@@ -1,8 +1,8 @@
-[gd_scene load_steps=12 format=4 uid="uid://b00w3axd0lxv5"]
+[gd_scene load_steps=15 format=4 uid="uid://b00w3axd0lxv5"]
 
 [ext_resource type="Script" path="res://addons/func_godot/src/map/func_godot_map.gd" id="1_7fhe0"]
 [ext_resource type="Resource" uid="uid://d3nxh65kiq487" path="res://TrenchBroom/cfg_defaultMap.tres" id="2_aghup"]
-[ext_resource type="Material" path="res://TrenchBroom/Textures/tex_testPanel.tres" id="3_rdh1v"]
+[ext_resource type="Material" uid="uid://bsksa0mlj08ao" path="res://TrenchBroom/Textures/tex_testPanel.tres" id="3_rdh1v"]
 [ext_resource type="PackedScene" uid="uid://4tpyq3got7up" path="res://Scenes/info_player_start.tscn" id="4_uk3x1"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_unhtq"]
@@ -42,6 +42,19 @@ background_mode = 2
 sky = SubResource("Sky_npd16")
 
 [sub_resource type="SphereMesh" id="SphereMesh_tlrwp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y4laa"]
+transparency = 3
+alpha_hash_scale = 1.0
+alpha_antialiasing_mode = 0
+albedo_color = Color(1, 1, 1, 0.501961)
+
+[sub_resource type="BoxMesh" id="BoxMesh_yh54d"]
+material = SubResource("StandardMaterial3D_y4laa")
+size = Vector3(10, 20, 10)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_hhgj7"]
+points = PackedVector3Array(-5, -10, -5, -5, -10, 5, -5, 10, -5, 5, -10, -5, 5, -10, 5, -5, 10, 5, 5, 10, -5, 5, 10, 5)
 
 [node name="Sky Palace" type="Node3D"]
 
@@ -105,3 +118,17 @@ mesh = SubResource("SphereMesh_tlrwp")
 [node name="MeshInstance3D8" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.51884, 7.5, 0)
 mesh = SubResource("SphereMesh_tlrwp")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_mask = 3
+gravity_space_override = 3
+gravity_point = true
+gravity = 4.9
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14.6511)
+mesh = SubResource("BoxMesh_yh54d")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14.6511)
+shape = SubResource("ConvexPolygonShape3D_hhgj7")

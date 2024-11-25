@@ -11,6 +11,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0418422, 0)
 [node name="CameraFollower" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.80069, 0.599079, 0, -0.599079, 0.80069, 0, 0.5, 0)
 script = ExtResource("1_1rajd")
+zoomSettings = [8.0, 10.0, 6.0]
 horSensitivity = 3.0
 verSensitivity = 3.0
 traction = 10.0
@@ -26,3 +27,7 @@ current = true
 
 [node name="Sonic" parent="." instance=ExtResource("2_5305i")]
 cameraPath = NodePath("../CameraFollower/SpringArm3D/Camera3D")
+joggingSpeed = 15.0
+runningSpeed = 25.0
+sprintingSpeed = 35.0
+fallGravityMultiplier = 3.0

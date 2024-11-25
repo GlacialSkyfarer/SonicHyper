@@ -4,7 +4,7 @@ public class Mathf2 {
 
     public static float GetJumpForce(float gravity, float jumpHeight) {
 
-        return Mathf.Sqrt(2 * -gravity * jumpHeight);
+        return Mathf.Sqrt(2 * Mathf.Abs(gravity) * jumpHeight);
 
     }
 
