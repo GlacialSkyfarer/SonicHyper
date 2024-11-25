@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://cyjbdi347hyhd"]
+
+[ext_resource type="Script" path="res://Actors/Players/Sonic.cs" id="1_splnw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p7pbq"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0, 0.333333, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6kq48"]
+material = SubResource("StandardMaterial3D_p7pbq")
+radius = 0.4
+radial_segments = 8
+rings = 2
+
+[sub_resource type="PrismMesh" id="PrismMesh_yjcli"]
+size = Vector3(0.2, 0.2, 0.05)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wa5yb"]
+radius = 0.4
+
+[node name="Sonic" type="CharacterBody3D"]
+collision_layer = 2
+script = ExtResource("1_splnw")
+runningSpeed = 20.0
+sprintingSpeed = 30.0
+acceleration = 8.0
+deceleration = 20.0
+turnSpeed = 17.0
+turnFriction = 1.0
+fallGravityMultiplier = 3.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_6kq48")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(1.78112, 0, 0, 0, 2.33566e-07, 1.78112, 0, -1.78112, 2.33566e-07, 0, -0.35036, -0.73315)
+mesh = SubResource("PrismMesh_yjcli")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_wa5yb")
