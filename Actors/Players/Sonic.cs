@@ -31,6 +31,8 @@ public partial class Sonic : CharacterBody3D
 	private Node3D standingModel;
 	[Export] private NodePath ballModelPath;
 	private Node3D ballModel;
+	[Export] private NodePath floorCastPath;
+	private RayCast3D floorCast;
 
 	#endregion
 
@@ -52,6 +54,7 @@ public partial class Sonic : CharacterBody3D
 	[Export] private float airAcceleration = 3f;
 	[Export] private float airDeceleration = 6f;
 	[ExportSubgroup("Handling")]
+	Vector3 floorNormal = Vector3.Up;
 	[Export] private float turnSpeed = 10f;
 	[Export] private float turnFriction = 2f;
 	private float currentSpeed = 0f;
@@ -94,6 +97,7 @@ public partial class Sonic : CharacterBody3D
 		ballCollider = GetNode<CollisionShape3D>(ballColliderPath);
 		standingModel = GetNode<Node3D>(standingModelPath);
 		ballModel = GetNode<Node3D>(ballModelPath);
+		floorCast = GetNode<RayCast3D>(floorCastPath);
 
 	}
 
@@ -137,13 +141,15 @@ public partial class Sonic : CharacterBody3D
 
 		Velocity += gravity * (float)delta * GetGravityMultiplier() * 0.5f;
 
+		currentSpeed = Mathf.Clamp(currentSpeed, 0, Velocity.Length());
+
 	}
 
 	private Vector3 _StateProcess(Vector3 velocity, Vector3 gravity, double delta) {
 
 		Vector2 inputVector = Input.GetVector("move_left", "move_right", "move_back", "move_forward");
 		Vector3 cameraTransformedInputVector = camera.GlobalTransform.Basis.X * inputVector.X - camera.GlobalTransform.Basis.Z * inputVector.Y;
-		Vector3 flatInputVector = new Vector3(cameraTransformedInputVector.X, 0, cameraTransformedInputVector.Z).Normalized();
+		Vector3 floorTransformedInputVector = new Vector3(cameraTransformedInputVector.X, 0, cameraTransformedInputVector.Z).Normalized();
 
 		currentSpeed = Mathf.Clamp(currentSpeed, 0, maximumSpeed);
 
@@ -167,9 +173,9 @@ public partial class Sonic : CharacterBody3D
 
 		}
 
-		if (flatInputVector != Vector3.Zero) {
+		if (floorTransformedInputVector != Vector3.Zero) {
 
-			float angleTo = -flatInputVector.SignedAngleTo(-GlobalBasis.Z, GlobalBasis.Y);
+			float angleTo = -floorTransformedInputVector.SignedAngleTo(-GlobalBasis.Z, GlobalBasis.Y);
 
 			float turnAmount =	Mathf.Min(turnSpeed * (float)delta, Mathf.Abs(angleTo));
 
@@ -179,7 +185,7 @@ public partial class Sonic : CharacterBody3D
 
 		}
 
-		float accelMult = (float)delta * inputVector.Length();
+		float accelMult = (float)delta;
 
 		switch (currentPlayerState) {
 			
@@ -202,7 +208,7 @@ public partial class Sonic : CharacterBody3D
 					currentPlayerState = SonicPlayerState.Idle;
 				}
 
-				currentSpeed = Mathf.MoveToward(currentSpeed, runningSpeed, (currentSpeed > runningSpeed ? deceleration : acceleration) * accelMult);
+				currentSpeed = Mathf.MoveToward(currentSpeed, runningSpeed * inputVector.Length(), (currentSpeed > runningSpeed ? deceleration : acceleration) * accelMult);
 
 				velocity = -GlobalBasis.Z * currentSpeed + Vector3.Up * velocity.Y;
 
@@ -226,7 +232,7 @@ public partial class Sonic : CharacterBody3D
 
 				if (inputVector != Vector2.Zero) {
 
-					currentSpeed = Mathf.MoveToward(currentSpeed, joggingSpeed, (currentSpeed > joggingSpeed ? airDeceleration : airAcceleration) * accelMult);
+					currentSpeed = Mathf.MoveToward(currentSpeed, joggingSpeed * inputVector.Length(), (currentSpeed > joggingSpeed ? airDeceleration : airAcceleration) * accelMult);
 
 				} else {
 
@@ -248,7 +254,7 @@ public partial class Sonic : CharacterBody3D
 
 				if (inputVector != Vector2.Zero) {
 
-					currentSpeed = Mathf.MoveToward(currentSpeed, joggingSpeed, (currentSpeed > joggingSpeed ? airDeceleration : airAcceleration) * accelMult);
+					currentSpeed = Mathf.MoveToward(currentSpeed, joggingSpeed * inputVector.Length(), (currentSpeed > joggingSpeed ? airDeceleration : airAcceleration) * accelMult);
 
 				} else {
 
