@@ -4,25 +4,27 @@ using System;
 public partial class CameraFollower : Node3D
 {
 
-	[Export] public Godot.Collections.Array<float> zoomSettings = new Godot.Collections.Array<float>() { 4f, 6f, 8f, 2f };
+	[Export] private Godot.Collections.Array<float> zoomSettings = new Godot.Collections.Array<float>() { 4f, 6f, 8f, 2f };
 
 	float cameraDistance = 4f;
 
 	int zoomIndex = 0;
 
-	[Export] public float horSensitivity = 1f;
-	[Export] public float verSensitivity = 1f;
+	[Export] private float horSensitivity = 1f;
+	[Export] private float verSensitivity = 1f;
 
-	[Export] public float traction = 1f;
+	[Export] private float traction = 1f;
 
-	[Export] public NodePath springArmPath;
-	public SpringArm3D springArm;
+	[Export] private NodePath springArmPath;
+	private SpringArm3D springArm;
 
-	[Export] public NodePath targetPath;
-	public Node3D target;
+	[Export] private NodePath targetPath;
+	private Node3D target;
 
 	float verRotationValue = 0f;
 	float horRotationValue = 0f;
+
+	[Export] private bool followWhenTurning = false;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -57,7 +59,7 @@ public partial class CameraFollower : Node3D
 		verRotationValue = Mathf.Lerp(verRotationValue, rightStick.Y, (float)delta * traction);
 		horRotationValue = Mathf.Lerp(horRotationValue, rightStick.X, (float)delta * traction);
 
-		GlobalRotation = new Vector3(GlobalRotation.X - ((float)delta * verSensitivity * verRotationValue), GlobalRotation.Y - ((float)delta * horSensitivity * (horRotationValue + Input.GetAxis("move_left", "move_right") * 0.2f)), GlobalRotation.Z);
+		GlobalRotation = new Vector3(GlobalRotation.X - ((float)delta * verSensitivity * verRotationValue), GlobalRotation.Y - ((float)delta * horSensitivity * (horRotationValue + (followWhenTurning ? (Input.GetAxis("move_left", "move_right") * 0.2f) : 0))), GlobalRotation.Z);
 		RotationDegrees = new Vector3(Mathf.Clamp(RotationDegrees.X, -80, -5), RotationDegrees.Y, RotationDegrees.Z);
 
 	}

@@ -1,10 +1,10 @@
 using Godot;
 using System;
+using System.Data;
 
 public enum SonicPlayerState {
 
-	Idle,
-	Running,
+	Standing,
 	SpinJumping,
 	SpinFalling,
 	ChargingDash,
@@ -38,7 +38,7 @@ public partial class Sonic : CharacterBody3D
 
 	#region Variables
 
-	private SonicPlayerState currentPlayerState = SonicPlayerState.Idle;
+	private SonicPlayerState currentPlayerState = SonicPlayerState.Standing;
 
 	[ExportCategory("Movement")]
 	[ExportGroup("Running")] 
@@ -53,16 +53,20 @@ public partial class Sonic : CharacterBody3D
 	[Export] private float deceleration = 6f;
 	[Export] private float airAcceleration = 3f;
 	[Export] private float airDeceleration = 6f;
+	[Export] private float slopeAccel = 5f;
+	[Export] private float slopeDecel = 3f;
+	[Export] private float slopeSlideAngle = 22.5f;
 	[ExportSubgroup("Handling")]
 	Vector3 floorNormal = Vector3.Up;
 	[Export] private float turnSpeed = 10f;
 	[Export] private float turnFriction = 2f;
+	private Vector3 currentDirection = Vector3.Forward;
 	private float currentSpeed = 0f;
 
 	[ExportGroup("Jumping")]
 
-	[Export] private Godot.Collections.Array<SonicPlayerState> jumpableStates = new Godot.Collections.Array<SonicPlayerState> { SonicPlayerState.Idle, SonicPlayerState.Running };
-	[Export] private Godot.Collections.Array<SonicPlayerState> spinDashableStates = new Godot.Collections.Array<SonicPlayerState> { SonicPlayerState.Idle, SonicPlayerState.Running };
+	[Export] private Godot.Collections.Array<SonicPlayerState> jumpableStates = new Godot.Collections.Array<SonicPlayerState> { SonicPlayerState.Standing };
+	[Export] private Godot.Collections.Array<SonicPlayerState> spinDashableStates = new Godot.Collections.Array<SonicPlayerState> {SonicPlayerState.Standing };
 	[Export] private float maxJumpHeight = 4.0f;
 	[Export] private float fallGravityMultiplier = 1.5f;
 
@@ -128,28 +132,81 @@ public partial class Sonic : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
 	{
+
 		Vector3 velocity = Velocity;
-		
+
+		if (IsOnFloor()) {
+
+			velocity = VelocityToLocal(velocity);
+
+		}
+
 		Vector3 gravity = GetGravity();
 
 		velocity += gravity * (float)delta * GetGravityMultiplier() * 0.5f;
 
+		RotateOnSlope();
+	
+		UpDirection = GlobalBasis.Y;
+
 		velocity = _StateProcess(velocity, gravity, delta);
 
-		Velocity = velocity;
+		if (IsOnFloor()) {
+			
+			Velocity = VelocityToGlobal(velocity);
+
+		} else {
+
+			Velocity = velocity;
+
+		}
+
 		MoveAndSlide();
 
-		Velocity += gravity * (float)delta * GetGravityMultiplier() * 0.5f;
+		velocity = Velocity;
+
+		if (IsOnFloor()) {
+
+			velocity = VelocityToLocal(velocity);
+
+		}
+
+		velocity += gravity * (float)delta * GetGravityMultiplier() * 0.5f;
+
+		if (IsOnFloor()) {
+			
+			Velocity = VelocityToGlobal(velocity);
+
+		} else {
+
+			Velocity = velocity;
+
+		}
 
 		currentSpeed = Mathf.Clamp(currentSpeed, 0, Velocity.Length());
 
 	}
 
 	private Vector3 _StateProcess(Vector3 velocity, Vector3 gravity, double delta) {
-
+		
 		Vector2 inputVector = Input.GetVector("move_left", "move_right", "move_back", "move_forward");
-		Vector3 cameraTransformedInputVector = camera.GlobalTransform.Basis.X * inputVector.X - camera.GlobalTransform.Basis.Z * inputVector.Y;
-		Vector3 floorTransformedInputVector = new Vector3(cameraTransformedInputVector.X, 0, cameraTransformedInputVector.Z).Normalized();
+		Vector3 cameraTransformedInputVector = camera.GlobalBasis.X * inputVector.X - camera.GlobalBasis.Z * inputVector.Y;
+		cameraTransformedInputVector = new Vector3(cameraTransformedInputVector.X, 0, cameraTransformedInputVector.Z).Normalized();
+
+		if (cameraTransformedInputVector != Vector3.Zero) {
+
+			float angleTo = -cameraTransformedInputVector.SignedAngleTo(currentDirection, Vector3.Up);
+
+			float turnAmount =	Mathf.Min(turnSpeed * (float)delta, Mathf.Abs(angleTo));
+
+			currentDirection = currentDirection.Rotated(Vector3.Up, Mathf.Sign(angleTo) * turnAmount);
+
+			currentSpeed -= turnAmount * turnFriction;
+
+		}
+
+		standingModel.LookAt(standingModel.GlobalPosition - (currentDirection.X * GlobalBasis.X) - (currentDirection.Z * GlobalBasis.Z), GlobalBasis.Y);
+		ballModel.LookAt(ballModel.GlobalPosition - (currentDirection.X * GlobalBasis.X) - (currentDirection.Z * GlobalBasis.Z), GlobalBasis.Y);
 
 		currentSpeed = Mathf.Clamp(currentSpeed, 0, maximumSpeed);
 
@@ -161,8 +218,10 @@ public partial class Sonic : CharacterBody3D
 			currentCoyoteTime = 0f;
 
 			jumpLock = true;
-			
+
 			velocity += Vector3.Up * Mathf2.GetJumpForce(gravity.Y, maxJumpHeight);
+
+			velocity = VelocityToLocal(velocity);
 
 		}
 
@@ -173,44 +232,29 @@ public partial class Sonic : CharacterBody3D
 
 		}
 
-		if (floorTransformedInputVector != Vector3.Zero) {
-
-			float angleTo = -floorTransformedInputVector.SignedAngleTo(-GlobalBasis.Z, GlobalBasis.Y);
-
-			float turnAmount =	Mathf.Min(turnSpeed * (float)delta, Mathf.Abs(angleTo));
-
-			RotateY(Mathf.Sign(angleTo) * turnAmount);
-
-			currentSpeed -= turnAmount * turnFriction;
-
-		}
-
 		float accelMult = (float)delta;
-
+		
 		switch (currentPlayerState) {
-			
-			case SonicPlayerState.Idle:
 
-				if (inputVector != Vector2.Zero) {
-					currentPlayerState = SonicPlayerState.Running;
-					currentSpeed = Mathf.Max(startingSpeed, currentSpeed);
+			case SonicPlayerState.Standing:
+
+				if (!IsOnFloor()) {
+
+					velocity = VelocityToLocal(velocity);
+					
+					currentPlayerState = SonicPlayerState.SpinFalling;
+
 				}
 
-				currentSpeed = Mathf.MoveToward(currentSpeed, 0f, deceleration * (float)delta);
+				if (currentSpeed == 0 && inputVector != Vector2.Zero) {
+					
+					currentSpeed = startingSpeed;
 
-				velocity = -GlobalBasis.Z * currentSpeed + Vector3.Up * velocity.Y;
-
-			break;
-
-			case SonicPlayerState.Running:
-
-				if (inputVector == Vector2.Zero) {
-					currentPlayerState = SonicPlayerState.Idle;
 				}
 
 				currentSpeed = Mathf.MoveToward(currentSpeed, runningSpeed * inputVector.Length(), (currentSpeed > runningSpeed ? deceleration : acceleration) * accelMult);
 
-				velocity = -GlobalBasis.Z * currentSpeed + Vector3.Up * velocity.Y;
+				velocity = GetRunningVelocity(velocity, currentDirection);
 
 			break;
 
@@ -218,13 +262,13 @@ public partial class Sonic : CharacterBody3D
 
 				if (IsOnFloor() && !jumpLock) {
 
-					currentPlayerState = SonicPlayerState.Idle;
+					currentPlayerState = SonicPlayerState.Standing;
 
 				}
 
 				jumpLock = false;
 
-				if (velocity.Y < 0f  || !Input.IsActionPressed("jump")) {
+				if ((velocity * GlobalBasis.Y).Y < 0f  || !Input.IsActionPressed("jump")) {
 
 					currentPlayerState = SonicPlayerState.SpinFalling;
 
@@ -240,7 +284,7 @@ public partial class Sonic : CharacterBody3D
 
 				}
 
-				velocity = -GlobalBasis.Z * currentSpeed + Vector3.Up * velocity.Y;
+				velocity = GetRunningVelocity(velocity, currentDirection);
 
 			break;
 
@@ -248,7 +292,7 @@ public partial class Sonic : CharacterBody3D
 
 				if (IsOnFloor()) {
 
-					currentPlayerState = SonicPlayerState.Idle;
+					currentPlayerState = SonicPlayerState.Standing;
 
 				}
 
@@ -262,7 +306,7 @@ public partial class Sonic : CharacterBody3D
 
 				}
 
-				velocity = -GlobalBasis.Z * currentSpeed + Vector3.Up * velocity.Y;
+				velocity = GetRunningVelocity(velocity, currentDirection);
 
 			break;
 
@@ -278,27 +322,29 @@ public partial class Sonic : CharacterBody3D
 
 				}
 
-				velocity = -GlobalBasis.Z * currentSpeed + Vector3.Up * velocity.Y;
+				velocity = GetRunningVelocity(velocity, currentDirection);
 
 			break;
 
 			case SonicPlayerState.Rolling:
 
-				if (currentSpeed < startingSpeed) {
-
-					currentPlayerState = SonicPlayerState.Idle;
+				if (!IsOnFloor()) {
+					
+					velocity = VelocityToLocal(velocity);
+					
+					currentPlayerState = SonicPlayerState.SpinFalling;
 
 				}
 
-				if (Input.IsActionJustPressed("action")) {
+				if (Input.IsActionJustPressed("action") || currentSpeed < startingSpeed) {
 
-					currentPlayerState = SonicPlayerState.Running;
+					currentPlayerState = SonicPlayerState.Standing;
 
 				}
 
 				currentSpeed = Mathf.MoveToward(currentSpeed, 0f, rollDeceleration * (float)delta);
 
-				velocity = -GlobalBasis.Z * currentSpeed + Vector3.Up * velocity.Y;
+				velocity = GetRunningVelocity(velocity, currentDirection);
 
 			break;
 
@@ -312,9 +358,7 @@ public partial class Sonic : CharacterBody3D
 
 		switch (currentPlayerState) {
 
-
-			case SonicPlayerState.Idle:
-			case SonicPlayerState.Running: 
+			case SonicPlayerState.Standing: 
 
 				standingCollider.Disabled = false;
 				ballCollider.Disabled = true;
@@ -394,6 +438,44 @@ public partial class Sonic : CharacterBody3D
 				return 1f;
 
 		}
+
+	}
+
+	private void RotateOnSlope() {
+
+		if (IsOnFloor()) {
+
+			Quaternion targetRotation = new Quaternion(GlobalBasis.Y, floorCast.GetCollisionNormal());
+
+			Quaternion *= targetRotation;
+		
+		} else {
+
+			GlobalBasis = Basis.Identity;
+
+		}
+
+	}
+	
+	private Vector3 GetRunningVelocity(Vector3 velocity, Vector3 movementDirection) {
+
+		return movementDirection * currentSpeed + Vector3.Up * velocity.Y;
+
+	}
+
+	private Vector3 VelocityToLocal(Vector3 velocity) {
+
+		Quaternion q = new Quaternion(GlobalBasis.Y, Vector3.Up).Normalized();
+
+		return q * velocity;
+
+	}
+
+	private Vector3 VelocityToGlobal(Vector3 velocity) {
+
+		Quaternion q = new Quaternion(Vector3.Up, GlobalBasis.Y).Normalized();
+
+		return q * velocity;
 
 	}
 
