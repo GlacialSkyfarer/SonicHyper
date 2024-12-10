@@ -62,6 +62,7 @@ _data = {
 
 [node name="Sonic" type="CharacterBody3D"]
 collision_layer = 2
+floor_snap_length = 0.2
 script = ExtResource("1_splnw")
 animatorPath = NodePath("Sonic/AnimationPlayer")
 standingColliderPath = NodePath("StandingShape")
