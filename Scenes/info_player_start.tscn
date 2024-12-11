@@ -26,8 +26,5 @@ margin = 0.1
 current = true
 
 [node name="Sonic" parent="." instance=ExtResource("2_5305i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 cameraPath = NodePath("../CameraFollower/SpringArm3D/Camera3D")
-joggingSpeed = 15.0
-runningSpeed = 25.0
-sprintingSpeed = 35.0
-fallGravityMultiplier = 3.0

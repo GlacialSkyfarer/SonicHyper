@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bg7ra6m6wqrbf" path="res://Assets/Visual/Models/Sonic.fbx" id="2_4xsjd"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wa5yb"]
-radius = 0.4
+radius = 0.3
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_8e37d"]
 radius = 0.6
@@ -62,6 +62,7 @@ _data = {
 
 [node name="Sonic" type="CharacterBody3D"]
 collision_layer = 2
+floor_stop_on_slope = false
 floor_snap_length = 0.2
 script = ExtResource("1_splnw")
 animatorPath = NodePath("Sonic/AnimationPlayer")
@@ -70,15 +71,19 @@ ballColliderPath = NodePath("BallShape")
 standingModelPath = NodePath("Sonic")
 ballModelPath = NodePath("Ball")
 floorCastPath = NodePath("FloorCast")
-startingSpeed = 6.0
-runningSpeed = 20.0
-sprintingSpeed = 30.0
-maximumSpeed = 65.0
+joggingSpeed = 15.0
+runningSpeed = 25.0
+sprintingSpeed = 35.0
+maximumSpeed = 75.0
 acceleration = 12.0
 deceleration = 18.0
+airAcceleration = 8.0
+airDeceleration = 12.0
+turnSpeed = 15.0
 turnFriction = 1.0
-jumpableStates = [0, 1, 5]
+jumpableStates = [0, 1, 4]
 maxJumpHeight = 6.0
+maximumDashSpeed = 40.0
 animations = {
 "Idle": "Sonic|idle_breathe",
 "Jet": "Sonic|boost",
@@ -88,15 +93,16 @@ animations = {
 }
 
 [node name="StandingShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_wa5yb")
 
 [node name="BallShape" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 shape = SubResource("SphereShape3D_8e37d")
 disabled = true
 
 [node name="Sonic" parent="." instance=ExtResource("2_4xsjd")]
-transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 0, -1, 0)
+transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 0, 0, 0)
 
 [node name="Sonic" parent="Sonic" index="0"]
 transform = Transform3D(-100, -8.74228e-06, -1.04216e-12, 0, -1.19209e-05, 100, -8.74228e-06, 100, 1.19209e-05, 0, 0, 0)
@@ -457,7 +463,7 @@ bones/173/scale = Vector3(1, 1, 1)
 visible = false
 
 [node name="Ball" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 visible = false
 mesh = SubResource("SphereMesh_qhobh")
 
@@ -468,7 +474,6 @@ libraries = {
 autoplay = "speen"
 
 [node name="FloorCast" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 target_position = Vector3(0, -0.5, 0)
 hit_back_faces = false
 

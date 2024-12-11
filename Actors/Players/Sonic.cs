@@ -221,8 +221,6 @@ public partial class Sonic : CharacterBody3D
 
 			velocity += Vector3.Up * Mathf2.GetJumpForce(gravity.Y, maxJumpHeight);
 
-			velocity = VelocityToLocal(velocity);
-
 		}
 
 		if (spinDashableStates.Contains(currentPlayerState) && Input.IsActionJustPressed("action")) {
@@ -443,9 +441,13 @@ public partial class Sonic : CharacterBody3D
 
 	private void RotateOnSlope() {
 
-		if (IsOnFloor()) {
+		Vector3 colNorm = floorCast.GetCollisionNormal();
 
-			Quaternion targetRotation = new Quaternion(GlobalBasis.Y, floorCast.GetCollisionNormal());
+		if (IsOnFloor() && GlobalBasis.Y != colNorm) {
+
+			GD.Print(colNorm);
+
+			Quaternion targetRotation = new Quaternion(GlobalBasis.Y, colNorm);
 
 			Quaternion *= targetRotation;
 		
