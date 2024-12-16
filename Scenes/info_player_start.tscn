@@ -19,6 +19,7 @@ springArmPath = NodePath("SpringArm3D")
 targetPath = NodePath("../Sonic")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CameraFollower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.675393, 0.505331)
 shape = SubResource("SeparationRayShape3D_shek0")
 margin = 0.1
 
