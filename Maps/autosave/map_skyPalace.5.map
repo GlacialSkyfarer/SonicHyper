@@ -1,0 +1,10 @@
+// Game: SonicHyper
+// Format: Valve
+// entity 0
+{
+"mapversion" "220"
+"wad" ""
+"classname" "worldspawn"
+"_tb_mod" "Textures"
+"_tb_textures" "Textures/special;textures;textures\GreenHill;textures\special"
+}

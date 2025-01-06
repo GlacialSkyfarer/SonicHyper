@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://b26pqqr74asa"]
+
+[ext_resource type="Texture2D" uid="uid://dkja81w4l23bm" path="res://TrenchBroom/Textures/GreenHill/rock.png" id="1_md0r2"]
+
+[resource]
+transparency = 3
+alpha_hash_scale = 1.0
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("1_md0r2")
+metallic_specular = 0.0
+texture_filter = 2

@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://cxh2cn34vqvnv"
+path="res://.godot/imported/map_skyPalace.5.map-3c1ded912db2111d0f36cc41da27d292.tres"
+
+[deps]
+
+source_file="res://Maps/autosave/map_skyPalace.5.map"
+dest_files=["res://.godot/imported/map_skyPalace.5.map-3c1ded912db2111d0f36cc41da27d292.tres"]
+
+[params]
+

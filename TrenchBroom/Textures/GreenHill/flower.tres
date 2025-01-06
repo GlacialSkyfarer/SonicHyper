@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dmers7wwnh1ie"]
+
+[ext_resource type="Texture2D" uid="uid://be4omacdg6gsf" path="res://TrenchBroom/Textures/GreenHill/flower.png" id="1_wpogs"]
+
+[resource]
+transparency = 3
+alpha_hash_scale = 1.0
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("1_wpogs")
+metallic_specular = 0.0
+texture_filter = 2

@@ -31,8 +31,16 @@ public partial class Sonic : CharacterBody3D
 	private Node3D standingModel;
 	[Export] private NodePath ballModelPath;
 	private Node3D ballModel;
+	private AnimationPlayer ballPlayer;
 	[Export] private NodePath floorCastPath;
 	private RayCast3D floorCast;
+
+	//Sounds
+
+	[Export] private NodePath spinHoldSoundPath;
+	private AudioStreamPlayer spinHoldSound;
+	[Export] private NodePath spinReleaseSoundPath;
+	private AudioStreamPlayer spinReleaseSound;
 
 	#endregion
 
@@ -58,6 +66,7 @@ public partial class Sonic : CharacterBody3D
 	[Export] private float slopeSlideAngle = 22.5f;
 	[ExportSubgroup("Handling")]
 	Vector3 floorNormal = Vector3.Up;
+	[Export] private float airTurnSpeed = 7f;
 	[Export] private float turnSpeed = 10f;
 	[Export] private float turnFriction = 2f;
 	private Vector3 currentDirection = Vector3.Forward;
@@ -102,6 +111,9 @@ public partial class Sonic : CharacterBody3D
 		standingModel = GetNode<Node3D>(standingModelPath);
 		ballModel = GetNode<Node3D>(ballModelPath);
 		floorCast = GetNode<RayCast3D>(floorCastPath);
+		ballPlayer = ballModel.GetNode<AnimationPlayer>("Ball/Ball/AnimationPlayer");
+		spinHoldSound = GetNode<AudioStreamPlayer>(spinHoldSoundPath);
+		spinReleaseSound = GetNode<AudioStreamPlayer>(spinReleaseSoundPath);
 
 	}
 
@@ -126,6 +138,20 @@ public partial class Sonic : CharacterBody3D
 
 		}
 
+		if (currentPlayerState == SonicPlayerState.ChargingDash) {
+
+			if (!spinHoldSound.Playing) {
+
+				spinHoldSound.Play();
+
+			}
+
+		} else {
+
+			spinHoldSound.Stop();
+
+		}
+
 		_AnimationProcess(delta);
 
     }
@@ -135,59 +161,27 @@ public partial class Sonic : CharacterBody3D
 
 		Vector3 velocity = Velocity;
 
-		if (IsOnFloor()) {
-
-			velocity = VelocityToLocal(velocity);
-
-		}
-
-		Vector3 gravity = GetGravity();
-
-		velocity += gravity * (float)delta * GetGravityMultiplier() * 0.5f;
-
-		RotateOnSlope();
+		float gravity = GetGravity().Length();
 	
+		RotateOnSlope(delta);
+
 		UpDirection = GlobalBasis.Y;
+
+		velocity += gravity * (float)delta * GetGravityMultiplier() * 0.5f * -GlobalBasis.Y;
 
 		velocity = _StateProcess(velocity, gravity, delta);
 
-		if (IsOnFloor()) {
-			
-			Velocity = VelocityToGlobal(velocity);
-
-		} else {
-
-			Velocity = velocity;
-
-		}
+		Velocity = velocity;
 
 		MoveAndSlide();
 
-		velocity = Velocity;
-
-		if (IsOnFloor()) {
-
-			velocity = VelocityToLocal(velocity);
-
-		}
-
-		velocity += gravity * (float)delta * GetGravityMultiplier() * 0.5f;
-
-		if (IsOnFloor()) {
-			
-			Velocity = VelocityToGlobal(velocity);
-
-		} else {
-
-			Velocity = velocity;
-
-		}
+		Velocity += gravity * (float)delta * GetGravityMultiplier() * 0.5f * -GlobalBasis.Y;
 
 		currentSpeed = Mathf.Clamp(currentSpeed, 0, Velocity.Length());
 
 	}
 
-	private Vector3 _StateProcess(Vector3 velocity, Vector3 gravity, double delta) {
+	private Vector3 _StateProcess(Vector3 velocity, float gravity, double delta) {
 		
 		Vector2 inputVector = Input.GetVector("move_left", "move_right", "move_back", "move_forward");
 		Vector3 cameraTransformedInputVector = camera.GlobalBasis.X * inputVector.X - camera.GlobalBasis.Z * inputVector.Y;
@@ -197,7 +191,7 @@ public partial class Sonic : CharacterBody3D
 
 			float angleTo = -cameraTransformedInputVector.SignedAngleTo(currentDirection, Vector3.Up);
 
-			float turnAmount =	Mathf.Min(turnSpeed * (float)delta, Mathf.Abs(angleTo));
+			float turnAmount =	Mathf.Min((IsOnFloor() ? turnSpeed : airTurnSpeed) * (float)delta, Mathf.Abs(angleTo));
 
 			currentDirection = currentDirection.Rotated(Vector3.Up, Mathf.Sign(angleTo) * turnAmount);
 
@@ -219,7 +213,7 @@ public partial class Sonic : CharacterBody3D
 
 			jumpLock = true;
 
-			velocity += Vector3.Up * Mathf2.GetJumpForce(gravity.Y, maxJumpHeight);
+			velocity += Vector3.Up * Mathf2.GetJumpForce(gravity, maxJumpHeight);
 
 		}
 
@@ -237,8 +231,6 @@ public partial class Sonic : CharacterBody3D
 			case SonicPlayerState.Standing:
 
 				if (!IsOnFloor()) {
-
-					velocity = VelocityToLocal(velocity);
 					
 					currentPlayerState = SonicPlayerState.SpinFalling;
 
@@ -317,6 +309,7 @@ public partial class Sonic : CharacterBody3D
 					currentSpeed += Mathf.Remap(currentDashChargeTime, 0, dashChargeTime, minimumDashSpeed, maximumDashSpeed);
 					currentDashChargeTime = 0f;
 					currentPlayerState = SonicPlayerState.Rolling;
+					spinReleaseSound.Play();
 
 				}
 
@@ -327,8 +320,6 @@ public partial class Sonic : CharacterBody3D
 			case SonicPlayerState.Rolling:
 
 				if (!IsOnFloor()) {
-					
-					velocity = VelocityToLocal(velocity);
 					
 					currentPlayerState = SonicPlayerState.SpinFalling;
 
@@ -405,6 +396,15 @@ public partial class Sonic : CharacterBody3D
 				standingCollider.Disabled = true;
 				standingModel.Visible = false;
 				ballModel.Visible = true;
+				if (currentPlayerState == SonicPlayerState.ChargingDash) {
+
+					ballPlayer.Play("speendash");
+
+				} else {
+
+					ballPlayer.Play("speen");
+
+				}
 
 			break;
 
@@ -439,19 +439,17 @@ public partial class Sonic : CharacterBody3D
 
 	}
 
-	private void RotateOnSlope() {
+	private void RotateOnSlope(double delta) {
 
 		Vector3 colNorm = floorCast.GetCollisionNormal();
 
 		if (IsOnFloor() && GlobalBasis.Y != colNorm) {
 
-			GD.Print(colNorm);
-
 			Quaternion targetRotation = new Quaternion(GlobalBasis.Y, colNorm);
 
-			Quaternion *= targetRotation;
+			Quaternion *= (targetRotation * (float)delta);
 		
-		} else {
+		} else if (UpDirection != Vector3.Down) {
 
 			GlobalBasis = Basis.Identity;
 
@@ -461,7 +459,7 @@ public partial class Sonic : CharacterBody3D
 	
 	private Vector3 GetRunningVelocity(Vector3 velocity, Vector3 movementDirection) {
 
-		return movementDirection * currentSpeed + Vector3.Up * velocity.Y;
+		return VelocityToGlobal(movementDirection * currentSpeed) + GlobalBasis.Y * VelocityToLocal(velocity).Y;
 
 	}
 

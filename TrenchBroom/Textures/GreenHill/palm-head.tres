@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://c8g25gkfsednw"]
+
+[ext_resource type="Texture2D" uid="uid://bpidly63fhjm3" path="res://TrenchBroom/Textures/GreenHill/palm-head.png" id="1_d7vp1"]
+
+[resource]
+transparency = 3
+alpha_hash_scale = 1.0
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("1_d7vp1")
+metallic_specular = 0.0
+texture_filter = 2

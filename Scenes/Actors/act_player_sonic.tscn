@@ -1,13 +1,15 @@
-[gd_scene load_steps=10 format=3 uid="uid://cyjbdi347hyhd"]
+[gd_scene load_steps=13 format=3 uid="uid://cyjbdi347hyhd"]
 
 [ext_resource type="Script" path="res://Actors/Players/Sonic.cs" id="1_splnw"]
 [ext_resource type="PackedScene" uid="uid://bg7ra6m6wqrbf" path="res://Assets/Visual/Models/Sonic.fbx" id="2_4xsjd"]
+[ext_resource type="AudioStream" uid="uid://bsbgp1csl4cos" path="res://Assets/Audio/Sounds/Metal/snd_spindash_hold.wav" id="3_xb38u"]
+[ext_resource type="AudioStream" uid="uid://chgjsejm2jvhc" path="res://Assets/Audio/Sounds/Metal/snd_spindash_release.wav" id="4_nw1sy"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wa5yb"]
 radius = 0.3
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_8e37d"]
-radius = 0.6
+radius = 0.58
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3l85c"]
 diffuse_mode = 3
@@ -35,6 +37,42 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.682784, 1.09072, 0.698563)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.161624, -0.247377)]
+}
 
 [sub_resource type="Animation" id="Animation_q8sbu"]
 resource_name = "speen"
@@ -53,17 +91,108 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(-6.28319, 0, 0)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -0.3, 0), Vector3(0, -0.3, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_fpqil"]
+resource_name = "speendash"
+length = 0.35
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-6.28319, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.790791, 0, 0), Vector3(0.790791, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.8, 1.2, 0.8), Vector3(0.8, 1.2, 0.8)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("..:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -0.161624, -0.247377), Vector3(0, -0.161624, -0.247377)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_yjqa6"]
 _data = {
 "RESET": SubResource("Animation_1hce8"),
-"speen": SubResource("Animation_q8sbu")
+"speen": SubResource("Animation_q8sbu"),
+"speendash": SubResource("Animation_fpqil")
 }
 
 [node name="Sonic" type="CharacterBody3D"]
 collision_layer = 2
 floor_stop_on_slope = false
-floor_snap_length = 0.2
+floor_snap_length = 0.3
 script = ExtResource("1_splnw")
 animatorPath = NodePath("Sonic/AnimationPlayer")
 standingColliderPath = NodePath("StandingShape")
@@ -71,6 +200,8 @@ ballColliderPath = NodePath("BallShape")
 standingModelPath = NodePath("Sonic")
 ballModelPath = NodePath("Ball")
 floorCastPath = NodePath("FloorCast")
+spinHoldSoundPath = NodePath("SpinChargeSound")
+spinReleaseSoundPath = NodePath("SpinReleaseSound")
 startingSpeed = 2.0
 joggingSpeed = 15.0
 runningSpeed = 25.0
@@ -78,13 +209,14 @@ sprintingSpeed = 35.0
 maximumSpeed = 75.0
 acceleration = 12.0
 deceleration = 30.0
-airAcceleration = 8.0
-airDeceleration = 12.0
+airAcceleration = 12.0
+airDeceleration = 20.0
 turnSpeed = 15.0
 turnFriction = 1.0
 jumpableStates = [0, 1, 4]
 maxJumpHeight = 6.0
-maximumDashSpeed = 40.0
+minimumDashSpeed = 15.0
+maximumDashSpeed = 55.0
 animations = {
 "Idle": "Sonic|idle_breathe",
 "Jet": "Sonic|boost",
@@ -94,16 +226,16 @@ animations = {
 }
 
 [node name="StandingShape" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
 shape = SubResource("CapsuleShape3D_wa5yb")
 
 [node name="BallShape" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.49012e-08, 0)
 shape = SubResource("SphereShape3D_8e37d")
 disabled = true
 
 [node name="Sonic" parent="." instance=ExtResource("2_4xsjd")]
-transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 0, 0, 0)
+transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 0, -0.8, 0)
 
 [node name="Sonic" parent="Sonic" index="0"]
 transform = Transform3D(-100, -8.74228e-06, -1.04216e-12, 0, -1.19209e-05, 100, -8.74228e-06, 100, 1.19209e-05, 0, 0, 0)
@@ -463,19 +595,31 @@ bones/173/scale = Vector3(1, 1, 1)
 [node name="ball_LOD0" parent="Sonic/Sonic/Skeleton3D" index="0"]
 visible = false
 
-[node name="Ball" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
-visible = false
-mesh = SubResource("SphereMesh_qhobh")
+[node name="FloorCast" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.8, 0)
+target_position = Vector3(0, -0.5, 0)
+hit_back_faces = false
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Ball"]
+[node name="Ball" type="Node3D" parent="."]
+
+[node name="Ball" type="Node3D" parent="Ball"]
+transform = Transform3D(0.682784, 0, 0, 0, 1.09072, 0, 0, 0, 0.698563, 0, -0.161624, -0.247377)
+
+[node name="Ball" type="MeshInstance3D" parent="Ball/Ball"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("SphereMesh_qhobh")
+skeleton = NodePath("../../..")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Ball/Ball/Ball"]
 libraries = {
 "": SubResource("AnimationLibrary_yjqa6")
 }
 autoplay = "speen"
 
-[node name="FloorCast" type="RayCast3D" parent="."]
-target_position = Vector3(0, -0.5, 0)
-hit_back_faces = false
+[node name="SpinChargeSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_xb38u")
+
+[node name="SpinReleaseSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_nw1sy")
 
 [editable path="Sonic"]
