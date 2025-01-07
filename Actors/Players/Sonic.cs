@@ -41,6 +41,8 @@ public partial class Sonic : CharacterBody3D
 	private AudioStreamPlayer spinHoldSound;
 	[Export] private NodePath spinReleaseSoundPath;
 	private AudioStreamPlayer spinReleaseSound;
+	[Export] private NodePath jumpSoundPath;
+	private AudioStreamPlayer jumpSound;
 
 	#endregion
 
@@ -114,6 +116,7 @@ public partial class Sonic : CharacterBody3D
 		ballPlayer = ballModel.GetNode<AnimationPlayer>("Ball/Ball/AnimationPlayer");
 		spinHoldSound = GetNode<AudioStreamPlayer>(spinHoldSoundPath);
 		spinReleaseSound = GetNode<AudioStreamPlayer>(spinReleaseSoundPath);
+		jumpSound = GetNode<AudioStreamPlayer>(jumpSoundPath);
 
 	}
 
@@ -215,6 +218,8 @@ public partial class Sonic : CharacterBody3D
 
 			velocity += Vector3.Up * Mathf2.GetJumpForce(gravity, maxJumpHeight);
 
+			jumpSound.Play();
+
 		}
 
 		if (spinDashableStates.Contains(currentPlayerState) && Input.IsActionJustPressed("action")) {
@@ -242,7 +247,7 @@ public partial class Sonic : CharacterBody3D
 
 				}
 
-				currentSpeed = Mathf.MoveToward(currentSpeed, runningSpeed * inputVector.Length(), (currentSpeed > runningSpeed ? deceleration : acceleration) * accelMult);
+				currentSpeed = Mathf.MoveToward(currentSpeed, runningSpeed * inputVector.Length(), (currentSpeed > runningSpeed * inputVector.Length() ? deceleration : acceleration) * accelMult);
 
 				velocity = GetRunningVelocity(velocity, currentDirection);
 

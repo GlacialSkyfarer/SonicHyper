@@ -3,20 +3,19 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dkja81w4l23bm"
-path.s3tc="res://.godot/imported/rock.png-af7bbf3d46b5ee978e9c7034763c8df2.s3tc.ctex"
+path="res://.godot/imported/rock.png-af7bbf3d46b5ee978e9c7034763c8df2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://TrenchBroom/Textures/GreenHill/rock.png"
-dest_files=["res://.godot/imported/rock.png-af7bbf3d46b5ee978e9c7034763c8df2.s3tc.ctex"]
+dest_files=["res://.godot/imported/rock.png-af7bbf3d46b5ee978e9c7034763c8df2.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

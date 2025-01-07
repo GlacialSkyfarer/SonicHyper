@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://cyjbdi347hyhd"]
+[gd_scene load_steps=14 format=3 uid="uid://cyjbdi347hyhd"]
 
 [ext_resource type="Script" path="res://Actors/Players/Sonic.cs" id="1_splnw"]
 [ext_resource type="PackedScene" uid="uid://bg7ra6m6wqrbf" path="res://Assets/Visual/Models/Sonic.fbx" id="2_4xsjd"]
+[ext_resource type="AudioStream" uid="uid://c7smi58wkyhhm" path="res://Assets/Audio/Sounds/Metal/snd_jump.wav" id="3_hh371"]
 [ext_resource type="AudioStream" uid="uid://bsbgp1csl4cos" path="res://Assets/Audio/Sounds/Metal/snd_spindash_hold.wav" id="3_xb38u"]
 [ext_resource type="AudioStream" uid="uid://chgjsejm2jvhc" path="res://Assets/Audio/Sounds/Metal/snd_spindash_release.wav" id="4_nw1sy"]
 
@@ -202,6 +203,7 @@ ballModelPath = NodePath("Ball")
 floorCastPath = NodePath("FloorCast")
 spinHoldSoundPath = NodePath("SpinChargeSound")
 spinReleaseSoundPath = NodePath("SpinReleaseSound")
+jumpSoundPath = NodePath("JumpSound")
 startingSpeed = 2.0
 joggingSpeed = 15.0
 runningSpeed = 25.0
@@ -615,6 +617,9 @@ libraries = {
 "": SubResource("AnimationLibrary_yjqa6")
 }
 autoplay = "speen"
+
+[node name="JumpSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_hh371")
 
 [node name="SpinChargeSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_xb38u")
