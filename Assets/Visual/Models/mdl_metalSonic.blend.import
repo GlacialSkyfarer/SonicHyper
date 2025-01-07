@@ -31,7 +31,18 @@ animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
-_subresources={}
+_subresources={
+"materials": {
+"Texture": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Visual/Materials/Actors/mat_metalSonic_flame.tres"
+},
+"Texture_player00.png": {
+"use_external/enabled": true,
+"use_external/path": "res://Assets/Visual/Materials/Actors/mat_metalSonic.tres"
+}
+}
+}
 blender/nodes/visible=0
 blender/nodes/active_collection_only=false
 blender/nodes/punctual_lights=true

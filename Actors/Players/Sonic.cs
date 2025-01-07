@@ -8,7 +8,9 @@ public enum SonicPlayerState {
 	SpinJumping,
 	SpinFalling,
 	ChargingDash,
-	Rolling
+	Rolling,
+	StandFalling,
+	SpringJumping
 
 }
 
@@ -237,7 +239,7 @@ public partial class Sonic : CharacterBody3D
 
 				if (!IsOnFloor()) {
 					
-					currentPlayerState = SonicPlayerState.SpinFalling;
+					currentPlayerState = SonicPlayerState.StandFalling;
 
 				}
 
@@ -283,7 +285,57 @@ public partial class Sonic : CharacterBody3D
 
 			break;
 
+			case SonicPlayerState.SpringJumping:
+
+				if (IsOnFloor()) {
+
+					currentPlayerState = SonicPlayerState.Standing;
+
+				}
+
+				if ((velocity * GlobalBasis.Y).Y < 0f) {
+
+					currentPlayerState = SonicPlayerState.StandFalling;
+
+				}
+
+				if (inputVector != Vector2.Zero) {
+
+					currentSpeed = Mathf.MoveToward(currentSpeed, joggingSpeed * inputVector.Length(), (currentSpeed > joggingSpeed ? airDeceleration : airAcceleration) * accelMult);
+
+				} else {
+
+					currentSpeed = Mathf.MoveToward(currentSpeed, 0, airDeceleration * accelMult);
+
+				}
+
+				velocity = GetRunningVelocity(velocity, currentDirection);
+
+			break;
+
 			case SonicPlayerState.SpinFalling:
+
+				if (IsOnFloor()) {
+
+					currentPlayerState = SonicPlayerState.Standing;
+
+				}
+
+				if (inputVector != Vector2.Zero) {
+
+					currentSpeed = Mathf.MoveToward(currentSpeed, joggingSpeed * inputVector.Length(), (currentSpeed > joggingSpeed ? airDeceleration : airAcceleration) * accelMult);
+
+				} else {
+
+					currentSpeed = Mathf.MoveToward(currentSpeed, 0, airDeceleration * accelMult);
+
+				}
+
+				velocity = GetRunningVelocity(velocity, currentDirection);
+
+			break;
+
+			case SonicPlayerState.StandFalling:
 
 				if (IsOnFloor()) {
 
@@ -410,6 +462,24 @@ public partial class Sonic : CharacterBody3D
 					ballPlayer.Play("speen");
 
 				}
+
+			break;
+			case SonicPlayerState.StandFalling:
+
+				standingCollider.Disabled = false;
+				ballCollider.Disabled = true;
+				standingModel.Visible = true;
+				ballModel.Visible = false;
+				PlayAnimation("StandFall");
+
+			break;
+			case SonicPlayerState.SpringJumping:
+
+				standingCollider.Disabled = false;
+				ballCollider.Disabled = true;
+				standingModel.Visible = true;
+				ballModel.Visible = false;
+				PlayAnimation("SpringJump");
 
 			break;
 
