@@ -10,7 +10,8 @@ public enum SonicPlayerState {
 	ChargingDash,
 	Rolling,
 	StandFalling,
-	SpringJumping
+	SpringJumping,
+	HomingAttacking
 
 }
 
@@ -35,7 +36,9 @@ public partial class Sonic : CharacterBody3D
 	private Node3D ballModel;
 	private AnimationPlayer ballPlayer;
 	[Export] private NodePath floorCastPath;
-	private RayCast3D floorCast;
+	private ShapeCast3D floorCast;
+	[Export] private NodePath homingAttackAreaPath;
+	private Area3D homingAttackArea;
 
 	//Sounds
 
@@ -98,6 +101,14 @@ public partial class Sonic : CharacterBody3D
 	[Export] private float rollDeceleration = 3f;
 	private float currentDashChargeTime = 0f;
 
+	[ExportGroup("Homing Attack")] 
+
+	[Export] private Godot.Collections.Array<SonicPlayerState> homingAttackableStates = new Godot.Collections.Array<SonicPlayerState> { SonicPlayerState.SpinFalling, SonicPlayerState.SpinJumping, SonicPlayerState.StandFalling };
+	[Export] private Godot.Collections.Array<SonicPlayerState> homingAttackRechargeStates = new Godot.Collections.Array<SonicPlayerState> { SonicPlayerState.Standing, SonicPlayerState.ChargingDash, SonicPlayerState.Rolling };
+
+	[Export] private float airDashForce = 40f;
+	private bool hasHomingAttack = true;
+
 
 	[ExportCategory("Animation")]
 	[Export] private Godot.Collections.Dictionary<string,string> animations;
@@ -114,11 +125,12 @@ public partial class Sonic : CharacterBody3D
 		ballCollider = GetNode<CollisionShape3D>(ballColliderPath);
 		standingModel = GetNode<Node3D>(standingModelPath);
 		ballModel = GetNode<Node3D>(ballModelPath);
-		floorCast = GetNode<RayCast3D>(floorCastPath);
+		floorCast = GetNode<ShapeCast3D>(floorCastPath);
 		ballPlayer = ballModel.GetNode<AnimationPlayer>("Ball/Ball/AnimationPlayer");
 		spinHoldSound = GetNode<AudioStreamPlayer>(spinHoldSoundPath);
 		spinReleaseSound = GetNode<AudioStreamPlayer>(spinReleaseSoundPath);
 		jumpSound = GetNode<AudioStreamPlayer>(jumpSoundPath);
+		homingAttackArea = GetNode<Area3D>(homingAttackAreaPath);
 
 	}
 
@@ -222,6 +234,22 @@ public partial class Sonic : CharacterBody3D
 
 			jumpSound.Play();
 
+		} else if (homingAttackableStates.Contains(currentPlayerState) && hasHomingAttack && Input.IsActionJustPressed("homing_attack")) {
+
+			var bodies = homingAttackArea.GetOverlappingBodies();
+
+			if (bodies.Count > 0) {
+
+				throw new NotImplementedException();
+
+			} else {
+
+				hasHomingAttack = false;
+				currentSpeed = airDashForce;
+				currentPlayerState = SonicPlayerState.SpinFalling;
+
+			}
+
 		}
 
 		if (spinDashableStates.Contains(currentPlayerState) && Input.IsActionJustPressed("action")) {
@@ -231,13 +259,22 @@ public partial class Sonic : CharacterBody3D
 
 		}
 
+		if (homingAttackRechargeStates.Contains(currentPlayerState)) {
+
+			hasHomingAttack = true;
+		}
+
 		float accelMult = (float)delta;
 		
 		switch (currentPlayerState) {
 
 			case SonicPlayerState.Standing:
 
-				if (!IsOnFloor()) {
+				ApplyFloorSnap();
+
+				floorCast.ForceShapecastUpdate();
+
+				if (!floorCast.IsColliding()) {
 					
 					currentPlayerState = SonicPlayerState.StandFalling;
 
@@ -249,7 +286,7 @@ public partial class Sonic : CharacterBody3D
 
 				}
 
-				currentSpeed = Mathf.MoveToward(currentSpeed, runningSpeed * inputVector.Length(), (currentSpeed > runningSpeed * inputVector.Length() ? deceleration : acceleration) * accelMult);
+				currentSpeed = Mathf.MoveToward(currentSpeed, sprintingSpeed * inputVector.Length(), (currentSpeed > sprintingSpeed * inputVector.Length() ? deceleration : acceleration) * accelMult);
 
 				velocity = GetRunningVelocity(velocity, currentDirection);
 
@@ -515,20 +552,29 @@ public partial class Sonic : CharacterBody3D
 	}
 
 	private void RotateOnSlope(double delta) {
-
-		Vector3 colNorm = floorCast.GetCollisionNormal();
-
-		if (IsOnFloor() && GlobalBasis.Y != colNorm) {
-
-			Quaternion targetRotation = new Quaternion(GlobalBasis.Y, colNorm);
-
-			Quaternion *= (targetRotation * (float)delta);
 		
-		} else if (UpDirection != Vector3.Down) {
+		if (floorCast.IsColliding()) {
+
+			Vector3 colNorm = floorCast.GetCollisionNormal(0);
+
+			if (GlobalBasis.Y != colNorm) {
+
+				Quaternion targetRotation = (Quaternion * new Quaternion(GlobalBasis.Y, colNorm)).Normalized();
+
+				if (Quaternion != targetRotation) {
+
+					Quaternion = Quaternion.Slerp(targetRotation, (float)delta * 16);
+
+				}
+			
+			} 
+
+		} else {
 
 			GlobalBasis = Basis.Identity;
 
 		}
+
 
 	}
 	

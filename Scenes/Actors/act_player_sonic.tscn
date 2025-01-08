@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cyjbdi347hyhd"]
+[gd_scene load_steps=19 format=3 uid="uid://cyjbdi347hyhd"]
 
 [ext_resource type="Script" path="res://Actors/Players/Sonic.cs" id="1_splnw"]
 [ext_resource type="AudioStream" uid="uid://c7smi58wkyhhm" path="res://Assets/Audio/Sounds/Metal/snd_jump.wav" id="3_hh371"]
@@ -11,6 +11,10 @@ radius = 0.3
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_8e37d"]
 radius = 0.58
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_n7ipb"]
+height = 0.1
+radius = 0.3
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3l85c"]
 specular_mode = 1
@@ -192,9 +196,30 @@ _data = {
 "speendash": SubResource("Animation_fpqil")
 }
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_q6c7f"]
+radius = 6.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4pwk4"]
+emission_shape_offset = Vector3(0, 10, 0)
+emission_shape = 3
+emission_box_extents = Vector3(20, 0, 20)
+direction = Vector3(-0.5, -1, -0.2)
+spread = 0.0
+initial_velocity_min = 40.22
+initial_velocity_max = 40.22
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nunea"]
+shading_mode = 0
+albedo_color = Color(0.31386, 0.370009, 0.592725, 1)
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_gayre"]
+material = SubResource("StandardMaterial3D_nunea")
+size = Vector2(0.05, 0.15)
+
 [node name="Sonic" type="CharacterBody3D"]
 collision_layer = 2
-floor_stop_on_slope = false
 floor_snap_length = 1.0
 script = ExtResource("1_splnw")
 animatorPath = NodePath("mdl_metalSonic/AnimationPlayer")
@@ -202,7 +227,8 @@ standingColliderPath = NodePath("StandingShape")
 ballColliderPath = NodePath("BallShape")
 standingModelPath = NodePath("mdl_metalSonic")
 ballModelPath = NodePath("Ball")
-floorCastPath = NodePath("FloorCast")
+floorCastPath = NodePath("FloorCast2")
+homingAttackAreaPath = NodePath("HomingAttackArea")
 spinHoldSoundPath = NodePath("SpinChargeSound")
 spinReleaseSoundPath = NodePath("SpinReleaseSound")
 jumpSoundPath = NodePath("JumpSound")
@@ -214,7 +240,7 @@ maximumSpeed = 75.0
 acceleration = 12.0
 deceleration = 30.0
 airAcceleration = 12.0
-airDeceleration = 20.0
+airDeceleration = 15.0
 turnSpeed = 15.0
 turnFriction = 1.0
 jumpableStates = [0, 1, 4]
@@ -239,6 +265,10 @@ shape = SubResource("CapsuleShape3D_wa5yb")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.49012e-08, 0)
 shape = SubResource("SphereShape3D_8e37d")
 disabled = true
+
+[node name="FloorCast2" type="ShapeCast3D" parent="."]
+shape = SubResource("CylinderShape3D_n7ipb")
+target_position = Vector3(0, -1.2, 0)
 
 [node name="mdl_metalSonic" parent="." instance=ExtResource("6_n7joc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.8, 0)
@@ -292,10 +322,6 @@ bones/23/rotation = Quaternion(3.09086e-08, 0.707107, 0.707107, 3.09086e-08)
 [node name="AnimationPlayer" parent="mdl_metalSonic" index="1"]
 autoplay = "Idle"
 
-[node name="FloorCast" type="RayCast3D" parent="."]
-target_position = Vector3(0, -1.5, 0)
-hit_back_faces = false
-
 [node name="Ball" type="Node3D" parent="."]
 visible = false
 
@@ -321,5 +347,20 @@ stream = ExtResource("3_xb38u")
 
 [node name="SpinReleaseSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_nw1sy")
+
+[node name="HomingAttackArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HomingAttackArea"]
+shape = SubResource("SphereShape3D_q6c7f")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+amount = 1000
+lifetime = 2.0
+visibility_aabb = AABB(-10, -10, -10, 20, 20, 20)
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_4pwk4")
+draw_pass_1 = SubResource("QuadMesh_gayre")
 
 [editable path="mdl_metalSonic"]

@@ -8,7 +8,7 @@ public partial class Actor : CharacterBody3D
 
     public float hp;
     [Export]
-    public float maxHP;
+    protected float maxHP;
 
     #endregion
 
@@ -26,7 +26,7 @@ public partial class Actor : CharacterBody3D
 
     }
 
-    public virtual void OnDeath() {
+    protected virtual void OnDeath() {
         QueueFree();
     }
 
