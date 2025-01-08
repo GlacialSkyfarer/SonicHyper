@@ -28,7 +28,7 @@ project/assembly_name="Sonic Adventure- Hyper"
 
 [editor_plugins]
 
-enabled=PackedStringArray()
+enabled=PackedStringArray("res://addons/func_godot/plugin.cfg")
 
 [file_customization]
 
