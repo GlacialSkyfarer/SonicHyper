@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cyjbdi347hyhd"]
+[gd_scene load_steps=20 format=3 uid="uid://cyjbdi347hyhd"]
 
 [ext_resource type="Script" path="res://Actors/Players/Sonic.cs" id="1_splnw"]
 [ext_resource type="AudioStream" uid="uid://c7smi58wkyhhm" path="res://Assets/Audio/Sounds/Metal/snd_jump.wav" id="3_hh371"]
@@ -11,6 +11,9 @@ radius = 0.3
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_8e37d"]
 radius = 0.58
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qkshk"]
+radius = 0.8
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_n7ipb"]
 height = 0.1
@@ -196,8 +199,9 @@ _data = {
 "speendash": SubResource("Animation_fpqil")
 }
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_q6c7f"]
-radius = 6.0
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ytp2g"]
+height = 16.0
+radius = 10.0
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4pwk4"]
 emission_shape_offset = Vector3(0, 10, 0)
@@ -241,13 +245,19 @@ acceleration = 12.0
 deceleration = 30.0
 airAcceleration = 12.0
 airDeceleration = 15.0
-turnSpeed = 15.0
+turnSpeed = 20.0
 turnFriction = 1.0
 jumpableStates = [0, 1, 4]
 maxJumpHeight = 6.0
+bounceVelocity = 22.0
 minimumDashSpeed = 15.0
 maximumDashSpeed = 55.0
+homingAttackableStates = [2, 1, 5, 8]
+homingAttackRechargeStates = [0, 3, 4, 8]
+homingAttackSpeed = 35.0
+homingAttackAccuracy = 22.0
 animations = {
+"HomingAttackBounce": "HomingAttackBounce",
 "Idle": "Idle",
 "Jet": "Jet",
 "Jog": "Walk",
@@ -266,6 +276,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.49012e-08, 0)
 shape = SubResource("SphereShape3D_8e37d")
 disabled = true
 
+[node name="JumpHurtBox" type="Area3D" parent="BallShape"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.49012e-08, 0)
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BallShape/JumpHurtBox"]
+shape = SubResource("SphereShape3D_qkshk")
+
 [node name="FloorCast2" type="ShapeCast3D" parent="."]
 shape = SubResource("CylinderShape3D_n7ipb")
 target_position = Vector3(0, -1.2, 0)
@@ -274,50 +292,38 @@ target_position = Vector3(0, -1.2, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.8, 0)
 
 [node name="Skeleton3D" parent="mdl_metalSonic/Armature" index="0"]
-bones/0/position = Vector3(0, -0.236746, 0)
-bones/0/rotation = Quaternion(0, 0.707107, 0.707107, 0)
-bones/1/position = Vector3(1.01042e-07, 1.14339e-07, 5.19479)
-bones/1/rotation = Quaternion(-0.00146213, 0.916689, 0.397232, 0.0434153)
-bones/2/rotation = Quaternion(-0.309239, 0.0190403, 0.0347088, 0.95016)
-bones/3/rotation = Quaternion(0.673508, 0.329243, -0.619342, -0.233241)
-bones/4/rotation = Quaternion(0.00348703, 0.105597, -8.70773e-05, 0.994403)
+bones/1/rotation = Quaternion(2.52221e-08, 0.9997, -0.0245072, -1.02886e-06)
+bones/2/rotation = Quaternion(0.493428, 0.138202, 0.855025, 0.0797555)
+bones/3/rotation = Quaternion(0.689565, -0.000423187, -0.000401499, 0.724223)
+bones/3/scale = Vector3(1, 1, 1)
+bones/4/rotation = Quaternion(-0.0245072, -0.00058419, 1.4202e-05, 0.999699)
 bones/4/scale = Vector3(1, 1, 1)
-bones/5/rotation = Quaternion(0.051119, -0.153346, -0.0350274, 0.986228)
-bones/6/rotation = Quaternion(-0.0420442, -0.331098, 0.931364, 0.145491)
-bones/6/scale = Vector3(1, 1, 1)
-bones/7/rotation = Quaternion(0.0034642, -0.105591, 8.65264e-05, 0.994404)
-bones/8/rotation = Quaternion(0.105452, -0.699316, 0.100609, 0.699797)
-bones/9/position = Vector3(-0.157111, -1.69132, 6.66391)
-bones/9/rotation = Quaternion(0.858294, -0.0104371, -0.512533, -0.0230933)
-bones/9/scale = Vector3(1, 0.319982, 1.00022)
-bones/10/rotation = Quaternion(-0.0203179, 0.438084, -0.898674, -0.00746345)
-bones/10/scale = Vector3(1, 1, 1)
-bones/11/rotation = Quaternion(0.363999, 0.00190499, -0.0188855, 0.931206)
+bones/5/rotation = Quaternion(0.487597, -0.512104, -0.487596, 0.512103)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/rotation = Quaternion(-0.724224, -6.88677e-07, -7.25352e-07, 0.689565)
+bones/7/rotation = Quaternion(0.689565, 0.000421679, 0.000402936, 0.724223)
+bones/7/scale = Vector3(1, 1, 1)
+bones/8/rotation = Quaternion(1.42336e-05, 0.999699, -0.0245072, -0.000582238)
+bones/8/scale = Vector3(1, 1, 1)
+bones/9/rotation = Quaternion(0.487596, 0.512103, 0.487597, 0.512104)
+bones/10/rotation = Quaternion(-0.724224, -6.88677e-07, -7.25352e-07, 0.689565)
+bones/11/rotation = Quaternion(-0.722742, -7.11279e-07, -7.43826e-07, 0.691118)
 bones/11/scale = Vector3(1, 1, 1)
-bones/12/rotation = Quaternion(-0.367964, -0.467803, 0.164803, 0.786513)
-bones/12/scale = Vector3(1.08094, 1, 0.911223)
-bones/13/position = Vector3(-0.755486, -4.26102, 3.25719)
-bones/13/rotation = Quaternion(-0.000412418, 0.707107, -0.707107, 0.000412418)
-bones/13/scale = Vector3(1, 1, 1)
-bones/14/position = Vector3(-0.640632, 1.35628, 3.47327)
-bones/14/rotation = Quaternion(-7.94371e-08, 1, 4.63409e-11, 0.000583367)
+bones/12/rotation = Quaternion(-0.00214584, 1.56563e-13, -1.13351e-13, 0.999998)
+bones/12/scale = Vector3(1, 1, 1)
 bones/14/scale = Vector3(1, 1, 1)
-bones/15/position = Vector3(-1.84103, -3.17859, 6.09288)
-bones/16/position = Vector3(-2.25244, 1.69478, 6.02139)
-bones/16/rotation = Quaternion(3.09086e-08, 0.707107, 0.707107, 3.09086e-08)
-bones/17/rotation = Quaternion(0.0124344, 0.928995, -0.369573, 0.0151841)
-bones/17/scale = Vector3(1, 1, 1)
-bones/18/rotation = Quaternion(0.0048091, -0.0020457, 0.000249512, 0.999986)
-bones/18/scale = Vector3(1, 1, 1)
-bones/19/rotation = Quaternion(-0.604822, 0.399122, -0.316482, 0.612153)
-bones/19/scale = Vector3(0.928643, 1.15025, 0.924711)
-bones/20/position = Vector3(0.755486, 3.53746, 1.42433)
-bones/20/scale = Vector3(1, 1, 1)
-bones/21/position = Vector3(0.640631, 2.36097, 4.10926)
-bones/21/rotation = Quaternion(4.63491e-11, 0.00058347, -7.9437e-08, 1)
-bones/22/position = Vector3(1.81486, -2.79913, 5.94352)
-bones/23/position = Vector3(1.20087, -1.94485, 7.4234)
-bones/23/rotation = Quaternion(3.09086e-08, 0.707107, 0.707107, 3.09086e-08)
+bones/15/rotation = Quaternion(0.0329445, 0.0659572, 0.00487374, 0.997267)
+bones/15/scale = Vector3(1, 1, 1)
+bones/17/rotation = Quaternion(0.0529414, -0.105444, 0.00132227, 0.993014)
+bones/18/rotation = Quaternion(0.0329445, -0.0659594, -0.00487356, 0.997266)
+bones/19/rotation = Quaternion(0.64947, 0.00726053, -0.0138917, 0.760226)
+bones/19/scale = Vector3(1, 1, 1)
+bones/20/rotation = Quaternion(0.101596, 0.00203515, -0.00527118, 0.99481)
+bones/21/rotation = Quaternion(-0.565464, -0.414161, 0.293566, 0.650031)
+bones/21/scale = Vector3(1, 1, 1)
+bones/22/rotation = Quaternion(0.64947, -0.0072621, 0.0138931, 0.760226)
+bones/22/scale = Vector3(1, 1, 1)
+bones/23/rotation = Quaternion(0.101596, -0.00203515, 0.00527118, 0.99481)
 
 [node name="AnimationPlayer" parent="mdl_metalSonic" index="1"]
 autoplay = "Idle"
@@ -353,7 +359,8 @@ collision_layer = 0
 collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HomingAttackArea"]
-shape = SubResource("SphereShape3D_q6c7f")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.5, 0)
+shape = SubResource("CylinderShape3D_ytp2g")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 amount = 1000
@@ -362,5 +369,7 @@ visibility_aabb = AABB(-10, -10, -10, 20, 20, 20)
 transform_align = 3
 process_material = SubResource("ParticleProcessMaterial_4pwk4")
 draw_pass_1 = SubResource("QuadMesh_gayre")
+
+[connection signal="body_entered" from="BallShape/JumpHurtBox" to="." method="OnBallHurtBoxEntered"]
 
 [editable path="mdl_metalSonic"]

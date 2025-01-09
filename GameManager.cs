@@ -46,5 +46,13 @@ public partial class GameManager : Node
 		node.AddToGroup(targetname);
 
 	}
+
+	public async void HitStop(double time, float timeScale = 0) {
+
+		Engine.TimeScale = timeScale;
+		await ToSignal(GetTree().CreateTimer(time, ignoreTimeScale: true), "timeout");
+		Engine.TimeScale = 1;
+
+	}
 	
 }

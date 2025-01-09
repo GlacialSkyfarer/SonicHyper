@@ -11,7 +11,8 @@ public enum SonicPlayerState {
 	Rolling,
 	StandFalling,
 	SpringJumping,
-	HomingAttacking
+	HomingAttacking,
+	HomingAttackBouncing,
 
 }
 
@@ -21,6 +22,8 @@ public partial class Sonic : CharacterBody3D
 	#region References
 
 	[ExportCategory("References")]	
+
+	private GameManager gameManager;
 
 	[Export] private NodePath cameraPath;
 	private Camera3D camera;
@@ -56,6 +59,9 @@ public partial class Sonic : CharacterBody3D
 	private SonicPlayerState currentPlayerState = SonicPlayerState.Standing;
 
 	[ExportCategory("Movement")]
+
+	[Export] private Godot.Collections.Array<SonicPlayerState> antiGravStates = new Godot.Collections.Array<SonicPlayerState> { SonicPlayerState.HomingAttacking }; 
+
 	[ExportGroup("Running")] 
 
 	[ExportSubgroup("Speed")]
@@ -91,6 +97,8 @@ public partial class Sonic : CharacterBody3D
 	private float currentCoyoteTime = 0f;
 	[Export] private float maxCoyoteTime = 0.1f;
 
+	[Export] private float bounceVelocity = 30;
+
 	private bool jumpLock = false;
 
 	[ExportGroup("Spindash")]
@@ -107,8 +115,15 @@ public partial class Sonic : CharacterBody3D
 	[Export] private Godot.Collections.Array<SonicPlayerState> homingAttackRechargeStates = new Godot.Collections.Array<SonicPlayerState> { SonicPlayerState.Standing, SonicPlayerState.ChargingDash, SonicPlayerState.Rolling };
 
 	[Export] private float airDashForce = 40f;
+	[Export] private float homingAttackSpeed = 20f;
+	[Export] private float maxHomingAttackTime = 4f;
+	[Export] private float homingAttackAccuracy = 1f;
+	[Export] private double homingAttackHitstop = 0.1;
+	[Export] private float homingAttackHitstopTimeScale = 0.1f;
+	private float currentHomingAttackTime = 0f;
+	private Node3D homingTarget;
 	private bool hasHomingAttack = true;
-
+	private Vector3 homingAttackDirection = Vector3.Forward;
 
 	[ExportCategory("Animation")]
 	[Export] private Godot.Collections.Dictionary<string,string> animations;
@@ -132,6 +147,8 @@ public partial class Sonic : CharacterBody3D
 		jumpSound = GetNode<AudioStreamPlayer>(jumpSoundPath);
 		homingAttackArea = GetNode<Area3D>(homingAttackAreaPath);
 
+		gameManager = GetNode<GameManager>("/root/GameManager");
+
 	}
 
     public override void _Process(double delta)
@@ -141,6 +158,7 @@ public partial class Sonic : CharacterBody3D
 
 		currentJumpBuffer = Mathf.Max(currentJumpBuffer - (float)delta, 0f);
 		currentCoyoteTime = Mathf.Max(currentCoyoteTime - (float)delta, 0f);
+		currentHomingAttackTime = Mathf.Max(currentHomingAttackTime - (float)delta, 0f);
 		currentDashChargeTime = Mathf.Min(currentDashChargeTime + (float)delta, dashChargeTime);
 
 		if (IsOnFloor()) {
@@ -176,15 +194,14 @@ public partial class Sonic : CharacterBody3D
     public override void _PhysicsProcess(double delta)
 	{
 
+		RotateOnSlope(delta);
+		UpDirection = GlobalBasis.Y;
+
 		Vector3 velocity = Velocity;
 
 		float gravity = GetGravity().Length();
-	
-		RotateOnSlope(delta);
 
-		UpDirection = GlobalBasis.Y;
-
-		velocity += gravity * (float)delta * GetGravityMultiplier() * 0.5f * -GlobalBasis.Y;
+		if (!antiGravStates.Contains(currentPlayerState)) velocity += gravity * (float)delta * GetGravityMultiplier() * 0.5f * -GlobalBasis.Y;
 
 		velocity = _StateProcess(velocity, gravity, delta);
 
@@ -192,7 +209,7 @@ public partial class Sonic : CharacterBody3D
 
 		MoveAndSlide();
 
-		Velocity += gravity * (float)delta * GetGravityMultiplier() * 0.5f * -GlobalBasis.Y;
+		if (!antiGravStates.Contains(currentPlayerState)) Velocity += gravity * (float)delta * GetGravityMultiplier() * 0.5f * -GlobalBasis.Y;
 
 		currentSpeed = Mathf.Clamp(currentSpeed, 0, Velocity.Length());
 
@@ -204,7 +221,7 @@ public partial class Sonic : CharacterBody3D
 		Vector3 cameraTransformedInputVector = camera.GlobalBasis.X * inputVector.X - camera.GlobalBasis.Z * inputVector.Y;
 		cameraTransformedInputVector = new Vector3(cameraTransformedInputVector.X, 0, cameraTransformedInputVector.Z).Normalized();
 
-		if (cameraTransformedInputVector != Vector3.Zero) {
+		if (cameraTransformedInputVector != Vector3.Zero && currentPlayerState != SonicPlayerState.HomingAttacking) {
 
 			float angleTo = -cameraTransformedInputVector.SignedAngleTo(currentDirection, Vector3.Up);
 
@@ -236,19 +253,7 @@ public partial class Sonic : CharacterBody3D
 
 		} else if (homingAttackableStates.Contains(currentPlayerState) && hasHomingAttack && Input.IsActionJustPressed("homing_attack")) {
 
-			var bodies = homingAttackArea.GetOverlappingBodies();
-
-			if (bodies.Count > 0) {
-
-				throw new NotImplementedException();
-
-			} else {
-
-				hasHomingAttack = false;
-				currentSpeed = airDashForce;
-				currentPlayerState = SonicPlayerState.SpinFalling;
-
-			}
+			HomingAttack(cameraTransformedInputVector);
 
 		}
 
@@ -292,6 +297,7 @@ public partial class Sonic : CharacterBody3D
 
 			break;
 
+			case SonicPlayerState.HomingAttackBouncing:
 			case SonicPlayerState.SpinJumping:
 
 				if (IsOnFloor() && !jumpLock) {
@@ -302,9 +308,15 @@ public partial class Sonic : CharacterBody3D
 
 				jumpLock = false;
 
-				if ((velocity * GlobalBasis.Y).Y < 0f  || !Input.IsActionPressed("jump")) {
+				if ((velocity * GlobalBasis.Y).Y < 0f  || (!Input.IsActionPressed("jump") && currentPlayerState == SonicPlayerState.SpinJumping)) {
 
 					currentPlayerState = SonicPlayerState.SpinFalling;
+
+				}
+
+				if (currentPlayerState == SonicPlayerState.HomingAttackBouncing && !animator.IsPlaying()) {
+
+					currentPlayerState = SonicPlayerState.StandFalling;
 
 				}
 
@@ -349,30 +361,9 @@ public partial class Sonic : CharacterBody3D
 				velocity = GetRunningVelocity(velocity, currentDirection);
 
 			break;
-
-			case SonicPlayerState.SpinFalling:
-
-				if (IsOnFloor()) {
-
-					currentPlayerState = SonicPlayerState.Standing;
-
-				}
-
-				if (inputVector != Vector2.Zero) {
-
-					currentSpeed = Mathf.MoveToward(currentSpeed, joggingSpeed * inputVector.Length(), (currentSpeed > joggingSpeed ? airDeceleration : airAcceleration) * accelMult);
-
-				} else {
-
-					currentSpeed = Mathf.MoveToward(currentSpeed, 0, airDeceleration * accelMult);
-
-				}
-
-				velocity = GetRunningVelocity(velocity, currentDirection);
-
-			break;
-
+			
 			case SonicPlayerState.StandFalling:
+			case SonicPlayerState.SpinFalling:
 
 				if (IsOnFloor()) {
 
@@ -431,9 +422,76 @@ public partial class Sonic : CharacterBody3D
 
 			break;
 
+			case SonicPlayerState.HomingAttacking:
+
+				if (homingTarget != null && currentHomingAttackTime > 0) {
+
+					homingAttackDirection = homingAttackDirection.Normalized();
+
+					Vector3 desiredDirection = GlobalPosition.DirectionTo(homingTarget.GlobalPosition);
+
+					if (homingAttackDirection != desiredDirection) {
+
+						Quaternion q = new Quaternion(homingAttackDirection, desiredDirection);
+
+						if (q.IsNormalized() && q.GetAxis().IsNormalized()) {
+
+							homingAttackDirection = homingAttackDirection.Rotated(q.GetAxis().Normalized(), Mathf.Min(homingAttackDirection.AngleTo(desiredDirection), homingAttackAccuracy * (float)delta));
+
+						}
+
+					}
+
+					velocity = homingAttackDirection * homingAttackSpeed;
+
+				} else {
+
+					currentPlayerState = SonicPlayerState.SpinFalling;
+
+				}
+
+			break;
+
 		}
 
 		return velocity;
+
+	}
+
+	public void OnBallHurtBoxEntered(Node3D b) {
+
+		if (b is Actor) {
+
+			Actor a = (Actor)b;
+
+			a.OnHit(1, GlobalPosition.DirectionTo(b.GlobalPosition));
+
+		}
+
+		switch (currentPlayerState) {
+
+			case SonicPlayerState.HomingAttacking:
+			case SonicPlayerState.SpinJumping:
+			case SonicPlayerState.SpinFalling:
+
+				if (currentPlayerState == SonicPlayerState.HomingAttacking) {
+
+					currentPlayerState = SonicPlayerState.HomingAttackBouncing;
+					currentDirection = new Vector3(GlobalPosition.X, b.GlobalPosition.Y, GlobalPosition.Z).DirectionTo(b.GlobalPosition);
+					PlayAnimation("HomingAttackBounce", true);
+					gameManager.HitStop(homingAttackHitstop, homingAttackHitstopTimeScale);
+					Velocity = Vector3.Zero;
+
+				} else {
+
+					currentPlayerState = SonicPlayerState.SpinJumping;
+
+				}
+				Velocity = new Vector3(Velocity.X, bounceVelocity, Velocity.Z);
+
+			break;
+
+		}
 
 	}
 
@@ -441,12 +499,35 @@ public partial class Sonic : CharacterBody3D
 
 		switch (currentPlayerState) {
 
+			case SonicPlayerState.SpringJumping:
+			case SonicPlayerState.StandFalling:
+			case SonicPlayerState.HomingAttackBouncing:
 			case SonicPlayerState.Standing: 
 
 				standingCollider.Disabled = false;
 				ballCollider.Disabled = true;
 				standingModel.Visible = true;
 				ballModel.Visible = false;
+
+			break;
+			case SonicPlayerState.HomingAttacking:
+			case SonicPlayerState.ChargingDash:
+			case SonicPlayerState.Rolling:
+			case SonicPlayerState.SpinJumping:
+			case SonicPlayerState.SpinFalling:
+
+				ballCollider.Disabled = false;
+				standingCollider.Disabled = true;
+				standingModel.Visible = false;
+				ballModel.Visible = true;
+
+			break;
+
+		}
+
+		switch (currentPlayerState) {
+
+			case SonicPlayerState.Standing: 
 
 				if (currentSpeed == 0) {
 
@@ -486,10 +567,6 @@ public partial class Sonic : CharacterBody3D
 			case SonicPlayerState.SpinJumping:
 			case SonicPlayerState.SpinFalling:
 
-				ballCollider.Disabled = false;
-				standingCollider.Disabled = true;
-				standingModel.Visible = false;
-				ballModel.Visible = true;
 				if (currentPlayerState == SonicPlayerState.ChargingDash) {
 
 					ballPlayer.Play("speendash");
@@ -503,19 +580,11 @@ public partial class Sonic : CharacterBody3D
 			break;
 			case SonicPlayerState.StandFalling:
 
-				standingCollider.Disabled = false;
-				ballCollider.Disabled = true;
-				standingModel.Visible = true;
-				ballModel.Visible = false;
 				PlayAnimation("StandFall");
 
 			break;
 			case SonicPlayerState.SpringJumping:
 
-				standingCollider.Disabled = false;
-				ballCollider.Disabled = true;
-				standingModel.Visible = true;
-				ballModel.Visible = false;
 				PlayAnimation("SpringJump");
 
 			break;
@@ -524,11 +593,20 @@ public partial class Sonic : CharacterBody3D
 
 	}
 
-	private void PlayAnimation(string key) {
+	private void PlayAnimation(string key, bool fromStart = false) {
 
 		if (animations.ContainsKey(key)) {
 
-			animator.Play(animations[key]);
+			if (fromStart) {
+
+				animator.Seek(0);
+				animator.Play(animations[key]);
+
+			} else if (animator.CurrentAnimation != animations[key]) {
+
+				animator.Play(animations[key]);
+
+			}
 
 		} else {
 
@@ -571,10 +649,60 @@ public partial class Sonic : CharacterBody3D
 
 		} else {
 
-			GlobalBasis = Basis.Identity;
+			if (GlobalBasis.Y != Vector3.Up) {
+
+				Quaternion targetRotation = Quaternion.Identity;
+
+				if (Quaternion != targetRotation) {
+
+					Quaternion = Quaternion.Slerp(targetRotation, (float)delta * 16);
+
+				}
+			
+			} 
 
 		}
 
+
+	}
+
+	private void HomingAttack(Vector3 cameraTransformedInputVector) {
+
+		var bodies = homingAttackArea.GetOverlappingBodies();
+
+		if (bodies.Count > 0) {
+
+			float currentLowestAngle = 360f;
+
+			foreach (PhysicsBody3D b in bodies) {
+
+				float angle = cameraTransformedInputVector.AngleTo(new Vector3(GlobalPosition.X, b.GlobalPosition.Y, GlobalPosition.Z).DirectionTo(b.GlobalPosition));
+
+				if (angle < currentLowestAngle && angle < Mathf.Pi * 0.4f) {
+
+					currentLowestAngle = angle;
+					homingTarget = b;
+
+				}
+
+			}
+
+			currentHomingAttackTime = maxHomingAttackTime;
+			currentPlayerState = SonicPlayerState.HomingAttacking;
+			homingAttackDirection = currentDirection;
+			hasHomingAttack = false;
+
+			if (currentLowestAngle != 360f) {
+
+				return;
+
+			}
+
+		}
+
+		hasHomingAttack = false;
+		currentSpeed = airDashForce;
+		currentPlayerState = SonicPlayerState.SpinFalling;
 
 	}
 	
