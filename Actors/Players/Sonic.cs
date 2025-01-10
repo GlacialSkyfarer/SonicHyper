@@ -37,11 +37,17 @@ public partial class Sonic : CharacterBody3D
 	private Node3D standingModel;
 	[Export] private NodePath ballModelPath;
 	private Node3D ballModel;
+	[Export] private NodePath ballPlayerPath;
 	private AnimationPlayer ballPlayer;
 	[Export] private NodePath floorCastPath;
 	private ShapeCast3D floorCast;
 	[Export] private NodePath homingAttackAreaPath;
 	private Area3D homingAttackArea;
+	[Export] private NodePath rotatorNodePath;
+	private Node3D rotatorNode;
+	[Export] private NodePath glowTrailPath;
+	private Trail3D glowTrail;
+	private MeshInstance3D glowBall;
 
 	//Sounds
 
@@ -128,6 +134,9 @@ public partial class Sonic : CharacterBody3D
 	[ExportCategory("Animation")]
 	[Export] private Godot.Collections.Dictionary<string,string> animations;
 
+	[Export] private float glowLength = 1f;
+	private float currentGlowTime = 0f;
+	
 	#endregion
 
 	public override void _Ready() {
@@ -141,11 +150,14 @@ public partial class Sonic : CharacterBody3D
 		standingModel = GetNode<Node3D>(standingModelPath);
 		ballModel = GetNode<Node3D>(ballModelPath);
 		floorCast = GetNode<ShapeCast3D>(floorCastPath);
-		ballPlayer = ballModel.GetNode<AnimationPlayer>("Ball/Ball/AnimationPlayer");
 		spinHoldSound = GetNode<AudioStreamPlayer>(spinHoldSoundPath);
 		spinReleaseSound = GetNode<AudioStreamPlayer>(spinReleaseSoundPath);
 		jumpSound = GetNode<AudioStreamPlayer>(jumpSoundPath);
 		homingAttackArea = GetNode<Area3D>(homingAttackAreaPath);
+		ballPlayer = GetNode<AnimationPlayer>(ballPlayerPath);
+		rotatorNode = GetNode<Node3D>(rotatorNodePath);
+		glowTrail = GetNode<Trail3D>(glowTrailPath);
+		glowBall = glowTrail.GetNode<MeshInstance3D>("Ball");
 
 		gameManager = GetNode<GameManager>("/root/GameManager");
 
@@ -160,6 +172,7 @@ public partial class Sonic : CharacterBody3D
 		currentCoyoteTime = Mathf.Max(currentCoyoteTime - (float)delta, 0f);
 		currentHomingAttackTime = Mathf.Max(currentHomingAttackTime - (float)delta, 0f);
 		currentDashChargeTime = Mathf.Min(currentDashChargeTime + (float)delta, dashChargeTime);
+		currentGlowTime = Mathf.Max(currentGlowTime - (float)delta, 0f);
 
 		if (IsOnFloor()) {
 
@@ -233,8 +246,7 @@ public partial class Sonic : CharacterBody3D
 
 		}
 
-		standingModel.LookAt(standingModel.GlobalPosition - (currentDirection.X * GlobalBasis.X) - (currentDirection.Z * GlobalBasis.Z), GlobalBasis.Y);
-		ballModel.LookAt(ballModel.GlobalPosition - (currentDirection.X * GlobalBasis.X) - (currentDirection.Z * GlobalBasis.Z), GlobalBasis.Y);
+		rotatorNode.LookAt(rotatorNode.GlobalPosition - (currentDirection.X * GlobalBasis.X) - (currentDirection.Z * GlobalBasis.Z), GlobalBasis.Y);
 
 		currentSpeed = Mathf.Clamp(currentSpeed, 0, maximumSpeed);
 
@@ -389,6 +401,8 @@ public partial class Sonic : CharacterBody3D
 
 				currentSpeed = Mathf.MoveToward(currentSpeed, 0f, deceleration * (float)delta);
 
+				currentGlowTime = glowLength;
+
 				if (Input.IsActionJustReleased("action")) {
 
 					currentSpeed += Mathf.Remap(currentDashChargeTime, 0, dashChargeTime, minimumDashSpeed, maximumDashSpeed);
@@ -423,6 +437,8 @@ public partial class Sonic : CharacterBody3D
 			break;
 
 			case SonicPlayerState.HomingAttacking:
+
+				currentGlowTime = glowLength;
 
 				if (homingTarget != null && currentHomingAttackTime > 0) {
 
@@ -497,6 +513,7 @@ public partial class Sonic : CharacterBody3D
 
 	private void _AnimationProcess(double delta) {
 
+		//Colliders and Models
 		switch (currentPlayerState) {
 
 			case SonicPlayerState.SpringJumping:
@@ -525,6 +542,7 @@ public partial class Sonic : CharacterBody3D
 
 		}
 
+		//Animations
 		switch (currentPlayerState) {
 
 			case SonicPlayerState.Standing: 
@@ -588,6 +606,25 @@ public partial class Sonic : CharacterBody3D
 				PlayAnimation("SpringJump");
 
 			break;
+
+		}
+
+		//Glow
+		if (currentGlowTime > 0) {
+
+			glowBall.Visible = true;
+			glowTrail.Enabled = true;
+
+		} else {
+
+			glowBall.Visible = false;
+			glowTrail.Enabled = false;
+
+		}
+
+		if ((-glowTrail.GlobalBasis.Z).AngleTo(Velocity.Normalized()) > 0.1f) {
+
+			glowTrail.Quaternion *= new Quaternion(-glowTrail.GlobalBasis.Z, Velocity.Normalized());
 
 		}
 
@@ -670,6 +707,8 @@ public partial class Sonic : CharacterBody3D
 
 		var bodies = homingAttackArea.GetOverlappingBodies();
 
+		currentGlowTime = glowLength;
+
 		if (bodies.Count > 0) {
 
 			float currentLowestAngle = 360f;
@@ -703,6 +742,7 @@ public partial class Sonic : CharacterBody3D
 		hasHomingAttack = false;
 		currentSpeed = airDashForce;
 		currentPlayerState = SonicPlayerState.SpinFalling;
+		
 
 	}
 	
