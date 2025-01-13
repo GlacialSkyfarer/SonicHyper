@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c681hjp72suu7"]
+
+[ext_resource type="Script" path="res://Gizmos/Logic/LogicDelay.cs" id="1_cr8pq"]
+
+[node name="GizLogicDelay" type="Node"]
+script = ExtResource("1_cr8pq")

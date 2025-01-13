@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 
 public enum SonicPlayerState {
@@ -93,6 +94,8 @@ public partial class Sonic : CharacterBody3D
 
 	[ExportGroup("Jumping")]
 
+	[Export] private float maxYVelocity = 30f;
+
 	[Export] private Godot.Collections.Array<SonicPlayerState> jumpableStates = new Godot.Collections.Array<SonicPlayerState> { SonicPlayerState.Standing };
 	[Export] private Godot.Collections.Array<SonicPlayerState> spinDashableStates = new Godot.Collections.Array<SonicPlayerState> {SonicPlayerState.Standing };
 	[Export] private float maxJumpHeight = 4.0f;
@@ -130,6 +133,12 @@ public partial class Sonic : CharacterBody3D
 	private Node3D homingTarget;
 	private bool hasHomingAttack = true;
 	private Vector3 homingAttackDirection = Vector3.Forward;
+
+	[ExportCategory("Damage")]
+	[ExportGroup("Rings")]
+	public int currentRings = 0;
+	[Export] private float invincibilityTime = 5f;
+	private float currentInvincibilityTime = 0;
 
 	[ExportCategory("Animation")]
 	[Export] private Godot.Collections.Dictionary<string,string> animations;
@@ -217,6 +226,12 @@ public partial class Sonic : CharacterBody3D
 		if (!antiGravStates.Contains(currentPlayerState)) velocity += gravity * (float)delta * GetGravityMultiplier() * 0.5f * -GlobalBasis.Y;
 
 		velocity = _StateProcess(velocity, gravity, delta);
+
+		if (UpDirection == Vector3.Up) {
+
+			velocity.Y = Mathf.Min(velocity.Y, maxYVelocity);
+
+		}
 
 		Velocity = velocity;
 
@@ -678,7 +693,7 @@ public partial class Sonic : CharacterBody3D
 
 				if (Quaternion != targetRotation) {
 
-					Quaternion = Quaternion.Slerp(targetRotation, (float)delta * 16);
+					Quaternion = targetRotation;
 
 				}
 			
@@ -692,7 +707,7 @@ public partial class Sonic : CharacterBody3D
 
 				if (Quaternion != targetRotation) {
 
-					Quaternion = Quaternion.Slerp(targetRotation, (float)delta * 16);
+					Quaternion = targetRotation;
 
 				}
 			

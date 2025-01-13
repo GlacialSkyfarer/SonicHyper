@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="FuncGodotFGDPointClass" load_steps=3 format=3 uid="uid://3vatb4pxkfk5"]
+
+[ext_resource type="Script" path="res://addons/func_godot/src/fgd/func_godot_fgd_point_class.gd" id="1_nlqoy"]
+[ext_resource type="Script" path="res://Gizmos/RingTrail.cs" id="2_57tdb"]
+
+[resource]
+script = ExtResource("1_nlqoy")
+script_class = ExtResource("2_57tdb")
+apply_rotation_on_map_build = false
+classname = "gizmo_ringTrail"
+description = "A path3D defining a line of rings. Target the next node in sequence to create a path, then target the first to apply it."
+func_godot_internal = false
+base_classes = Array[Resource]([])
+class_properties = {
+"isfirst": false,
+"rings": 3,
+"skipfirst": false,
+"target": "",
+"targetname": ""
+}
+class_property_descriptions = {
+"isfirst": "Whether this is the first node in the path.",
+"rings": "How many rings to place along the path.",
+"skipfirst": "Skip the first ring?",
+"target": "Next node in path.",
+"targetname": "Name to target this by."
+}
+meta_properties = {
+"color": Color(0.8, 0.8, 0.8, 1),
+"model": "{\"path\":\"Textures/special/gizmo_ringTrail.png\", \"scale\":0.5}",
+"size": AABB(-8, -8, -8, 8, 8, 8)
+}
+node_class = "Node3D"
+name_property = "ringTrail"

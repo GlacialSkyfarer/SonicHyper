@@ -1330,3 +1330,164 @@
 ( 256 2560 0 ) ( 256 2560 -1 ) ( 256 2559 0 ) GreenHill/rock [ -1.6081226496766366e-16 0 -1 0 ] [ 0 1 0 -16 ] 0 0.5 0.5
 }
 }
+// entity 38
+{
+"classname" "gizmo_ringTrail"
+"origin" "0 112 8"
+"rings" "15"
+"isfirst" "1"
+"target" "rt01"
+"targetname" "rt00"
+}
+// entity 39
+{
+"classname" "gizmo_ringTrail"
+"origin" "88 256 8"
+"target" "rt02"
+"targetname" "rt01"
+"isfirst" "0"
+}
+// entity 40
+{
+"classname" "gizmo_ringTrail"
+"origin" "-64 528 8"
+"isfirst" "0 : No"
+"rings" "3"
+"target" "rt03"
+"targetname" "rt02"
+}
+// entity 41
+{
+"classname" "gizmo_ringTrail"
+"origin" "0 848 8"
+"targetname" "rt03"
+"target" "rt00"
+"isfirst" "0"
+}
+// entity 42
+{
+"classname" "gizmo_ringTrail"
+"origin" "0 2552 8"
+"target" "rt12"
+"targetname" "rt11"
+}
+// entity 43
+{
+"classname" "gizmo_ringTrail"
+"origin" "0 2608 16"
+"target" "rt13"
+"targetname" "rt12"
+}
+// entity 44
+{
+"classname" "gizmo_ringTrail"
+"origin" "0 2640 32"
+"targetname" "rt13"
+"target" "rt14"
+}
+// entity 45
+{
+"classname" "gizmo_ringTrail"
+"origin" "0 2672 88"
+"target" "rt16"
+"targetname" "rt15"
+"isfirst" "0"
+}
+// entity 46
+{
+"classname" "gizmo_ringTrail"
+"origin" "0 2664 56"
+"targetname" "rt14"
+"target" "rt15"
+}
+// entity 47
+{
+"classname" "gizmo_ringTrail"
+"origin" "0 2680 120"
+"isfirst" "0"
+"target" "rt17"
+"targetname" "rt16"
+}
+// entity 48
+{
+"classname" "gizmo_ringTrail"
+"origin" "0 2680 208"
+"target" "rt10"
+"targetname" "rt17"
+}
+// entity 49
+{
+"classname" "gizmo_ringTrail"
+"origin" "0 2480 8"
+"isfirst" "1"
+"rings" "8"
+"target" "rt11"
+"targetname" "rt10"
+}
+// entity 50
+{
+"classname" "gizmo_ringTrail"
+"origin" "0 2856 232"
+"target" "rt21"
+"targetname" "rt20"
+"isfirst" "1"
+"rings" "16"
+"skipfirst" "1"
+}
+// entity 51
+{
+"classname" "gizmo_ringTrail"
+"origin" "40 2896 232"
+"targetname" "rt22"
+"target" "rt23"
+}
+// entity 52
+{
+"classname" "gizmo_ringTrail"
+"origin" "0 2936 232"
+"targetname" "rt24"
+"target" "rt25"
+}
+// entity 53
+{
+"classname" "gizmo_ringTrail"
+"origin" "-40 2896 232"
+"targetname" "rt26"
+"target" "rt27"
+}
+// entity 54
+{
+"classname" "gizmo_ringTrail"
+"origin" "32 2928 232"
+"targetname" "rt23"
+"target" "rt24"
+}
+// entity 55
+{
+"classname" "gizmo_ringTrail"
+"origin" "32 2864 232"
+"target" "rt22"
+"targetname" "rt21"
+}
+// entity 56
+{
+"classname" "gizmo_ringTrail"
+"origin" "-32 2928 232"
+"targetname" "rt25"
+"target" "rt26"
+}
+// entity 57
+{
+"classname" "gizmo_ringTrail"
+"origin" "-32 2864 232"
+"targetname" "rt27"
+"rings" "r"
+"target" "rt28"
+}
+// entity 58
+{
+"classname" "gizmo_ringTrail"
+"origin" "0 2856 232"
+"target" "rt20"
+"targetname" "rt28"
+}

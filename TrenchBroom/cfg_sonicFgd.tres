@@ -1,7 +1,12 @@
-[gd_resource type="Resource" script_class="FuncGodotFGDFile" load_steps=3 format=3 uid="uid://brxg473cwuy5n"]
+[gd_resource type="Resource" script_class="FuncGodotFGDFile" load_steps=8 format=3 uid="uid://brxg473cwuy5n"]
 
 [ext_resource type="Resource" uid="uid://crgpdahjaj" path="res://addons/func_godot/fgd/func_godot_fgd.tres" id="1_w3k6j"]
 [ext_resource type="Script" path="res://addons/func_godot/src/fgd/func_godot_fgd_file.gd" id="2_32la5"]
+[ext_resource type="Resource" uid="uid://3vatb4pxkfk5" path="res://TrenchBroom/Definitions/fgd_gizmo_ringTrail.tres" id="2_ywoo1"]
+[ext_resource type="Resource" uid="uid://b2hhkthipscqv" path="res://TrenchBroom/Definitions/fgd_gizmo_mover.tres" id="3_ltpuu"]
+[ext_resource type="Resource" uid="uid://dkcb33bqpptcu" path="res://TrenchBroom/Definitions/fgd_logic_delay.tres" id="4_3lnlt"]
+[ext_resource type="Resource" uid="uid://bb4qleknl6xud" path="res://TrenchBroom/Definitions/fgd_logic_relay.tres" id="5_kpijd"]
+[ext_resource type="Resource" uid="uid://be2b0onciopt7" path="res://TrenchBroom/Definitions/fgd_trigger_player.tres" id="6_bkond"]
 
 [resource]
 script = ExtResource("2_32la5")
@@ -9,4 +14,4 @@ export_file = false
 target_map_editor = 1
 fgd_name = "SonicHyper"
 base_fgd_files = Array[Resource]([ExtResource("1_w3k6j")])
-entity_definitions = Array[Resource]([])
+entity_definitions = Array[Resource]([ExtResource("2_ywoo1"), ExtResource("3_ltpuu"), ExtResource("4_3lnlt"), ExtResource("5_kpijd"), ExtResource("6_bkond")])

@@ -5,14 +5,14 @@ using System.Collections.Generic;
 public partial class GameManager : Node
 {
 
-	public void CallTarget(string target, string method = "Trigger") {
+	public void CallTarget(string target, string method = "Trigger", params Variant[] args) {
 		
 		Godot.Collections.Array<Node> targets = GetTree().GetNodesInGroup(target);
 
 		foreach (Node t in targets) {
 
 			if (t.HasMethod(method)) {
-				t.Call(method);
+				t.Call(method, args);
 			}
 
 		}

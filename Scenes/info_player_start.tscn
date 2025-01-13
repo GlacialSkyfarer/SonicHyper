@@ -29,3 +29,17 @@ current = true
 [node name="Sonic" parent="." instance=ExtResource("2_5305i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.161624, -0.247377)
 cameraPath = NodePath("../CameraFollower/SpringArm3D/Camera3D")
+
+[node name="Skeleton3D" parent="Sonic/Rotator/mdl_metalSonic/Armature" index="0"]
+bones/5/position = Vector3(1.38314, 0.624634, 1.19551)
+bones/9/position = Vector3(-1.18326, 0.588608, 0.461134)
+bones/11/rotation = Quaternion(-0.68984, -7.47183e-07, -7.11974e-07, 0.723961)
+bones/12/rotation = Quaternion(-0.0675869, 1.63534e-13, -1.03081e-13, 0.997713)
+bones/13/rotation = Quaternion(0.670217, 0.133936, -0.703736, 0.193974)
+bones/14/rotation = Quaternion(0.28678, 0.10116, -0.00716216, 0.952614)
+bones/16/rotation = Quaternion(0.594683, -0.310495, 0.622232, 0.40345)
+bones/17/rotation = Quaternion(0.735419, -0.0715241, 0.0183679, 0.673577)
+bones/21/rotation = Quaternion(-0.67853, -0.518307, 0.187087, 0.485751)
+
+[editable path="Sonic"]
+[editable path="Sonic/Rotator/mdl_metalSonic"]

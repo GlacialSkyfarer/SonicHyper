@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="FuncGodotFGDSolidClass" load_steps=3 format=3 uid="uid://b2hhkthipscqv"]
 
 [ext_resource type="Script" path="res://addons/func_godot/src/fgd/func_godot_fgd_solid_class.gd" id="1_ig001"]
-[ext_resource type="Script" path="res://Gizmos/Door.cs" id="2_2mqcc"]
+[ext_resource type="Script" path="res://Gizmos/Mover.cs" id="2_3ui8j"]
 
 [resource]
 script = ExtResource("1_ig001")
@@ -17,7 +17,7 @@ collision_layer = 1
 collision_mask = 1
 collision_priority = 1.0
 collision_shape_margin = 0.04
-script_class = ExtResource("2_2mqcc")
+script_class = ExtResource("2_3ui8j")
 classname = "gizmo_door"
 description = "Door that opens and closes."
 func_godot_internal = false

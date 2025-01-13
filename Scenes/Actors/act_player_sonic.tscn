@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://cyjbdi347hyhd"]
+[gd_scene load_steps=52 format=3 uid="uid://cyjbdi347hyhd"]
 
 [ext_resource type="Script" path="res://Actors/Players/Sonic.cs" id="1_splnw"]
 [ext_resource type="AudioStream" uid="uid://c7smi58wkyhhm" path="res://Assets/Audio/Sounds/Metal/snd_jump.wav" id="3_hh371"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://chgjsejm2jvhc" path="res://Assets/Audio/Sounds/Metal/snd_spindash_release.wav" id="4_nw1sy"]
 [ext_resource type="Script" path="res://Gizmos/Trail3D.cs" id="6_jnpce"]
 [ext_resource type="PackedScene" uid="uid://dkcu7fsvcyis3" path="res://Assets/Visual/Models/mdl_metalSonic.blend" id="6_n7joc"]
+[ext_resource type="Script" path="res://Interface/VariableDisplay.cs" id="7_6mtf7"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vvscq"]
 animation = &"Fall"
@@ -133,26 +134,6 @@ billboard_keep_scale = true
 [sub_resource type="QuadMesh" id="QuadMesh_gayre"]
 material = SubResource("StandardMaterial3D_nunea")
 size = Vector2(0.05, 0.15)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_forj4"]
-transparency = 1
-blend_mode = 1
-cull_mode = 2
-shading_mode = 0
-vertex_color_use_as_albedo = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l2x6m"]
-transparency = 1
-blend_mode = 1
-cull_mode = 2
-shading_mode = 0
-albedo_color = Color(0.012969, 1.68458e-07, 0.409161, 0.513726)
-
-[sub_resource type="SphereMesh" id="SphereMesh_1cehn"]
-radius = 0.75
-height = 1.5
-radial_segments = 8
-rings = 8
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3l85c"]
 specular_mode = 1
@@ -334,6 +315,37 @@ _data = {
 "speendash": SubResource("Animation_fpqil")
 }
 
+[sub_resource type="SystemFont" id="SystemFont_p0o12"]
+font_names = PackedStringArray("Impact")
+
+[sub_resource type="LabelSettings" id="LabelSettings_g3r6x"]
+font = SubResource("SystemFont_p0o12")
+font_size = 32
+font_color = Color(1, 0.937255, 0, 1)
+shadow_size = 5
+shadow_color = Color(0, 0, 0, 0.698039)
+shadow_offset = Vector2(3, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_forj4"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l2x6m"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.012969, 1.68458e-07, 0.409161, 0.513726)
+
+[sub_resource type="SphereMesh" id="SphereMesh_1cehn"]
+radius = 0.75
+height = 1.5
+radial_segments = 8
+rings = 8
+
 [node name="Sonic" type="CharacterBody3D"]
 collision_layer = 2
 floor_snap_length = 1.0
@@ -347,7 +359,7 @@ ballPlayerPath = NodePath("Rotator/Ball/Ball/AnimationPlayer")
 floorCastPath = NodePath("FloorCast2")
 homingAttackAreaPath = NodePath("HomingAttackArea")
 rotatorNodePath = NodePath("Rotator")
-glowTrailPath = NodePath("Rotator/Trail3D")
+glowTrailPath = NodePath("Trail3D")
 spinHoldSoundPath = NodePath("SpinChargeSound")
 spinReleaseSoundPath = NodePath("SpinReleaseSound")
 jumpSoundPath = NodePath("JumpSound")
@@ -362,6 +374,7 @@ airAcceleration = 12.0
 airDeceleration = 15.0
 turnSpeed = 20.0
 turnFriction = 1.0
+maxYVelocity = 70.0
 jumpableStates = [0, 1, 4]
 maxJumpHeight = 6.0
 bounceVelocity = 22.0
@@ -451,67 +464,51 @@ bones/3/rotation = Quaternion(0.689565, -0.000423187, -0.000401499, 0.724223)
 bones/3/scale = Vector3(1, 1, 1)
 bones/4/rotation = Quaternion(-0.0245072, -0.00058419, 1.4202e-05, 0.999699)
 bones/4/scale = Vector3(1, 1, 1)
-bones/5/position = Vector3(3.05835, 0.57399, 0.1632)
+bones/5/position = Vector3(1.38309, 0.624503, 1.19284)
 bones/5/rotation = Quaternion(0.487597, -0.512104, -0.487596, 0.512103)
 bones/5/scale = Vector3(1, 1, 1)
 bones/6/position = Vector3(3.61403, 0.52835, -0.767123)
 bones/6/rotation = Quaternion(-0.724223, -6.88677e-07, -7.25352e-07, 0.689565)
-bones/7/position = Vector3(-1.0266, -0.348955, 3.47901)
+bones/7/position = Vector3(-1.02661, 0.549571, 4.96499)
 bones/7/rotation = Quaternion(0.689565, 0.000421679, 0.000402936, 0.724223)
 bones/7/scale = Vector3(1, 1, 1)
 bones/8/position = Vector3(-0.640635, 1.86296, 1.67459)
 bones/8/rotation = Quaternion(1.42336e-05, 0.999699, -0.0245072, -0.000582238)
 bones/8/scale = Vector3(1, 1, 1)
-bones/9/position = Vector3(-3.35626, 0.875987, -0.181738)
+bones/9/position = Vector3(-1.18335, 0.588864, 0.466358)
 bones/9/rotation = Quaternion(0.487596, 0.512103, 0.487597, 0.512104)
 bones/10/position = Vector3(-3.61403, 0.528351, -0.767139)
 bones/10/rotation = Quaternion(-0.724223, -6.88677e-07, -7.25352e-07, 0.689565)
-bones/11/rotation = Quaternion(-0.755352, -6.71887e-07, -7.74868e-07, 0.65532)
+bones/11/rotation = Quaternion(-0.689526, -7.48198e-07, -7.12328e-07, 0.724261)
 bones/11/scale = Vector3(1, 1, 1)
-bones/12/rotation = Quaternion(0.205731, 3.72927e-10, 1.41597e-11, 0.978609)
+bones/12/rotation = Quaternion(-0.0650085, 1.63316e-13, -1.03108e-13, 0.997885)
 bones/12/scale = Vector3(1, 1, 1)
-bones/13/rotation = Quaternion(0.593982, 0.423224, -0.523395, 0.440595)
+bones/13/rotation = Quaternion(0.669476, 0.134979, -0.70373, 0.195825)
 bones/13/scale = Vector3(1, 1, 1)
-bones/14/rotation = Quaternion(0.350475, 0.0988958, -0.00875289, 0.931295)
+bones/14/rotation = Quaternion(0.290207, 0.101051, -0.00724773, 0.951586)
 bones/14/scale = Vector3(1, 1, 1)
-bones/15/rotation = Quaternion(-0.0645785, 0.054161, -0.0152425, 0.996325)
+bones/15/rotation = Quaternion(-0.102336, 0.0546801, -0.0272153, 0.992873)
 bones/15/scale = Vector3(1, 1, 1)
-bones/16/rotation = Quaternion(0.461683, -0.320517, 0.64335, 0.519826)
+bones/16/rotation = Quaternion(0.594888, -0.309684, 0.622988, 0.402605)
 bones/16/scale = Vector3(1, 1, 1)
-bones/17/rotation = Quaternion(0.217282, -0.103068, 0.00542685, 0.970637)
+bones/17/rotation = Quaternion(0.733645, -0.0717271, 0.0183236, 0.675488)
 bones/17/scale = Vector3(1, 1, 1)
-bones/18/rotation = Quaternion(0.111948, -0.150652, -0.103125, 0.976799)
+bones/18/rotation = Quaternion(-0.570691, -0.00584936, 0.127702, 0.811153)
 bones/19/rotation = Quaternion(0.683339, 0.0527004, -0.0108489, 0.728116)
 bones/19/scale = Vector3(1, 1, 1)
 bones/20/rotation = Quaternion(0.037703, 0.00204431, -0.00195617, 0.999285)
 bones/20/scale = Vector3(1, 1, 1)
-bones/21/rotation = Quaternion(-0.352313, -0.436692, 0.179108, 0.808143)
+bones/21/rotation = Quaternion(-0.67853, -0.518307, 0.187087, 0.485751)
 bones/21/scale = Vector3(1, 1, 1)
-bones/22/rotation = Quaternion(0.243742, -0.0394474, -0.0446138, 0.96801)
+bones/22/rotation = Quaternion(0.683337, -0.0527019, 0.01085, 0.728117)
 bones/22/scale = Vector3(1, 1, 1)
-bones/23/rotation = Quaternion(0.769367, -0.00130429, 0.0399175, 0.637558)
+bones/23/rotation = Quaternion(0.0377065, -0.00204431, 0.00195635, 0.999285)
 bones/23/scale = Vector3(1, 1, 1)
-bones/24/rotation = Quaternion(-0.360869, 0.501138, -0.139704, 0.774026)
+bones/24/rotation = Quaternion(-0.653051, 0.426236, -0.293656, 0.552823)
+bones/24/scale = Vector3(1, 1, 1)
 
 [node name="AnimationPlayer" parent="Rotator/mdl_metalSonic" index="1"]
 autoplay = "Idle"
-
-[node name="Trail3D" type="MeshInstance3D" parent="Rotator"]
-material_override = SubResource("StandardMaterial3D_forj4")
-skeleton = NodePath("../..")
-script = ExtResource("6_jnpce")
-startRadius = 0.7
-pointsAround = 8
-pointLifetime = 0.4
-startColor = Color(0.012969, 1.68458e-07, 0.409161, 0.513726)
-endColor = Color(0.109804, 0, 0.596078, 0)
-sizeCurve = 0.353553
-
-[node name="Ball" type="MeshInstance3D" parent="Rotator/Trail3D"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-material_override = SubResource("StandardMaterial3D_l2x6m")
-mesh = SubResource("SphereMesh_1cehn")
-skeleton = NodePath("../..")
 
 [node name="Ball" type="Node3D" parent="Rotator"]
 transform = Transform3D(0.682784, 0, 0, 0, 1.09072, 0, 0, 0, 0.698563, 0, -0.161624, -0.247377)
@@ -526,6 +523,60 @@ libraries = {
 "": SubResource("AnimationLibrary_yjqa6")
 }
 autoplay = "speen"
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Labels" type="Node2D" parent="UI"]
+position = Vector2(40, 37)
+skew = 0.44855
+
+[node name="RINGS" type="Label" parent="UI/Labels"]
+offset_left = 42.3089
+offset_top = 2.21957
+offset_right = 132.309
+offset_bottom = 52.2196
+text = "RINGS: "
+label_settings = SubResource("LabelSettings_g3r6x")
+script = ExtResource("7_6mtf7")
+targetPath = NodePath("../../..")
+targetVariable = "currentRings"
+prefix = "RINGS: "
+metadata/_edit_use_anchors_ = true
+
+[node name="TIME" type="Label" parent="UI/Labels"]
+offset_left = 44.2657
+offset_top = 34.4033
+offset_right = 134.266
+offset_bottom = 84.4033
+text = "TIME:"
+label_settings = SubResource("LabelSettings_g3r6x")
+metadata/_edit_use_anchors_ = true
+
+[node name="SCORE" type="Label" parent="UI/Labels"]
+offset_left = 48.2224
+offset_top = 66.587
+offset_right = 138.222
+offset_bottom = 116.587
+text = "SCORE:"
+label_settings = SubResource("LabelSettings_g3r6x")
+metadata/_edit_use_anchors_ = true
+
+[node name="Trail3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_forj4")
+script = ExtResource("6_jnpce")
+startRadius = 0.7
+pointsAround = 8
+pointLifetime = 0.4
+startColor = Color(0.012969, 1.68458e-07, 0.409161, 0.513726)
+endColor = Color(0.109804, 0, 0.596078, 0)
+sizeCurve = 0.353553
+
+[node name="Ball" type="MeshInstance3D" parent="Trail3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_l2x6m")
+mesh = SubResource("SphereMesh_1cehn")
+skeleton = NodePath("../../Rotator")
 
 [connection signal="body_entered" from="BallShape/JumpHurtBox" to="." method="OnBallHurtBoxEntered"]
 
