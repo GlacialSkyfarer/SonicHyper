@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="FuncGodotFGDPointClass" load_steps=3 format=3 uid="uid://dkcb33bqpptcu"]
 
-[ext_resource type="PackedScene" path="res://Scenes/Gizmos/giz_logic_delay.tscn" id="1_4e8kj"]
+[ext_resource type="PackedScene" uid="uid://c681hjp72suu7" path="res://Scenes/Gizmos/giz_logic_delay.tscn" id="1_4e8kj"]
 [ext_resource type="Script" path="res://addons/func_godot/src/fgd/func_godot_fgd_point_class.gd" id="2_r4yip"]
 
 [resource]

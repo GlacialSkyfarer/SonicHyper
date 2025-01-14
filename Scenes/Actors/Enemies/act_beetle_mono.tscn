@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://brv31low4p3s3"]
+
+[ext_resource type="Script" path="res://Actors/Enemies/GUN/Beetles/Beetle.cs" id="1_77151"]
+[ext_resource type="PackedScene" uid="uid://btcs07os1t0o" path="res://Assets/Visual/Models/Enemies/mdl_beetle.blend" id="1_ihc45"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_wmmv3"]
+radius = 0.904675
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nob51"]
+size = Vector3(1.67676, 0.401337, 1.59949)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_g3lyc"]
+radius = 0.741153
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_0egjn"]
+radius = 10.0
+
+[node name="Mono Beetle" type="CharacterBody3D"]
+collision_layer = 12
+collision_mask = 2
+motion_mode = 1
+script = ExtResource("1_77151")
+lookBoxPath = NodePath("LookBox")
+maxHP = 1.0
+
+[node name="mdl_beetle" parent="." instance=ExtResource("1_ihc45")]
+
+[node name="AnimationPlayer" parent="mdl_beetle" index="1"]
+autoplay = "Fly"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_wmmv3")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.148636, -0.828674)
+shape = SubResource("BoxShape3D_nob51")
+
+[node name="Hurtbox" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
+shape = SubResource("SphereShape3D_g3lyc")
+
+[node name="LookBox" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LookBox"]
+shape = SubResource("SphereShape3D_0egjn")
+
+[connection signal="body_entered" from="Hurtbox" to="." method="OnHurtboxEntered"]
+
+[editable path="mdl_beetle"]

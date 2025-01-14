@@ -1,12 +1,15 @@
-[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dadwyc5habvfb"]
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://dadwyc5habvfb"]
 
-[ext_resource type="Texture2D" uid="uid://b5eryrxi3xhqu" path="res://Assets/Visual/Models/textures/player00.png" id="1_18pld"]
+[ext_resource type="Texture2D" uid="uid://b5eryrxi3xhqu" path="res://Assets/Visual/Textures/Players/player00.png" id="1_dim5p"]
+[ext_resource type="Texture2D" uid="uid://b75n8gvcu5br4" path="res://Assets/Visual/Textures/Players/player00_e.png" id="2_1i1r4"]
 
 [resource]
 transparency = 3
 alpha_hash_scale = 1.0
 alpha_antialiasing_mode = 0
-albedo_texture = ExtResource("1_18pld")
+albedo_texture = ExtResource("1_dim5p")
 metallic = 1.0
 roughness = 0.52
+emission_enabled = true
+emission_texture = ExtResource("2_1i1r4")
 texture_filter = 0

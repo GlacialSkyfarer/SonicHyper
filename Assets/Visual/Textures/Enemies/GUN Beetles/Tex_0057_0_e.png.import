@@ -2,20 +2,21 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dl7irgkutsk8e"
-path="res://.godot/imported/player01.png-90f53c0a1201f4d303ccd4d48d767084.ctex"
+uid="uid://k763xr108i41"
+path.s3tc="res://.godot/imported/Tex_0057_0_e.png-b915152a55c6795a01bcd28a45207530.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://Assets/Visual/Models/textures/player01.png"
-dest_files=["res://.godot/imported/player01.png-90f53c0a1201f4d303ccd4d48d767084.ctex"]
+source_file="res://Assets/Visual/Textures/Enemies/GUN Beetles/Tex_0057_0_e.png"
+dest_files=["res://.godot/imported/Tex_0057_0_e.png-b915152a55c6795a01bcd28a45207530.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

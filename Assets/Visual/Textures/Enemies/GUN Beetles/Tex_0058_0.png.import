@@ -2,20 +2,21 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxvautewpa4yi"
-path="res://.godot/imported/tex_testPanelCircle.png-f5b24337984944b50ad2ef93823a0a5f.ctex"
+uid="uid://u8jejsaabm1v"
+path.s3tc="res://.godot/imported/Tex_0058_0.png-9f83f47a5788c2bf1ec901fa12a116a6.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://TrenchBroom/Textures/tex_testPanelCircle.png"
-dest_files=["res://.godot/imported/tex_testPanelCircle.png-f5b24337984944b50ad2ef93823a0a5f.ctex"]
+source_file="res://Assets/Visual/Textures/Enemies/GUN Beetles/Tex_0058_0.png"
+dest_files=["res://.godot/imported/Tex_0058_0.png-9f83f47a5788c2bf1ec901fa12a116a6.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

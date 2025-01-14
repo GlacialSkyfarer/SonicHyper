@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=4 uid="uid://b00w3axd0lxv5"]
+[gd_scene load_steps=72 format=4 uid="uid://b00w3axd0lxv5"]
 
 [ext_resource type="Script" path="res://addons/func_godot/src/map/func_godot_map.gd" id="1_7fhe0"]
 [ext_resource type="Resource" uid="uid://d3nxh65kiq487" path="res://TrenchBroom/cfg_defaultMap.tres" id="2_aghup"]
@@ -13,6 +13,7 @@
 [ext_resource type="Material" uid="uid://dmers7wwnh1ie" path="res://TrenchBroom/Textures/GreenHill/flower.tres" id="10_vb33y"]
 [ext_resource type="Script" path="res://Gizmos/RingTrail.cs" id="11_qx2ju"]
 [ext_resource type="AudioStream" uid="uid://vgsjiyn8i0lk" path="res://Assets/Audio/Music/mus_scrapBrain.mp3" id="12_lrakw"]
+[ext_resource type="PackedScene" uid="uid://brv31low4p3s3" path="res://Scenes/Actors/Enemies/act_beetle_mono.tscn" id="14_qkrgs"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_bw8p3"]
 _surfaces = [{
@@ -914,10 +915,6 @@ sky = SubResource("Sky_npd16")
 ambient_light_source = 2
 ambient_light_color = Color(0.0930079, 0.117191, 0.315663, 1)
 
-[sub_resource type="SphereMesh" id="SphereMesh_dxvgy"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_sv4oq"]
-
 [node name="Sky Palace" type="Node3D"]
 
 [node name="FuncGodotMap" type="Node3D" parent="."]
@@ -1489,15 +1486,46 @@ func_godot_properties = {
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.95816, 0)
 
 [node name="Skeleton3D" parent="PfbPlayerSetup2/Sonic/Rotator/mdl_metalSonic/Armature" index="0"]
-bones/5/position = Vector3(1.38382, 0.626421, 1.23194)
-bones/9/position = Vector3(-1.1821, 0.585102, 0.389669)
-bones/11/rotation = Quaternion(-0.699108, -7.38878e-07, -7.22373e-07, 0.715016)
-bones/12/rotation = Quaternion(-0.102708, 1.6711e-13, -9.68485e-14, 0.994712)
-bones/13/rotation = Quaternion(0.680339, 0.118161, -0.703934, 0.166293)
-bones/14/rotation = Quaternion(0.23482, 0.102643, -0.00586449, 0.966586)
-bones/16/rotation = Quaternion(0.590683, -0.324501, 0.608712, 0.418642)
-bones/17/rotation = Quaternion(0.758812, -0.0687439, 0.0189521, 0.647395)
+bones/0/rotation = Quaternion(0, 0.707107, 0.707107, 0)
+bones/1/position = Vector3(1.01042e-07, -0.565305, 5.15365)
+bones/1/rotation = Quaternion(2.52221e-08, 0.9997, -0.0245072, -1.02886e-06)
+bones/1/scale = Vector3(1, 1, 1)
+bones/2/position = Vector3(9.44759e-07, -1.61807, -0.590834)
+bones/2/rotation = Quaternion(0.493428, 0.138202, 0.855025, 0.0797555)
+bones/3/position = Vector3(1.02659, 0.549571, 4.96499)
+bones/5/position = Vector3(1.38379, 0.626354, 1.23056)
+bones/6/position = Vector3(3.61403, 0.52835, -0.767123)
+bones/6/rotation = Quaternion(-0.724223, -6.88677e-07, -7.25352e-07, 0.689565)
+bones/7/position = Vector3(-1.02661, 0.549571, 4.96499)
+bones/8/position = Vector3(-0.640635, 1.86296, 1.67459)
+bones/8/rotation = Quaternion(1.42336e-05, 0.999699, -0.0245072, -0.000582238)
+bones/9/position = Vector3(-1.18214, 0.585245, 0.392574)
+bones/10/position = Vector3(-3.61403, 0.528351, -0.767139)
+bones/10/rotation = Quaternion(-0.724223, -6.88677e-07, -7.25352e-07, 0.689565)
+bones/11/rotation = Quaternion(-0.698741, -7.39286e-07, -7.22035e-07, 0.715374)
+bones/12/rotation = Quaternion(-0.101384, 1.66999e-13, -9.69419e-14, 0.994847)
+bones/13/rotation = Quaternion(0.679957, 0.11882, -0.703922, 0.167435)
+bones/13/scale = Vector3(1, 1, 1)
+bones/14/rotation = Quaternion(0.237078, 0.102586, -0.00592089, 0.966041)
+bones/14/scale = Vector3(1, 1, 1)
+bones/15/rotation = Quaternion(-0.102336, 0.0546801, -0.0272153, 0.992873)
+bones/16/rotation = Quaternion(0.590852, -0.32397, 0.609242, 0.418045)
+bones/16/scale = Vector3(1, 1, 1)
+bones/17/rotation = Quaternion(0.757956, -0.0688492, 0.0189307, 0.648386)
+bones/17/scale = Vector3(1, 1, 1)
+bones/18/rotation = Quaternion(-0.570691, -0.00584936, 0.127702, 0.811153)
+bones/19/rotation = Quaternion(0.683339, 0.0527004, -0.0108489, 0.728116)
+bones/19/scale = Vector3(1, 1, 1)
+bones/20/rotation = Quaternion(0.037703, 0.00204431, -0.00195617, 0.999285)
+bones/20/scale = Vector3(1, 1, 1)
 bones/21/rotation = Quaternion(-0.67853, -0.518307, 0.187087, 0.485751)
+bones/21/scale = Vector3(1, 1, 1)
+bones/22/rotation = Quaternion(0.683337, -0.0527019, 0.01085, 0.728117)
+bones/22/scale = Vector3(1, 1, 1)
+bones/23/rotation = Quaternion(0.0377065, -0.00204431, 0.00195635, 0.999285)
+bones/23/scale = Vector3(1, 1, 1)
+bones/24/rotation = Quaternion(-0.653051, 0.426236, -0.293656, 0.552823)
+bones/24/scale = Vector3(1, 1, 1)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_nxiil")
@@ -1512,60 +1540,17 @@ stream = ExtResource("12_lrakw")
 volume_db = -9.37
 autoplay = true
 
-[node name="HomingAttackable" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 3.35713, 0)
-mesh = SubResource("SphereMesh_dxvgy")
+[node name="Mono Beetle" parent="." instance=ExtResource("14_qkrgs")]
+transform = Transform3D(-0.0179934, 0, -0.999838, 0, 1, 0, 0.999838, 0, -0.0179934, 8.00591, 3.65327, 0.302505)
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="HomingAttackable"]
-collision_layer = 12
-collision_mask = 3
+[node name="Mono Beetle2" parent="." instance=ExtResource("14_qkrgs")]
+transform = Transform3D(-0.0179934, 0, -0.999838, 0, 1, 0, 0.999838, 0, -0.0179934, 14.2868, 5.78417, -4.89947)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HomingAttackable/CharacterBody3D"]
-shape = SubResource("SphereShape3D_sv4oq")
+[node name="Mono Beetle3" parent="." instance=ExtResource("14_qkrgs")]
+transform = Transform3D(-0.0179934, 0, -0.999838, 0, 1, 0, 0.999838, 0, -0.0179934, 22.5527, 5.78417, 4.5327)
 
-[node name="HomingAttackable2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.9564, 7.0786, 6.05197)
-mesh = SubResource("SphereMesh_dxvgy")
-
-[node name="CharacterBody3D" type="CharacterBody3D" parent="HomingAttackable2"]
-collision_layer = 12
-collision_mask = 3
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HomingAttackable2/CharacterBody3D"]
-shape = SubResource("SphereShape3D_sv4oq")
-
-[node name="HomingAttackable3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.0859, 10.1462, 1.91367)
-mesh = SubResource("SphereMesh_dxvgy")
-
-[node name="CharacterBody3D" type="CharacterBody3D" parent="HomingAttackable3"]
-collision_layer = 12
-collision_mask = 3
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HomingAttackable3/CharacterBody3D"]
-shape = SubResource("SphereShape3D_sv4oq")
-
-[node name="HomingAttackable4" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.2436, 10.1462, 8.36055)
-mesh = SubResource("SphereMesh_dxvgy")
-
-[node name="CharacterBody3D" type="CharacterBody3D" parent="HomingAttackable4"]
-collision_layer = 12
-collision_mask = 3
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HomingAttackable4/CharacterBody3D"]
-shape = SubResource("SphereShape3D_sv4oq")
-
-[node name="HomingAttackable5" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44.0641, 10.1462, 0.643196)
-mesh = SubResource("SphereMesh_dxvgy")
-
-[node name="CharacterBody3D" type="CharacterBody3D" parent="HomingAttackable5"]
-collision_layer = 12
-collision_mask = 3
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HomingAttackable5/CharacterBody3D"]
-shape = SubResource("SphereShape3D_sv4oq")
+[node name="Mono Beetle4" parent="." instance=ExtResource("14_qkrgs")]
+transform = Transform3D(-0.0179934, 0, -0.999838, 0, 1, 0, 0.999838, 0, -0.0179934, 30.9555, 1.36335, -0.698761)
 
 [editable path="PfbPlayerSetup2"]
 [editable path="PfbPlayerSetup2/Sonic"]

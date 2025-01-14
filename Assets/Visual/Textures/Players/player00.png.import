@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxvautewpa4yi"
-path="res://.godot/imported/tex_testPanelCircle.png-f5b24337984944b50ad2ef93823a0a5f.ctex"
+uid="uid://b5eryrxi3xhqu"
+path="res://.godot/imported/player00.png-287105a4e919f7157b8cb09dda768626.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://TrenchBroom/Textures/tex_testPanelCircle.png"
-dest_files=["res://.godot/imported/tex_testPanelCircle.png-f5b24337984944b50ad2ef93823a0a5f.ctex"]
+source_file="res://Assets/Visual/Textures/Players/player00.png"
+dest_files=["res://.godot/imported/player00.png-287105a4e919f7157b8cb09dda768626.ctex"]
 
 [params]
 

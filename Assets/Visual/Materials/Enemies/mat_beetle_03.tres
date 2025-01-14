@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://csjnta3o3rivv"]
+
+[ext_resource type="Texture2D" uid="uid://bbgjog0i1p2bs" path="res://Assets/Visual/Textures/Enemies/GUN Beetles/Tex_0059_0.png" id="1_13ksh"]
+
+[resource]
+transparency = 1
+albedo_texture = ExtResource("1_13ksh")
+roughness = 0.48
+texture_filter = 0

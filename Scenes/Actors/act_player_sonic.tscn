@@ -317,6 +317,7 @@ _data = {
 
 [sub_resource type="SystemFont" id="SystemFont_p0o12"]
 font_names = PackedStringArray("Impact")
+subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_g3r6x"]
 font = SubResource("SystemFont_p0o12")
@@ -360,6 +361,7 @@ floorCastPath = NodePath("FloorCast2")
 homingAttackAreaPath = NodePath("HomingAttackArea")
 rotatorNodePath = NodePath("Rotator")
 glowTrailPath = NodePath("Trail3D")
+ballHurtboxPath = NodePath("BallShape/JumpHurtBox")
 spinHoldSoundPath = NodePath("SpinChargeSound")
 spinReleaseSoundPath = NodePath("SpinReleaseSound")
 jumpSoundPath = NodePath("JumpSound")
@@ -373,7 +375,6 @@ deceleration = 30.0
 airAcceleration = 12.0
 airDeceleration = 15.0
 turnSpeed = 20.0
-turnFriction = 1.0
 maxYVelocity = 70.0
 jumpableStates = [0, 1, 4]
 maxJumpHeight = 6.0
@@ -384,6 +385,32 @@ homingAttackableStates = [2, 1, 5, 8]
 homingAttackRechargeStates = [0, 3, 4, 8]
 homingAttackSpeed = 45.0
 homingAttackAccuracy = 22.0
+comboScores = {
+1: 0,
+2: 100,
+3: 200,
+4: 300,
+5: 400,
+6: 500,
+7: 600,
+8: 800,
+9: 1000,
+10: 1500,
+11: 2000
+}
+comboScoreLabels = {
+1: "FINE...",
+2: "GOOD!",
+3: "NICE!",
+4: "GREAT!",
+5: "JAMMIN'!",
+6: "COOL!",
+7: "RADICAL!",
+8: "TIGHT!",
+9: "AWESOME!",
+10: "EXTREME!",
+11: "PERFECT!"
+}
 animations = {
 "HomingAttackBounce": "HomingAttackBounce",
 "Idle": "Idle",
@@ -464,7 +491,7 @@ bones/3/rotation = Quaternion(0.689565, -0.000423187, -0.000401499, 0.724223)
 bones/3/scale = Vector3(1, 1, 1)
 bones/4/rotation = Quaternion(-0.0245072, -0.00058419, 1.4202e-05, 0.999699)
 bones/4/scale = Vector3(1, 1, 1)
-bones/5/position = Vector3(1.38309, 0.624503, 1.19284)
+bones/5/position = Vector3(1.38348, 0.625531, 1.2138)
 bones/5/rotation = Quaternion(0.487597, -0.512104, -0.487596, 0.512103)
 bones/5/scale = Vector3(1, 1, 1)
 bones/6/position = Vector3(3.61403, 0.52835, -0.767123)
@@ -475,30 +502,30 @@ bones/7/scale = Vector3(1, 1, 1)
 bones/8/position = Vector3(-0.640635, 1.86296, 1.67459)
 bones/8/rotation = Quaternion(1.42336e-05, 0.999699, -0.0245072, -0.000582238)
 bones/8/scale = Vector3(1, 1, 1)
-bones/9/position = Vector3(-1.18335, 0.588864, 0.466358)
+bones/9/position = Vector3(-1.18268, 0.586853, 0.425356)
 bones/9/rotation = Quaternion(0.487596, 0.512103, 0.487597, 0.512104)
 bones/10/position = Vector3(-3.61403, 0.528351, -0.767139)
 bones/10/rotation = Quaternion(-0.724223, -6.88677e-07, -7.25352e-07, 0.689565)
-bones/11/rotation = Quaternion(-0.689526, -7.48198e-07, -7.12328e-07, 0.724261)
+bones/11/rotation = Quaternion(-0.694534, -7.4255e-07, -7.16804e-07, 0.71946)
 bones/11/scale = Vector3(1, 1, 1)
-bones/12/rotation = Quaternion(-0.0650085, 1.63316e-13, -1.03108e-13, 0.997885)
+bones/12/rotation = Quaternion(-0.0852167, 1.65352e-13, -1.00288e-13, 0.996363)
 bones/12/scale = Vector3(1, 1, 1)
-bones/13/rotation = Quaternion(0.669476, 0.134979, -0.70373, 0.195825)
+bones/13/rotation = Quaternion(0.675296, 0.126408, -0.70381, 0.180689)
 bones/13/scale = Vector3(1, 1, 1)
-bones/14/rotation = Quaternion(0.290207, 0.101051, -0.00724773, 0.951586)
+bones/14/rotation = Quaternion(0.262032, 0.101906, -0.0065441, 0.959641)
 bones/14/scale = Vector3(1, 1, 1)
 bones/15/rotation = Quaternion(-0.102336, 0.0546801, -0.0272153, 0.992873)
 bones/15/scale = Vector3(1, 1, 1)
-bones/16/rotation = Quaternion(0.594888, -0.309684, 0.622988, 0.402605)
+bones/16/rotation = Quaternion(0.592757, -0.317633, 0.615455, 0.411052)
 bones/16/scale = Vector3(1, 1, 1)
-bones/17/rotation = Quaternion(0.733645, -0.0717271, 0.0183236, 0.675488)
+bones/17/rotation = Quaternion(0.747332, -0.070133, 0.0186654, 0.660476)
 bones/17/scale = Vector3(1, 1, 1)
 bones/18/rotation = Quaternion(-0.570691, -0.00584936, 0.127702, 0.811153)
 bones/19/rotation = Quaternion(0.683339, 0.0527004, -0.0108489, 0.728116)
 bones/19/scale = Vector3(1, 1, 1)
 bones/20/rotation = Quaternion(0.037703, 0.00204431, -0.00195617, 0.999285)
 bones/20/scale = Vector3(1, 1, 1)
-bones/21/rotation = Quaternion(-0.67853, -0.518307, 0.187087, 0.485751)
+bones/21/rotation = Quaternion(-0.68955, -0.514425, 0.195897, 0.470651)
 bones/21/scale = Vector3(1, 1, 1)
 bones/22/rotation = Quaternion(0.683337, -0.0527019, 0.01085, 0.728117)
 bones/22/scale = Vector3(1, 1, 1)
@@ -528,7 +555,8 @@ autoplay = "speen"
 layer = 10
 
 [node name="Labels" type="Node2D" parent="UI"]
-position = Vector2(40, 37)
+position = Vector2(7, 12)
+scale = Vector2(0.734432, 0.734432)
 skew = 0.44855
 
 [node name="RINGS" type="Label" parent="UI/Labels"]
@@ -551,7 +579,15 @@ offset_right = 134.266
 offset_bottom = 84.4033
 text = "TIME:"
 label_settings = SubResource("LabelSettings_g3r6x")
+script = ExtResource("7_6mtf7")
+targetPath = NodePath("Timer")
+targetVariable = "time_left"
+prefix = "TIME: "
 metadata/_edit_use_anchors_ = true
+
+[node name="Timer" type="Timer" parent="UI/Labels/TIME"]
+wait_time = 600.0
+autostart = true
 
 [node name="SCORE" type="Label" parent="UI/Labels"]
 offset_left = 48.2224
@@ -560,6 +596,10 @@ offset_right = 138.222
 offset_bottom = 116.587
 text = "SCORE:"
 label_settings = SubResource("LabelSettings_g3r6x")
+script = ExtResource("7_6mtf7")
+targetPath = NodePath("../../..")
+targetVariable = "currentScore"
+prefix = "SCORE: "
 metadata/_edit_use_anchors_ = true
 
 [node name="Trail3D" type="MeshInstance3D" parent="."]

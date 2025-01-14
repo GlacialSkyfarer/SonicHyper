@@ -2,20 +2,21 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxvautewpa4yi"
-path="res://.godot/imported/tex_testPanelCircle.png-f5b24337984944b50ad2ef93823a0a5f.ctex"
+uid="uid://b75n8gvcu5br4"
+path.s3tc="res://.godot/imported/player00_e.png-741b80d5273285823d6c5db8593e9b4a.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://TrenchBroom/Textures/tex_testPanelCircle.png"
-dest_files=["res://.godot/imported/tex_testPanelCircle.png-f5b24337984944b50ad2ef93823a0a5f.ctex"]
+source_file="res://Assets/Visual/Textures/Players/player00_e.png"
+dest_files=["res://.godot/imported/player00_e.png-741b80d5273285823d6c5db8593e9b4a.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

@@ -17,16 +17,16 @@ public partial class Actor : CharacterBody3D
         base._Ready();
     }
 
-    public virtual void OnHit(float damage, Vector3 direction) {
+    public virtual void _OnHit(float damage, Vector3 direction, Node source) {
 
         hp -= damage;
         if (hp <= 0) {
-            OnDeath();
+            _OnDeath(source);
         }
 
     }
 
-    protected virtual void OnDeath() {
+    public virtual void _OnDeath(Node source) {
         QueueFree();
     }
 

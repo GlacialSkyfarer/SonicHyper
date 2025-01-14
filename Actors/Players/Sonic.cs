@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 
@@ -17,12 +18,14 @@ public enum SonicPlayerState {
 
 }
 
-public partial class Sonic : CharacterBody3D
+public partial class Sonic : Actor
 {
 
 	#region References
 
 	[ExportCategory("References")]	
+
+	[Export] private PackedScene ringPath;
 
 	private GameManager gameManager;
 
@@ -49,6 +52,8 @@ public partial class Sonic : CharacterBody3D
 	[Export] private NodePath glowTrailPath;
 	private Trail3D glowTrail;
 	private MeshInstance3D glowBall;
+	[Export] private NodePath ballHurtboxPath;
+	private Area3D ballHurtbox;
 
 	//Sounds
 
@@ -98,6 +103,7 @@ public partial class Sonic : CharacterBody3D
 
 	[Export] private Godot.Collections.Array<SonicPlayerState> jumpableStates = new Godot.Collections.Array<SonicPlayerState> { SonicPlayerState.Standing };
 	[Export] private Godot.Collections.Array<SonicPlayerState> spinDashableStates = new Godot.Collections.Array<SonicPlayerState> {SonicPlayerState.Standing };
+	
 	[Export] private float maxJumpHeight = 4.0f;
 	[Export] private float fallGravityMultiplier = 1.5f;
 
@@ -122,6 +128,8 @@ public partial class Sonic : CharacterBody3D
 
 	[Export] private Godot.Collections.Array<SonicPlayerState> homingAttackableStates = new Godot.Collections.Array<SonicPlayerState> { SonicPlayerState.SpinFalling, SonicPlayerState.SpinJumping, SonicPlayerState.StandFalling };
 	[Export] private Godot.Collections.Array<SonicPlayerState> homingAttackRechargeStates = new Godot.Collections.Array<SonicPlayerState> { SonicPlayerState.Standing, SonicPlayerState.ChargingDash, SonicPlayerState.Rolling };
+	[Export] private Godot.Collections.Array<SonicPlayerState> attackingStates = new Godot.Collections.Array<SonicPlayerState> { SonicPlayerState.HomingAttacking, SonicPlayerState.Rolling, SonicPlayerState.ChargingDash, SonicPlayerState.SpinJumping, SonicPlayerState.SpinFalling };
+
 
 	[Export] private float airDashForce = 40f;
 	[Export] private float homingAttackSpeed = 20f;
@@ -134,11 +142,19 @@ public partial class Sonic : CharacterBody3D
 	private bool hasHomingAttack = true;
 	private Vector3 homingAttackDirection = Vector3.Forward;
 
-	[ExportCategory("Damage")]
+	[ExportCategory("Other")]
 	[ExportGroup("Rings")]
 	public int currentRings = 0;
 	[Export] private float invincibilityTime = 5f;
 	private float currentInvincibilityTime = 0;
+	[ExportGroup("Score")]
+	public int currentScore = 0;
+	[Export] private Godot.Collections.Array<SonicPlayerState> comboBreakStates = new Godot.Collections.Array<SonicPlayerState>() { SonicPlayerState.Standing, SonicPlayerState.Rolling, SonicPlayerState.ChargingDash };
+
+	private int currentCombo = 0;
+
+	[Export] private Godot.Collections.Dictionary<int, int> comboScores;
+	[Export] private Godot.Collections.Dictionary<int, string> comboScoreLabels;
 
 	[ExportCategory("Animation")]
 	[Export] private Godot.Collections.Dictionary<string,string> animations;
@@ -167,6 +183,7 @@ public partial class Sonic : CharacterBody3D
 		rotatorNode = GetNode<Node3D>(rotatorNodePath);
 		glowTrail = GetNode<Trail3D>(glowTrailPath);
 		glowBall = glowTrail.GetNode<MeshInstance3D>("Ball");
+		ballHurtbox = GetNode<Area3D>(ballHurtboxPath);
 
 		gameManager = GetNode<GameManager>("/root/GameManager");
 
@@ -182,6 +199,7 @@ public partial class Sonic : CharacterBody3D
 		currentHomingAttackTime = Mathf.Max(currentHomingAttackTime - (float)delta, 0f);
 		currentDashChargeTime = Mathf.Min(currentDashChargeTime + (float)delta, dashChargeTime);
 		currentGlowTime = Mathf.Max(currentGlowTime - (float)delta, 0f);
+		currentInvincibilityTime = Mathf.Max(currentInvincibilityTime - (float)delta, 0f);
 
 		if (IsOnFloor()) {
 
@@ -215,6 +233,32 @@ public partial class Sonic : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
 	{
+
+		if (attackingStates.Contains(currentPlayerState)) {
+
+			ballHurtbox.ProcessMode = ProcessModeEnum.Inherit;
+
+		} else {
+
+			ballHurtbox.ProcessMode = ProcessModeEnum.Disabled;
+
+		}
+
+		if (currentCombo > 0 && comboBreakStates.Contains(currentPlayerState)) {
+
+			if (comboScores.ContainsKey(currentCombo)) {
+
+				currentScore += comboScores[currentCombo];
+
+			} else {
+
+				currentScore += comboScores[11];
+
+			}
+
+			currentCombo = 0;
+
+		}
 
 		RotateOnSlope(delta);
 		UpDirection = GlobalBasis.Y;
@@ -335,7 +379,7 @@ public partial class Sonic : CharacterBody3D
 
 				jumpLock = false;
 
-				if ((velocity * GlobalBasis.Y).Y < 0f  || (!Input.IsActionPressed("jump") && currentPlayerState == SonicPlayerState.SpinJumping)) {
+				if (((velocity * GlobalBasis.Y).Y < 0f  || !Input.IsActionPressed("jump")) && currentPlayerState == SonicPlayerState.SpinJumping) {
 
 					currentPlayerState = SonicPlayerState.SpinFalling;
 
@@ -495,7 +539,9 @@ public partial class Sonic : CharacterBody3D
 
 			Actor a = (Actor)b;
 
-			a.OnHit(1, GlobalPosition.DirectionTo(b.GlobalPosition));
+			a._OnHit(1, GlobalPosition.DirectionTo(b.GlobalPosition), this);
+
+			currentCombo += 1;
 
 		}
 
@@ -645,29 +691,6 @@ public partial class Sonic : CharacterBody3D
 
 	}
 
-	private void PlayAnimation(string key, bool fromStart = false) {
-
-		if (animations.ContainsKey(key)) {
-
-			if (fromStart) {
-
-				animator.Seek(0);
-				animator.Play(animations[key]);
-
-			} else if (animator.CurrentAnimation != animations[key]) {
-
-				animator.Play(animations[key]);
-
-			}
-
-		} else {
-
-			GD.PrintErr("No such animation: '" + key + "'.");
-
-		}
-
-	}
-
 	private float GetGravityMultiplier() {
 
 		switch (currentPlayerState) {
@@ -782,5 +805,54 @@ public partial class Sonic : CharacterBody3D
 		return q * velocity;
 
 	}
+
+	public override void _OnHit(float damage, Vector3 direction, Node source) {
+
+		if ((!attackingStates.Contains(currentPlayerState) || source.HasMeta("ignore_ball")) && currentInvincibilityTime <= 0) {
+
+			if (currentRings > 0) {
+
+				currentRings = 0;
+				currentInvincibilityTime = invincibilityTime;
+
+			} else {
+
+				_OnDeath(source);
+
+			}
+			
+		}
+
+	}
+
+	public override void _OnDeath(Node source) {
+
+		GetTree().Quit();
+
+	}
+
+	private void PlayAnimation(string key, bool fromStart = false) {
+
+		if (animations.ContainsKey(key)) {
+
+			if (fromStart) {
+
+				animator.Seek(0);
+				animator.Play(animations[key]);
+
+			} else if (animator.CurrentAnimation != animations[key]) {
+
+				animator.Play(animations[key]);
+
+			}
+
+		} else {
+
+			GD.PrintErr("No such animation: '" + key + "'.");
+
+		}
+
+	}
+
 
 }

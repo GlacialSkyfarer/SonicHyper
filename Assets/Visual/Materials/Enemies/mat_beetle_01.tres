@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://dvy148jfvvf8n"]
+
+[ext_resource type="Texture2D" uid="uid://brpfrs4cimp6q" path="res://Assets/Visual/Textures/Enemies/GUN Beetles/Tex_0057_0.png" id="1_va78q"]
+[ext_resource type="Texture2D" uid="uid://k763xr108i41" path="res://Assets/Visual/Textures/Enemies/GUN Beetles/Tex_0057_0_e.png" id="2_vqk5i"]
+
+[resource]
+cull_mode = 2
+albedo_texture = ExtResource("1_va78q")
+metallic = 1.0
+roughness = 0.73
+emission_enabled = true
+emission_texture = ExtResource("2_vqk5i")

@@ -27,7 +27,7 @@ autoplay = "Spin"
 [node name="OmniLight3D" type="OmniLight3D" parent="mdl_ring"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.463028, 0)
 light_color = Color(1, 0.780392, 0, 1)
-light_energy = 0.5
+light_energy = 0.1
 omni_range = 1.58272
 
 [connection signal="body_entered" from="." to="." method="OnCollect"]
