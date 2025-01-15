@@ -1,12 +1,12 @@
 [gd_scene load_steps=52 format=3 uid="uid://cyjbdi347hyhd"]
 
-[ext_resource type="Script" path="res://Actors/Players/Sonic.cs" id="1_splnw"]
-[ext_resource type="AudioStream" uid="uid://c7smi58wkyhhm" path="res://Assets/Audio/Sounds/Metal/snd_jump.wav" id="3_hh371"]
-[ext_resource type="AudioStream" uid="uid://bsbgp1csl4cos" path="res://Assets/Audio/Sounds/Metal/snd_spindash_hold.wav" id="3_xb38u"]
-[ext_resource type="AudioStream" uid="uid://chgjsejm2jvhc" path="res://Assets/Audio/Sounds/Metal/snd_spindash_release.wav" id="4_nw1sy"]
-[ext_resource type="Script" path="res://Gizmos/Trail3D.cs" id="6_jnpce"]
-[ext_resource type="PackedScene" uid="uid://dkcu7fsvcyis3" path="res://Assets/Visual/Models/mdl_metalSonic.blend" id="6_n7joc"]
-[ext_resource type="Script" path="res://Interface/VariableDisplay.cs" id="7_6mtf7"]
+[ext_resource type="Script" path="res://Actors/Players/Sonic.cs" id="1_7cjmg"]
+[ext_resource type="AudioStream" uid="uid://c7smi58wkyhhm" path="res://Assets/Audio/Sounds/Metal/snd_jump.wav" id="2_3qqho"]
+[ext_resource type="AudioStream" uid="uid://bsbgp1csl4cos" path="res://Assets/Audio/Sounds/Metal/snd_spindash_hold.wav" id="3_pg3lx"]
+[ext_resource type="AudioStream" uid="uid://chgjsejm2jvhc" path="res://Assets/Audio/Sounds/Metal/snd_spindash_release.wav" id="4_sdugq"]
+[ext_resource type="PackedScene" uid="uid://dkcu7fsvcyis3" path="res://Assets/Visual/Models/mdl_metalSonic.blend" id="5_fov8i"]
+[ext_resource type="Script" path="res://Interface/VariableDisplay.cs" id="6_7bcy7"]
+[ext_resource type="Script" path="res://Gizmos/Trail3D.cs" id="7_4ldwy"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vvscq"]
 animation = &"Fall"
@@ -347,10 +347,10 @@ height = 1.5
 radial_segments = 8
 rings = 8
 
-[node name="Sonic" type="CharacterBody3D"]
+[node name="Metal" type="CharacterBody3D"]
 collision_layer = 2
 floor_snap_length = 1.0
-script = ExtResource("1_splnw")
+script = ExtResource("1_7cjmg")
 animatorPath = NodePath("Rotator/mdl_metalSonic/AnimationPlayer")
 standingColliderPath = NodePath("StandingShape")
 ballColliderPath = NodePath("BallShape")
@@ -365,7 +365,7 @@ ballHurtboxPath = NodePath("BallShape/JumpHurtBox")
 spinHoldSoundPath = NodePath("SpinChargeSound")
 spinReleaseSoundPath = NodePath("SpinReleaseSound")
 jumpSoundPath = NodePath("JumpSound")
-startingSpeed = 4.0
+startingSpeed = 6.0
 joggingSpeed = 15.0
 runningSpeed = 25.0
 sprintingSpeed = 35.0
@@ -374,7 +374,10 @@ acceleration = 12.0
 deceleration = 30.0
 airAcceleration = 12.0
 airDeceleration = 15.0
+airTurnSpeed = 20.0
 turnSpeed = 20.0
+turnFriction = 1.5
+airTurnFriction = 3.0
 maxYVelocity = 70.0
 jumpableStates = [0, 1, 4]
 maxJumpHeight = 6.0
@@ -449,13 +452,13 @@ shape = SubResource("CylinderShape3D_n7ipb")
 target_position = Vector3(0, -1.2, 0)
 
 [node name="JumpSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_hh371")
+stream = ExtResource("2_3qqho")
 
 [node name="SpinChargeSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_xb38u")
+stream = ExtResource("3_pg3lx")
 
 [node name="SpinReleaseSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_nw1sy")
+stream = ExtResource("4_sdugq")
 
 [node name="HomingAttackArea" type="Area3D" parent="."]
 collision_layer = 0
@@ -475,7 +478,7 @@ draw_pass_1 = SubResource("QuadMesh_gayre")
 
 [node name="Rotator" type="Node3D" parent="."]
 
-[node name="mdl_metalSonic" parent="Rotator" instance=ExtResource("6_n7joc")]
+[node name="mdl_metalSonic" parent="Rotator" instance=ExtResource("5_fov8i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.8, 0)
 
 [node name="Skeleton3D" parent="Rotator/mdl_metalSonic/Armature" index="0"]
@@ -491,7 +494,7 @@ bones/3/rotation = Quaternion(0.689565, -0.000423187, -0.000401499, 0.724223)
 bones/3/scale = Vector3(1, 1, 1)
 bones/4/rotation = Quaternion(-0.0245072, -0.00058419, 1.4202e-05, 0.999699)
 bones/4/scale = Vector3(1, 1, 1)
-bones/5/position = Vector3(1.38346, 0.625483, 1.21282)
+bones/5/position = Vector3(1.38307, 0.624451, 1.19179)
 bones/5/rotation = Quaternion(0.487597, -0.512104, -0.487596, 0.512103)
 bones/5/scale = Vector3(1, 1, 1)
 bones/6/position = Vector3(3.61403, 0.52835, -0.767123)
@@ -502,23 +505,23 @@ bones/7/scale = Vector3(1, 1, 1)
 bones/8/position = Vector3(-0.640635, 1.86296, 1.67459)
 bones/8/rotation = Quaternion(1.42336e-05, 0.999699, -0.0245072, -0.000582238)
 bones/8/scale = Vector3(1, 1, 1)
-bones/9/position = Vector3(-1.18271, 0.586947, 0.427281)
+bones/9/position = Vector3(-1.1834, 0.589036, 0.469864)
 bones/9/rotation = Quaternion(0.487596, 0.512103, 0.487597, 0.512104)
 bones/10/position = Vector3(-3.61403, 0.528351, -0.767139)
 bones/10/rotation = Quaternion(-0.724223, -6.88677e-07, -7.25352e-07, 0.689565)
-bones/11/rotation = Quaternion(-0.69428, -7.43743e-07, -7.17443e-07, 0.719705)
+bones/11/rotation = Quaternion(-0.689235, -7.48175e-07, -7.11733e-07, 0.724538)
 bones/11/scale = Vector3(1, 1, 1)
-bones/12/rotation = Quaternion(-0.0842924, 1.65265e-13, -9.99836e-14, 0.996441)
+bones/12/rotation = Quaternion(-0.063994, 1.63193e-13, -1.03452e-13, 0.99795)
 bones/12/scale = Vector3(1, 1, 1)
-bones/13/rotation = Quaternion(0.675023, 0.126826, -0.703807, 0.181424)
+bones/13/rotation = Quaternion(0.669184, 0.135387, -0.703727, 0.196547)
 bones/13/scale = Vector3(1, 1, 1)
-bones/14/rotation = Quaternion(0.263411, 0.101866, -0.00657853, 0.959268)
+bones/14/rotation = Quaternion(0.292286, 0.100984, -0.00729966, 0.950957)
 bones/14/scale = Vector3(1, 1, 1)
 bones/15/rotation = Quaternion(-0.102336, 0.0546801, -0.0272153, 0.992873)
 bones/15/scale = Vector3(1, 1, 1)
-bones/16/rotation = Quaternion(0.592864, -0.317251, 0.615823, 0.41064)
+bones/16/rotation = Quaternion(0.594964, -0.30938, 0.623269, 0.402289)
 bones/16/scale = Vector3(1, 1, 1)
-bones/17/rotation = Quaternion(0.746723, -0.0702053, 0.0186502, 0.661157)
+bones/17/rotation = Quaternion(0.732944, -0.0718069, 0.0183061, 0.676241)
 bones/17/scale = Vector3(1, 1, 1)
 bones/18/rotation = Quaternion(-0.570691, -0.00584936, 0.127702, 0.811153)
 bones/19/rotation = Quaternion(0.683339, 0.0527004, -0.0108489, 0.728116)
@@ -566,7 +569,7 @@ offset_right = 132.309
 offset_bottom = 52.2196
 text = "RINGS: "
 label_settings = SubResource("LabelSettings_g3r6x")
-script = ExtResource("7_6mtf7")
+script = ExtResource("6_7bcy7")
 targetPath = NodePath("../../..")
 targetVariable = "currentRings"
 prefix = "RINGS: "
@@ -579,7 +582,7 @@ offset_right = 134.266
 offset_bottom = 84.4033
 text = "TIME:"
 label_settings = SubResource("LabelSettings_g3r6x")
-script = ExtResource("7_6mtf7")
+script = ExtResource("6_7bcy7")
 targetPath = NodePath("Timer")
 targetVariable = "time_left"
 prefix = "TIME: "
@@ -596,7 +599,7 @@ offset_right = 138.222
 offset_bottom = 116.587
 text = "SCORE:"
 label_settings = SubResource("LabelSettings_g3r6x")
-script = ExtResource("7_6mtf7")
+script = ExtResource("6_7bcy7")
 targetPath = NodePath("../../..")
 targetVariable = "currentScore"
 prefix = "SCORE: "
@@ -604,7 +607,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Trail3D" type="MeshInstance3D" parent="."]
 material_override = SubResource("StandardMaterial3D_forj4")
-script = ExtResource("6_jnpce")
+script = ExtResource("7_4ldwy")
 startRadius = 0.7
 pointsAround = 0
 pointLifetime = 0.4

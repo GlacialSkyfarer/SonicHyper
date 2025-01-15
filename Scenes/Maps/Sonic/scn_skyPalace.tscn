@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=4 uid="uid://b00w3axd0lxv5"]
+[gd_scene load_steps=74 format=4 uid="uid://b00w3axd0lxv5"]
 
 [ext_resource type="Script" path="res://addons/func_godot/src/map/func_godot_map.gd" id="1_7fhe0"]
 [ext_resource type="Resource" uid="uid://d3nxh65kiq487" path="res://TrenchBroom/cfg_defaultMap.tres" id="2_aghup"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://Gizmos/RingTrail.cs" id="11_qx2ju"]
 [ext_resource type="AudioStream" uid="uid://vgsjiyn8i0lk" path="res://Assets/Audio/Music/mus_scrapBrain.mp3" id="12_lrakw"]
 [ext_resource type="PackedScene" uid="uid://brv31low4p3s3" path="res://Scenes/Actors/Enemies/act_beetle_mono.tscn" id="14_qkrgs"]
+[ext_resource type="PackedScene" uid="uid://c1intvs7be6kq" path="res://Scenes/Actors/Enemies/act_beetle_gun.tscn" id="15_h2v2a"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_bw8p3"]
 _surfaces = [{
@@ -915,6 +916,13 @@ sky = SubResource("Sky_npd16")
 ambient_light_source = 2
 ambient_light_color = Color(0.0930079, 0.117191, 0.315663, 1)
 
+[sub_resource type="Curve3D" id="Curve3D_hrl5w"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 3.53586, 0, -6.14087, 0, 0, 0, 0, 0, 0, -5, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
 [node name="Sky Palace" type="Node3D"]
 
 [node name="FuncGodotMap" type="Node3D" parent="."]
@@ -1486,46 +1494,15 @@ func_godot_properties = {
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.95816, 0)
 
 [node name="Skeleton3D" parent="PfbPlayerSetup2/Sonic/Rotator/mdl_metalSonic/Armature" index="0"]
-bones/0/rotation = Quaternion(0, 0.707107, 0.707107, 0)
-bones/1/position = Vector3(1.01042e-07, -0.565305, 5.15365)
-bones/1/rotation = Quaternion(2.52221e-08, 0.9997, -0.0245072, -1.02886e-06)
-bones/1/scale = Vector3(1, 1, 1)
-bones/2/position = Vector3(9.44759e-07, -1.61807, -0.590834)
-bones/2/rotation = Quaternion(0.493428, 0.138202, 0.855025, 0.0797555)
-bones/3/position = Vector3(1.02659, 0.549571, 4.96499)
-bones/5/position = Vector3(1.38316, 0.624687, 1.1966)
-bones/6/position = Vector3(3.61403, 0.52835, -0.767123)
-bones/6/rotation = Quaternion(-0.724223, -6.88677e-07, -7.25352e-07, 0.689565)
-bones/7/position = Vector3(-1.02661, 0.549571, 4.96499)
-bones/8/position = Vector3(-0.640635, 1.86296, 1.67459)
-bones/8/rotation = Quaternion(1.42336e-05, 0.999699, -0.0245072, -0.000582238)
-bones/9/position = Vector3(-1.18323, 0.588504, 0.459005)
-bones/10/position = Vector3(-3.61403, 0.528351, -0.767139)
-bones/10/rotation = Quaternion(-0.724223, -6.88677e-07, -7.25352e-07, 0.689565)
-bones/11/rotation = Quaternion(-0.69013, -7.46898e-07, -7.12272e-07, 0.723685)
-bones/12/rotation = Quaternion(-0.0686378, 1.63651e-13, -1.03036e-13, 0.997642)
-bones/13/rotation = Quaternion(0.670524, 0.133491, -0.703743, 0.193193)
-bones/13/scale = Vector3(1, 1, 1)
-bones/14/rotation = Quaternion(0.285328, 0.101205, -0.0071259, 0.953045)
-bones/14/scale = Vector3(1, 1, 1)
-bones/15/rotation = Quaternion(-0.102336, 0.0546801, -0.0272153, 0.992873)
-bones/16/rotation = Quaternion(0.594572, -0.310925, 0.62183, 0.403902)
-bones/16/scale = Vector3(1, 1, 1)
-bones/17/rotation = Quaternion(0.73614, -0.0714413, 0.0183859, 0.672797)
-bones/17/scale = Vector3(1, 1, 1)
-bones/18/rotation = Quaternion(-0.570691, -0.00584936, 0.127702, 0.811153)
-bones/19/rotation = Quaternion(0.683339, 0.0527004, -0.0108489, 0.728116)
-bones/19/scale = Vector3(1, 1, 1)
-bones/20/rotation = Quaternion(0.037703, 0.00204431, -0.00195617, 0.999285)
-bones/20/scale = Vector3(1, 1, 1)
+bones/5/position = Vector3(1.38316, 0.624697, 1.19679)
+bones/9/position = Vector3(-1.18322, 0.588485, 0.45863)
+bones/11/rotation = Quaternion(-0.690182, -7.46847e-07, -7.12326e-07, 0.723636)
+bones/12/rotation = Quaternion(-0.0688226, 1.63671e-13, -1.03032e-13, 0.997629)
+bones/13/rotation = Quaternion(0.670578, 0.133412, -0.703744, 0.193056)
+bones/14/rotation = Quaternion(0.285072, 0.101214, -0.0071195, 0.953121)
+bones/16/rotation = Quaternion(0.594553, -0.311001, 0.621759, 0.403981)
+bones/17/rotation = Quaternion(0.736267, -0.0714267, 0.018389, 0.67266)
 bones/21/rotation = Quaternion(-0.67853, -0.518307, 0.187087, 0.485751)
-bones/21/scale = Vector3(1, 1, 1)
-bones/22/rotation = Quaternion(0.683337, -0.0527019, 0.01085, 0.728117)
-bones/22/scale = Vector3(1, 1, 1)
-bones/23/rotation = Quaternion(0.0377065, -0.00204431, 0.00195635, 0.999285)
-bones/23/scale = Vector3(1, 1, 1)
-bones/24/rotation = Quaternion(-0.653051, 0.426236, -0.293656, 0.552823)
-bones/24/scale = Vector3(1, 1, 1)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_nxiil")
@@ -1551,6 +1528,23 @@ transform = Transform3D(-0.0179934, 0, -0.999838, 0, 1, 0, 0.999838, 0, -0.01799
 
 [node name="Mono Beetle4" parent="." instance=ExtResource("14_qkrgs")]
 transform = Transform3D(-0.0179934, 0, -0.999838, 0, 1, 0, 0.999838, 0, -0.0179934, 30.9555, 1.36335, -0.698761)
+
+[node name="Mono Beetle5" parent="." instance=ExtResource("15_h2v2a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0647, 4.60938, 2.65961)
+
+[node name="Mono Beetle6" parent="." instance=ExtResource("15_h2v2a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.85414, 4.60938, -5.72902)
+
+[node name="Path3D" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8948, 4.60938, 4.26106)
+curve = SubResource("Curve3D_hrl5w")
+
+[node name="Mono Beetle7" parent="." instance=ExtResource("15_h2v2a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8948, 4.60938, 4.26106)
+followsPath = true
+loop = true
+path3DPath = NodePath("../Path3D")
+movementSpeed = 5.0
 
 [editable path="PfbPlayerSetup2"]
 [editable path="PfbPlayerSetup2/Sonic"]

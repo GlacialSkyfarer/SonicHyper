@@ -94,6 +94,7 @@ public partial class Sonic : Actor
 	[Export] private float airTurnSpeed = 7f;
 	[Export] private float turnSpeed = 10f;
 	[Export] private float turnFriction = 2f;
+	[Export] private float airTurnFriction = 4f;
 	private Vector3 currentDirection = Vector3.Forward;
 	private float currentSpeed = 0f;
 
@@ -301,7 +302,7 @@ public partial class Sonic : Actor
 
 			currentDirection = currentDirection.Rotated(Vector3.Up, Mathf.Sign(angleTo) * turnAmount);
 
-			currentSpeed -= turnAmount * turnFriction;
+			currentSpeed -= turnAmount * (IsOnFloor() ? turnFriction : airTurnFriction);
 
 		}
 
@@ -318,7 +319,9 @@ public partial class Sonic : Actor
 
 			jumpLock = true;
 
-			velocity += Vector3.Up * Mathf2.GetJumpForce(gravity, maxJumpHeight);
+			velocity += GlobalBasis.Y * Mathf2.GetJumpForce(gravity, maxJumpHeight);
+
+			currentSpeed = new Vector3(velocity.X, 0, velocity.Z).Length();
 
 			jumpSound.Play();
 
@@ -683,18 +686,13 @@ public partial class Sonic : Actor
 
 		}
 
-		if ((-glowTrail.GlobalBasis.Z).AngleTo(Velocity.Normalized()) > 0.1f) {
-
-			glowTrail.Quaternion *= new Quaternion(-glowTrail.GlobalBasis.Z, Velocity.Normalized());
-
-		}
-
 	}
 
 	private float GetGravityMultiplier() {
 
 		switch (currentPlayerState) {
 
+			case SonicPlayerState.StandFalling:
 			case SonicPlayerState.SpinFalling:
 				return fallGravityMultiplier;
 			default:
@@ -705,6 +703,8 @@ public partial class Sonic : Actor
 	}
 
 	private void RotateOnSlope(double delta) {
+
+		bool upwardSlope = VelocityToGlobal(currentDirection).Y > 0;
 		
 		if (floorCast.IsColliding()) {
 

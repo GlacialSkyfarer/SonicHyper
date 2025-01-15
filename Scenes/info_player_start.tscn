@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://4tpyq3got7up"]
 
 [ext_resource type="Script" path="res://Camera/CameraFollower.cs" id="1_1rajd"]
-[ext_resource type="PackedScene" uid="uid://cyjbdi347hyhd" path="res://Scenes/Actors/act_player_sonic.tscn" id="2_5305i"]
+[ext_resource type="PackedScene" uid="uid://cyjbdi347hyhd" path="res://Scenes/Actors/act_player_metalSonic.tscn" id="2_5305i"]
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_shek0"]
 
