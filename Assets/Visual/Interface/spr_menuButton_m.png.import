@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://dwk2ha1if3lyf"
+path="res://.godot/imported/spr_menuButton_m.png-92098a4ef88bf6a6ad4f694f2d80e528.res"
+
+[deps]
+
+source_file="res://Assets/Visual/Interface/spr_menuButton_m.png"
+dest_files=["res://.godot/imported/spr_menuButton_m.png-92098a4ef88bf6a6ad4f694f2d80e528.res"]
+
+[params]
+
+create_from=0
+threshold=0.5

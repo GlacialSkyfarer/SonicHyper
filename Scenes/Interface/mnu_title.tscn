@@ -1,0 +1,401 @@
+[gd_scene load_steps=24 format=3 uid="uid://0jc1n1es4jxn"]
+
+[ext_resource type="Texture2D" uid="uid://daaw73agiex1m" path="res://Assets/Visual/Interface/spr_logo.png" id="1_1he8q"]
+[ext_resource type="Texture2D" uid="uid://bbifyp5ytlv4a" path="res://Assets/Visual/Interface/spr_menuButton.png" id="2_wm21y"]
+[ext_resource type="BitMap" uid="uid://dwk2ha1if3lyf" path="res://Assets/Visual/Interface/spr_menuButton_m.png" id="3_hdgai"]
+[ext_resource type="Texture2D" uid="uid://cl3wariqxeeu3" path="res://Assets/Visual/Interface/spr_holyFUCKitsHim.png" id="4_st3nc"]
+
+[sub_resource type="Gradient" id="Gradient_2eo5x"]
+colors = PackedColorArray(0.447373, 0.2958, 0.58, 1, 0.316983, 0.3055, 0.65, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_3q2kf"]
+gradient = SubResource("Gradient_2eo5x")
+fill_from = Vector2(0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i2lfe"]
+texture = SubResource("GradientTexture2D_3q2kf")
+
+[sub_resource type="Gradient" id="Gradient_ujyq8"]
+colors = PackedColorArray(0.6375, 0.82245, 1, 1, 0.797523, 0.517073, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2gfji"]
+gradient = SubResource("Gradient_ujyq8")
+fill_to = Vector2(0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qw5lc"]
+texture = SubResource("GradientTexture2D_2gfji")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a31u6"]
+bg_color = Color(0.307999, 0.00085408, 0.48792, 0.364706)
+
+[sub_resource type="Gradient" id="Gradient_boyen"]
+colors = PackedColorArray(0.838097, 0.919719, 1, 1, 0.917533, 0.820243, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6j1v2"]
+gradient = SubResource("Gradient_boyen")
+fill_to = Vector2(0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vjvs0"]
+texture = SubResource("GradientTexture2D_6j1v2")
+
+[sub_resource type="SystemFont" id="SystemFont_hg8m7"]
+font_names = PackedStringArray("Impact")
+font_italic = true
+
+[sub_resource type="LabelSettings" id="LabelSettings_6xu4q"]
+line_spacing = 0.0
+font = SubResource("SystemFont_hg8m7")
+font_size = 60
+font_color = Color(0.14, 0, 0.123667, 1)
+shadow_color = Color(0, 0, 0, 0.172549)
+shadow_offset = Vector2(-1, -1)
+
+[sub_resource type="Animation" id="Animation_ry77x"]
+resource_name = "idle"
+length = 0.001
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_8o5n1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-26, 228)]
+}
+
+[sub_resource type="Animation" id="Animation_8qlgl"]
+resource_name = "selected"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(2, 0.5, 2),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(12, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1anwb"]
+_data = {
+"RESET": SubResource("Animation_8o5n1"),
+"idle": SubResource("Animation_ry77x"),
+"selected": SubResource("Animation_8qlgl")
+}
+
+[sub_resource type="Animation" id="Animation_7ax4l"]
+resource_name = "spin"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="Animation" id="Animation_ujlfk"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4pxeg"]
+_data = {
+"RESET": SubResource("Animation_ujlfk"),
+"spin": SubResource("Animation_7ax4l")
+}
+
+[node name="Title" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+z_index = -100
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.00386, 1.03089)
+theme_override_styles/panel = SubResource("StyleBoxTexture_i2lfe")
+
+[node name="Panel" type="Panel" parent="."]
+z_index = -10
+layout_mode = 0
+offset_left = 130.0
+offset_top = -469.0
+offset_right = 930.0
+offset_bottom = 1531.0
+rotation = 0.378976
+theme_override_styles/panel = SubResource("StyleBoxTexture_qw5lc")
+
+[node name="Shadow2" type="Panel" parent="Panel"]
+z_index = -1
+layout_mode = 0
+offset_left = 10.4938
+offset_right = 810.494
+offset_bottom = 2000.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_a31u6")
+
+[node name="Under" type="Panel" parent="Panel/Shadow2"]
+z_index = -1
+layout_mode = 0
+offset_left = 16.432
+offset_right = 816.432
+offset_bottom = 2000.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_vjvs0")
+
+[node name="Shadow3" type="Panel" parent="Panel/Shadow2/Under"]
+z_index = -13
+layout_mode = 0
+offset_left = 11.6994
+offset_top = -0.312287
+offset_right = 811.699
+offset_bottom = 1999.69
+theme_override_styles/panel = SubResource("StyleBoxFlat_a31u6")
+
+[node name="Chevron" type="Polygon2D" parent="."]
+position = Vector2(-28, 23)
+scale = Vector2(1.74473, 1.74473)
+texture = SubResource("GradientTexture2D_6j1v2")
+texture_scale = Vector2(0.4, 0.4)
+polygon = PackedVector2Array(0, 0, 300, 0, 371, 75, 300, 150, 0, 150)
+
+[node name="Shadow" type="Polygon2D" parent="Chevron"]
+z_index = -1
+position = Vector2(2, 5)
+color = Color(0.59, 0.236, 0.5015, 0.301961)
+texture_scale = Vector2(0.4, 0.4)
+polygon = PackedVector2Array(0, 0, 300, 0, 371, 75, 300, 150, 0, 150)
+
+[node name="SprLogo" type="Sprite2D" parent="Chevron"]
+position = Vector2(183, 80)
+scale = Vector2(0.627659, 0.62766)
+texture = ExtResource("1_1he8q")
+
+[node name="Act1" type="Control" parent="."]
+anchors_preset = 0
+offset_left = -23.0
+offset_top = 437.0
+offset_right = 17.0
+offset_bottom = 477.0
+scale = Vector2(2.08218, 2.08218)
+
+[node name="Act1" type="TextureButton" parent="Act1"]
+layout_mode = 0
+offset_left = -26.0
+offset_top = 228.0
+offset_right = 554.0
+offset_bottom = 328.0
+scale = Vector2(0.419219, 0.419219)
+texture_normal = ExtResource("2_wm21y")
+texture_click_mask = ExtResource("3_hdgai")
+stretch_mode = 0
+
+[node name="TextureRect" type="TextureRect" parent="Act1/Act1"]
+modulate = Color(0.43576, 0.1008, 0.48, 0.266667)
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.38539
+offset_top = 9.54154
+offset_right = 2.38538
+offset_bottom = 9.54154
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_wm21y")
+
+[node name="Label" type="Label" parent="Act1/Act1"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -171.5
+offset_top = -43.0
+offset_right = 171.5
+offset_bottom = 43.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Play Act 1"
+label_settings = SubResource("LabelSettings_6xu4q")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Act1/Act1"]
+libraries = {
+"": SubResource("AnimationLibrary_1anwb")
+}
+autoplay = "idle"
+
+[node name="Act2" type="Control" parent="Act1"]
+anchors_preset = 0
+offset_left = -34.0
+offset_top = 60.0
+offset_right = 6.0
+offset_bottom = 100.0
+
+[node name="Act2" type="TextureButton" parent="Act1/Act2"]
+layout_mode = 0
+offset_left = -26.0
+offset_top = 228.0
+offset_right = 554.0
+offset_bottom = 328.0
+scale = Vector2(0.419219, 0.419219)
+texture_normal = ExtResource("2_wm21y")
+texture_click_mask = ExtResource("3_hdgai")
+stretch_mode = 0
+
+[node name="TextureRect" type="TextureRect" parent="Act1/Act2/Act2"]
+modulate = Color(0.43576, 0.1008, 0.48, 0.266667)
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.38539
+offset_top = 9.54154
+offset_right = 2.38538
+offset_bottom = 9.54154
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_wm21y")
+
+[node name="Label" type="Label" parent="Act1/Act2/Act2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -171.5
+offset_top = -43.0
+offset_right = 171.5
+offset_bottom = 43.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Play Act 2"
+label_settings = SubResource("LabelSettings_6xu4q")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Act1/Act2/Act2"]
+libraries = {
+"": SubResource("AnimationLibrary_1anwb")
+}
+autoplay = "idle"
+
+[node name="Act3" type="Control" parent="Act1/Act2"]
+anchors_preset = 0
+offset_left = -30.0
+offset_top = 60.0
+offset_right = 10.0
+offset_bottom = 100.0
+
+[node name="Act2" type="TextureButton" parent="Act1/Act2/Act3"]
+layout_mode = 0
+offset_left = -26.0
+offset_top = 228.0
+offset_right = 554.0
+offset_bottom = 328.0
+scale = Vector2(0.419219, 0.419219)
+texture_normal = ExtResource("2_wm21y")
+texture_click_mask = ExtResource("3_hdgai")
+stretch_mode = 0
+
+[node name="TextureRect" type="TextureRect" parent="Act1/Act2/Act3/Act2"]
+modulate = Color(0.43576, 0.1008, 0.48, 0.266667)
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.38539
+offset_top = 9.54154
+offset_right = 2.38538
+offset_bottom = 9.54154
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_wm21y")
+
+[node name="Label" type="Label" parent="Act1/Act2/Act3/Act2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -171.5
+offset_top = -43.0
+offset_right = 171.5
+offset_bottom = 43.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Quit"
+label_settings = SubResource("LabelSettings_6xu4q")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Act1/Act2/Act3/Act2"]
+libraries = {
+"": SubResource("AnimationLibrary_1anwb")
+}
+autoplay = "idle"
+
+[node name="SprHolyFucKitsHim" type="Sprite2D" parent="."]
+position = Vector2(1263, 599)
+scale = Vector2(1.73001, 1.73001)
+texture = ExtResource("4_st3nc")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SprHolyFucKitsHim"]
+libraries = {
+"": SubResource("AnimationLibrary_4pxeg")
+}
+autoplay = "spin"

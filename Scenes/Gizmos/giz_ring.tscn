@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dbtgjwhhmkfy1"]
+[gd_scene load_steps=6 format=3 uid="uid://dbtgjwhhmkfy1"]
 
 [ext_resource type="Script" path="res://Gizmos/Ring.cs" id="1_ocyms"]
 [ext_resource type="PackedScene" uid="uid://od18b837yiyv" path="res://Assets/Visual/Models/mdl_ring.blend" id="2_h4cg3"]
+[ext_resource type="AudioStream" uid="uid://bpmb4261hxuii" path="res://Assets/Audio/Sounds/snd_ring.wav" id="2_uff1x"]
+[ext_resource type="PackedScene" uid="uid://dri7hqhgrh3oj" path="res://Scenes/Effects/eff_ring_particles.tscn" id="3_176yy"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_31gif"]
 radius = 0.779029
@@ -10,6 +12,9 @@ radius = 0.779029
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_ocyms")
+ringSound = ExtResource("2_uff1x")
+soundVolume = -12.0
+collectEffect = ExtResource("3_176yy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.546739, 0)

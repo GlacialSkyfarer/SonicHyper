@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://brv31low4p3s3"]
+[gd_scene load_steps=9 format=3 uid="uid://brv31low4p3s3"]
 
 [ext_resource type="Script" path="res://Actors/Enemies/GUN/Beetles/Beetle.cs" id="1_77151"]
 [ext_resource type="PackedScene" uid="uid://btcs07os1t0o" path="res://Assets/Visual/Models/Enemies/mdl_beetle.blend" id="1_ihc45"]
+[ext_resource type="PackedScene" uid="uid://bb54xxnkakld2" path="res://Scenes/Effects/eff_explosion_delta.tscn" id="2_4sgpq"]
+[ext_resource type="AudioStream" uid="uid://ddk4ynn17mcnu" path="res://Assets/Audio/Sounds/snd_explosion.mp3" id="3_qwrhk"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_wmmv3"]
 radius = 0.904675
@@ -21,6 +23,9 @@ collision_mask = 2
 motion_mode = 1
 script = ExtResource("1_77151")
 lookBoxPath = NodePath("LookBox")
+deathEffect = ExtResource("2_4sgpq")
+deathSound = ExtResource("3_qwrhk")
+deathSoundVolume = -6.0
 maxHP = 1.0
 
 [node name="mdl_beetle" parent="." instance=ExtResource("1_ihc45")]
