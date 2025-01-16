@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://cyjbdi347hyhd"]
+[gd_scene load_steps=56 format=3 uid="uid://cyjbdi347hyhd"]
 
 [ext_resource type="Script" path="res://Actors/Players/Sonic.cs" id="1_7cjmg"]
 [ext_resource type="AudioStream" uid="uid://c7smi58wkyhhm" path="res://Assets/Audio/Sounds/Metal/snd_jump.wav" id="2_3qqho"]
@@ -327,6 +327,60 @@ shadow_size = 5
 shadow_color = Color(0, 0, 0, 0.698039)
 shadow_offset = Vector2(3, 3)
 
+[sub_resource type="Animation" id="Animation_si00y"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xso7m"]
+resource_name = "fadeIn"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-1920, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_u4ufe"]
+resource_name = "fadeOut"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-1920, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0iwy5"]
+_data = {
+"RESET": SubResource("Animation_si00y"),
+"fadeIn": SubResource("Animation_xso7m"),
+"fadeOut": SubResource("Animation_u4ufe")
+}
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_forj4"]
 transparency = 1
 blend_mode = 1
@@ -354,7 +408,7 @@ script = ExtResource("1_7cjmg")
 animatorPath = NodePath("Rotator/mdl_metalSonic/AnimationPlayer")
 standingColliderPath = NodePath("StandingShape")
 ballColliderPath = NodePath("BallShape")
-standingModelPath = NodePath("Rotator/mdl_metalSonic")
+standingModelPath = NodePath("Rotator/mdl_metalSonic/Armature/Skeleton3D/Grp0")
 ballModelPath = NodePath("Rotator/Ball/Ball")
 ballPlayerPath = NodePath("Rotator/Ball/Ball/AnimationPlayer")
 floorCastPath = NodePath("FloorCast2")
@@ -362,6 +416,7 @@ homingAttackAreaPath = NodePath("HomingAttackArea")
 rotatorNodePath = NodePath("Rotator")
 glowTrailPath = NodePath("Trail3D")
 ballHurtboxPath = NodePath("BallShape/JumpHurtBox")
+fadeAnimPlayerPath = NodePath("UI/ColorRect/AnimationPlayer")
 spinHoldSoundPath = NodePath("SpinChargeSound")
 spinReleaseSoundPath = NodePath("SpinReleaseSound")
 jumpSoundPath = NodePath("JumpSound")
@@ -415,6 +470,7 @@ comboScoreLabels = {
 11: "PERFECT!"
 }
 animations = {
+"Damage": "Damage",
 "HomingAttackBounce": "HomingAttackBounce",
 "Idle": "Idle",
 "Jet": "Jet",
@@ -497,7 +553,7 @@ bones/3/rotation = Quaternion(0.689565, -0.000423187, -0.000401499, 0.724223)
 bones/3/scale = Vector3(1, 1, 1)
 bones/4/rotation = Quaternion(-0.0245072, -0.00058419, 1.4202e-05, 0.999699)
 bones/4/scale = Vector3(1, 1, 1)
-bones/5/position = Vector3(1.38382, 0.62642, 1.23192)
+bones/5/position = Vector3(1.38358, 0.625794, 1.21916)
 bones/5/rotation = Quaternion(0.487597, -0.512104, -0.487596, 0.512103)
 bones/5/scale = Vector3(1, 1, 1)
 bones/6/position = Vector3(3.61403, 0.52835, -0.767123)
@@ -508,23 +564,23 @@ bones/7/scale = Vector3(1, 1, 1)
 bones/8/position = Vector3(-0.640635, 1.86296, 1.67459)
 bones/8/rotation = Quaternion(1.42336e-05, 0.999699, -0.0245072, -0.000582238)
 bones/8/scale = Vector3(1, 1, 1)
-bones/9/position = Vector3(-1.1821, 0.585103, 0.389696)
+bones/9/position = Vector3(-1.18251, 0.586339, 0.414873)
 bones/9/rotation = Quaternion(0.487596, 0.512103, 0.487597, 0.512104)
 bones/10/position = Vector3(-3.61403, 0.528351, -0.767139)
 bones/10/rotation = Quaternion(-0.724223, -6.88677e-07, -7.25352e-07, 0.689565)
-bones/11/rotation = Quaternion(-0.699111, -7.38878e-07, -7.22379e-07, 0.715013)
+bones/11/rotation = Quaternion(-0.695898, -7.41192e-07, -7.18209e-07, 0.71814)
 bones/11/scale = Vector3(1, 1, 1)
-bones/12/rotation = Quaternion(-0.102691, 1.67109e-13, -9.685e-14, 0.994713)
+bones/12/rotation = Quaternion(-0.0904032, 1.6588e-13, -9.9413e-14, 0.995905)
 bones/12/scale = Vector3(1, 1, 1)
-bones/13/rotation = Quaternion(0.680334, 0.11817, -0.703934, 0.166307)
+bones/13/rotation = Quaternion(0.676789, 0.124056, -0.70384, 0.176565)
 bones/13/scale = Vector3(1, 1, 1)
-bones/14/rotation = Quaternion(0.234836, 0.102643, -0.00586488, 0.966583)
+bones/14/rotation = Quaternion(0.254301, 0.102124, -0.00635102, 0.961697)
 bones/14/scale = Vector3(1, 1, 1)
 bones/15/rotation = Quaternion(-0.102336, 0.0546801, -0.0272153, 0.992873)
 bones/15/scale = Vector3(1, 1, 1)
-bones/16/rotation = Quaternion(0.590685, -0.324495, 0.608719, 0.418635)
+bones/16/rotation = Quaternion(0.592162, -0.319683, 0.613466, 0.413287)
 bones/16/scale = Vector3(1, 1, 1)
-bones/17/rotation = Quaternion(0.758801, -0.0687453, 0.0189518, 0.647407)
+bones/17/rotation = Quaternion(0.750776, -0.0697213, 0.0187514, 0.656599)
 bones/17/scale = Vector3(1, 1, 1)
 bones/18/rotation = Quaternion(-0.570691, -0.00584936, 0.127702, 0.811153)
 bones/19/rotation = Quaternion(0.683339, 0.0527004, -0.0108489, 0.728116)
@@ -607,6 +663,20 @@ targetPath = NodePath("../../..")
 targetVariable = "currentScore"
 prefix = "SCORE: "
 metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/ColorRect"]
+libraries = {
+"": SubResource("AnimationLibrary_0iwy5")
+}
+autoplay = "fadeIn"
 
 [node name="Trail3D" type="MeshInstance3D" parent="."]
 material_override = SubResource("StandardMaterial3D_forj4")

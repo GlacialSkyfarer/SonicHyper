@@ -1,9 +1,11 @@
-[gd_scene load_steps=24 format=3 uid="uid://0jc1n1es4jxn"]
+[gd_scene load_steps=28 format=3 uid="uid://0jc1n1es4jxn"]
 
 [ext_resource type="Texture2D" uid="uid://daaw73agiex1m" path="res://Assets/Visual/Interface/spr_logo.png" id="1_1he8q"]
 [ext_resource type="Texture2D" uid="uid://bbifyp5ytlv4a" path="res://Assets/Visual/Interface/spr_menuButton.png" id="2_wm21y"]
 [ext_resource type="BitMap" uid="uid://dwk2ha1if3lyf" path="res://Assets/Visual/Interface/spr_menuButton_m.png" id="3_hdgai"]
+[ext_resource type="Script" path="res://Scenes/Maps/Sonic/MenuTextureButton.cs" id="4_8ir25"]
 [ext_resource type="Texture2D" uid="uid://cl3wariqxeeu3" path="res://Assets/Visual/Interface/spr_holyFUCKitsHim.png" id="4_st3nc"]
+[ext_resource type="PackedScene" uid="uid://b00w3axd0lxv5" path="res://Scenes/Maps/Sonic/scn_skyPalace.tscn" id="5_lvt72"]
 
 [sub_resource type="Gradient" id="Gradient_2eo5x"]
 colors = PackedColorArray(0.447373, 0.2958, 0.58, 1, 0.316983, 0.3055, 0.65, 1)
@@ -144,6 +146,15 @@ _data = {
 "spin": SubResource("Animation_7ax4l")
 }
 
+[sub_resource type="SystemFont" id="SystemFont_sh4fw"]
+font_names = PackedStringArray("Calibri")
+
+[sub_resource type="LabelSettings" id="LabelSettings_i8mbm"]
+font = SubResource("SystemFont_sh4fw")
+font_size = 34
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+
 [node name="Title" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -220,19 +231,23 @@ texture = ExtResource("1_1he8q")
 [node name="Act1" type="Control" parent="."]
 anchors_preset = 0
 offset_left = -23.0
-offset_top = 437.0
+offset_top = 325.0
 offset_right = 17.0
-offset_bottom = 477.0
+offset_bottom = 365.0
 scale = Vector2(2.08218, 2.08218)
 
 [node name="Act1" type="TextureButton" parent="Act1"]
 layout_mode = 0
-offset_right = 580.0
+offset_left = -26.0
+offset_right = 554.0
 offset_bottom = 100.0
 scale = Vector2(0.419219, 0.419219)
 texture_normal = ExtResource("2_wm21y")
 texture_click_mask = ExtResource("3_hdgai")
 stretch_mode = 0
+script = ExtResource("4_8ir25")
+type = 0
+scene = ExtResource("5_lvt72")
 
 [node name="TextureRect" type="TextureRect" parent="Act1/Act1"]
 modulate = Color(0.43576, 0.1008, 0.48, 0.266667)
@@ -273,14 +288,14 @@ libraries = {
 }
 autoplay = "idle"
 
-[node name="Act2" type="Control" parent="Act1"]
+[node name="Act3" type="Control" parent="Act1"]
 anchors_preset = 0
-offset_left = -34.0
-offset_top = 60.0
-offset_right = 6.0
-offset_bottom = 100.0
+offset_left = -4.80266
+offset_top = 58.1122
+offset_right = 35.1973
+offset_bottom = 98.1122
 
-[node name="Act2" type="TextureButton" parent="Act1/Act2"]
+[node name="Act2" type="TextureButton" parent="Act1/Act3"]
 layout_mode = 0
 offset_left = -26.0
 offset_right = 554.0
@@ -289,8 +304,9 @@ scale = Vector2(0.419219, 0.419219)
 texture_normal = ExtResource("2_wm21y")
 texture_click_mask = ExtResource("3_hdgai")
 stretch_mode = 0
+script = ExtResource("4_8ir25")
 
-[node name="TextureRect" type="TextureRect" parent="Act1/Act2/Act2"]
+[node name="TextureRect" type="TextureRect" parent="Act1/Act3/Act2"]
 modulate = Color(0.43576, 0.1008, 0.48, 0.266667)
 z_index = -1
 layout_mode = 1
@@ -305,63 +321,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_wm21y")
 
-[node name="Label" type="Label" parent="Act1/Act2/Act2"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -171.5
-offset_top = -43.0
-offset_right = 171.5
-offset_bottom = 43.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Play Act 2"
-label_settings = SubResource("LabelSettings_6xu4q")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Act1/Act2/Act2"]
-libraries = {
-"": SubResource("AnimationLibrary_1anwb")
-}
-autoplay = "idle"
-
-[node name="Act3" type="Control" parent="Act1/Act2"]
-anchors_preset = 0
-offset_left = -30.0
-offset_top = 60.0
-offset_right = 10.0
-offset_bottom = 100.0
-
-[node name="Act2" type="TextureButton" parent="Act1/Act2/Act3"]
-layout_mode = 0
-offset_left = -26.0
-offset_right = 554.0
-offset_bottom = 100.0
-scale = Vector2(0.419219, 0.419219)
-texture_normal = ExtResource("2_wm21y")
-texture_click_mask = ExtResource("3_hdgai")
-stretch_mode = 0
-
-[node name="TextureRect" type="TextureRect" parent="Act1/Act2/Act3/Act2"]
-modulate = Color(0.43576, 0.1008, 0.48, 0.266667)
-z_index = -1
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 2.38539
-offset_top = 9.54154
-offset_right = 2.38538
-offset_bottom = 9.54154
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_wm21y")
-
-[node name="Label" type="Label" parent="Act1/Act2/Act3/Act2"]
+[node name="Label" type="Label" parent="Act1/Act3/Act2"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -379,7 +339,7 @@ label_settings = SubResource("LabelSettings_6xu4q")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Act1/Act2/Act3/Act2"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Act1/Act3/Act2"]
 libraries = {
 "": SubResource("AnimationLibrary_1anwb")
 }
@@ -395,3 +355,18 @@ libraries = {
 "": SubResource("AnimationLibrary_4pxeg")
 }
 autoplay = "spin"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 138.0
+offset_top = 675.0
+offset_right = 828.0
+offset_bottom = 900.0
+text = "Use the LEFT STICK or WASD to run. 
+Press A (BOTTOM BUTTON) or SPACE to jump.
+Press A or SPACE again in the air to homing attack.
+Chain homing attacks together for score.
+Hold SHIFT or X (LEFT BUTTON) to spin dash.
+Try to get 10,000 points!
+(click the menu buttons with the mouse)"
+label_settings = SubResource("LabelSettings_i8mbm")

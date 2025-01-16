@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://i854w35gsorh"
-path="res://.godot/imported/mdl_spring_r.blend-7c1d8cdc4e660faa156547d75ba0a505.scn"
+uid="uid://1c5fsojtgisk"
+path="res://.godot/imported/mdl_goalPost.blend-07a143c0cef19a17d1306d2de9218eb6.scn"
 
 [deps]
 
-source_file="res://Assets/Visual/Models/Gizmos/mdl_spring_r.blend"
-dest_files=["res://.godot/imported/mdl_spring_r.blend-7c1d8cdc4e660faa156547d75ba0a505.scn"]
+source_file="res://Assets/Visual/Models/mdl_goalPost.blend"
+dest_files=["res://.godot/imported/mdl_goalPost.blend-07a143c0cef19a17d1306d2de9218eb6.scn"]
 
 [params]
 
@@ -26,7 +26,7 @@ meshes/lightmap_texel_size=0.2
 meshes/force_disable_compression=false
 skins/use_named_skins=true
 animation/import=true
-animation/fps=30
+animation/fps=24.0
 animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false

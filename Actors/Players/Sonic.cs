@@ -15,6 +15,7 @@ public enum SonicPlayerState {
 	SpringJumping,
 	HomingAttacking,
 	HomingAttackBouncing,
+	Damage
 
 }
 
@@ -38,7 +39,7 @@ public partial class Sonic : Actor
 	[Export] private NodePath ballColliderPath;
 	private CollisionShape3D ballCollider;
 	[Export] private NodePath standingModelPath;
-	private Node3D standingModel;
+	private MeshInstance3D standingModel;
 	[Export] private NodePath ballModelPath;
 	private Node3D ballModel;
 	[Export] private NodePath ballPlayerPath;
@@ -54,6 +55,8 @@ public partial class Sonic : Actor
 	private MeshInstance3D glowBall;
 	[Export] private NodePath ballHurtboxPath;
 	private Area3D ballHurtbox;
+	[Export] private NodePath fadeAnimPlayerPath;
+	private AnimationPlayer fadeAnimPlayer;
 
 	//Sounds
 
@@ -173,7 +176,7 @@ public partial class Sonic : Actor
 		animator = GetNode<AnimationPlayer>(animatorPath);
 		standingCollider = GetNode<CollisionShape3D>(standingColliderPath);
 		ballCollider = GetNode<CollisionShape3D>(ballColliderPath);
-		standingModel = GetNode<Node3D>(standingModelPath);
+		standingModel = GetNode<MeshInstance3D>(standingModelPath);
 		ballModel = GetNode<Node3D>(ballModelPath);
 		floorCast = GetNode<ShapeCast3D>(floorCastPath);
 		spinHoldSound = GetNode<AudioStreamPlayer>(spinHoldSoundPath);
@@ -185,6 +188,7 @@ public partial class Sonic : Actor
 		glowTrail = GetNode<Trail3D>(glowTrailPath);
 		glowBall = glowTrail.GetNode<MeshInstance3D>("Ball");
 		ballHurtbox = GetNode<Area3D>(ballHurtboxPath);
+		fadeAnimPlayer = GetNode<AnimationPlayer>(fadeAnimPlayerPath);
 
 		gameManager = GetNode<GameManager>("/root/GameManager");
 
@@ -436,6 +440,7 @@ public partial class Sonic : Actor
 
 			break;
 			
+			case SonicPlayerState.Damage:
 			case SonicPlayerState.StandFalling:
 			case SonicPlayerState.SpinFalling:
 
@@ -568,6 +573,7 @@ public partial class Sonic : Actor
 
 				}
 				Velocity = new Vector3(Velocity.X, bounceVelocity, Velocity.Z);
+				hasHomingAttack = true;
 
 			break;
 
@@ -580,6 +586,7 @@ public partial class Sonic : Actor
 		//Colliders and Models
 		switch (currentPlayerState) {
 
+			case SonicPlayerState.Damage:
 			case SonicPlayerState.SpringJumping:
 			case SonicPlayerState.StandFalling:
 			case SonicPlayerState.HomingAttackBouncing:
@@ -608,6 +615,12 @@ public partial class Sonic : Actor
 
 		//Animations
 		switch (currentPlayerState) {
+
+			case SonicPlayerState.Damage:
+
+				PlayAnimation("Damage");
+
+			break;
 
 			case SonicPlayerState.Standing: 
 
@@ -683,6 +696,16 @@ public partial class Sonic : Actor
 
 			glowBall.Visible = false;
 			glowTrail.Enabled = false;
+
+		}
+
+		if (currentInvincibilityTime > 0) {
+
+			standingModel.Transparency = 0.5f;
+
+		} else {
+
+			standingModel.Transparency = 0;
 
 		}
 
@@ -768,6 +791,7 @@ public partial class Sonic : Actor
 			currentPlayerState = SonicPlayerState.HomingAttacking;
 			homingAttackDirection = currentDirection;
 			hasHomingAttack = false;
+			currentInvincibilityTime = 0.5f;
 
 			if (currentLowestAngle != 360f) {
 
@@ -814,6 +838,9 @@ public partial class Sonic : Actor
 
 				currentRings = 0;
 				currentInvincibilityTime = invincibilityTime;
+				currentPlayerState = SonicPlayerState.Damage;
+				Velocity = (direction + Vector3.Up * 3).Normalized() * 30f;
+				GlobalPosition += Vector3.Up;
 
 			} else {
 
@@ -827,7 +854,17 @@ public partial class Sonic : Actor
 
 	public override void _OnDeath(Node source) {
 
-		GetTree().Quit();
+		Reset();
+
+	}
+
+	private async void Reset() {
+
+		fadeAnimPlayer.Play("fadeOut");
+
+		await ToSignal(GetTree().CreateTimer(1), "timeout");
+
+		GetTree().ReloadCurrentScene();
 
 	}
 
