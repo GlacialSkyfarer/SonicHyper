@@ -15,7 +15,7 @@ public partial class RingTrail : Node3D
 
 		gameManager = GetNode<GameManager>("/root/GameManager");
 
-		if (func_godot_properties.ContainsKey("targetname")) {
+		if (func_godot_properties.ContainsKey("targetname") && (string)func_godot_properties["targetname"] != "") {
 
 			gameManager.SetTargetName((string)func_godot_properties["targetname"], this);
 
@@ -69,16 +69,16 @@ public partial class RingTrail : Node3D
 
 			PackedScene ringScene = GD.Load<PackedScene>(ringPath);
 
-			for (int i = 0; i < (skipFirst ? rings - 1 : rings); i++) {
+			for (int i = 0; i < rings; i++) {
 
 				Vector3 ringPos;
 				if (skipFirst) {
 
-					ringPos = curve.SampleBaked(curve.GetBakedLength() * ((float)i / (rings - 1) + 1 / rings), true);
+					ringPos = curve.SampleBaked(curve.GetBakedLength() * (((float)i + 1) / rings), true);
 
 				} else {
 
-					ringPos = curve.SampleBaked(curve.GetBakedLength() * ((float)i / rings), true);
+					ringPos = curve.SampleBaked(curve.GetBakedLength() * ((float)i / (rings - 1)), true);
 
 				}
 				Ring ring = ringScene.Instantiate<Ring>();

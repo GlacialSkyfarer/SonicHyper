@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="FuncGodotFGDPointClass" load_steps=3 format=3 uid="uid://cxxa86hrglkko"]
+
+[ext_resource type="Script" path="res://addons/func_godot/src/fgd/func_godot_fgd_point_class.gd" id="1_jk61f"]
+[ext_resource type="PackedScene" uid="uid://brv31low4p3s3" path="res://Scenes/Actors/Enemies/act_beetle_mono.tscn" id="1_v0qsx"]
+
+[resource]
+script = ExtResource("1_jk61f")
+scene_file = ExtResource("1_v0qsx")
+apply_rotation_on_map_build = true
+classname = "actor_beetle_mono"
+description = "Mono GUN Beetle"
+func_godot_internal = false
+base_classes = Array[Resource]([])
+class_properties = {}
+class_property_descriptions = {}
+meta_properties = {
+"color": Color(0.362571, 0.337482, 0.279864, 1),
+"size": AABB(-16, -16, -16, 16, 16, 16)
+}
+node_class = ""
+name_property = ""
