@@ -22,7 +22,7 @@
 ( -224 2416 0 ) ( -224 2416 1 ) ( -223 2416 0 ) GreenHill/sh_rock [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 0.5 0.5
 ( -224 2416 0 ) ( -223 2416 0 ) ( -224 2417 0 ) GreenHill/sh_rock [ -1 0 0 0 ] [ 0 -1 0 0 ] 0 0.5 0.5
 ( -32 2416 160 ) ( -32 2448 160 ) ( 96 2448 160 ) GreenHill/sh_rock [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 0.5 0.5
-( -32 2576 16 ) ( -31 2576 16 ) ( -32 2576 17 ) GreenHill/sh_rock [ -1 0 0 0 ] [ 0 0 -1 0 ] 0 0.5 0.5
+( -32 2512 16 ) ( -31 2512 16 ) ( -32 2512 17 ) GreenHill/sh_rock [ -1 0 0 0 ] [ 0 0 -1 0 ] 0 0.5 0.5
 ( -32 2576 16 ) ( -32 2576 17 ) ( -32 2577 16 ) GreenHill/sh_rock [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 0.5 0.5
 }
 // brush 2
@@ -31,7 +31,7 @@
 ( -224 2416 0 ) ( -224 2416 1 ) ( -223 2416 0 ) GreenHill/sh_rock [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 0.5 0.5
 ( -32 2416 160 ) ( 96 2448 160 ) ( -32 2448 160 ) GreenHill/sh_rock [ -1 0 0 0 ] [ 0 -1 0 0 ] 0 0.5 0.5
 ( -32 2576 224 ) ( -32 2577 224 ) ( -31 2576 224 ) GreenHill/sh_grass [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 0.5 0.5
-( -32 2576 16 ) ( -31 2576 16 ) ( -32 2576 17 ) GreenHill/sh_grass_side [ 1 2.220446049250313e-16 0 96 ] [ 0 0 -1 64 ] 0 0.5 0.5
+( -32 2512 16 ) ( -31 2512 16 ) ( -32 2512 17 ) GreenHill/sh_grass_side [ 1 2.220446049250313e-16 0 96 ] [ 0 0 -1 64 ] 0 0.5 0.5
 ( -32 2576 16 ) ( -32 2576 17 ) ( -32 2577 16 ) GreenHill/sh_grass_side [ 0 1 0 0 ] [ 0 0 -1 64 ] 0 0.5 0.5
 }
 // brush 3
@@ -66,7 +66,7 @@
 ( -320 880 -64 ) ( -320 880 0 ) ( -192 880 0 ) GreenHill/sh_grass_side [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 0.5 0.5
 ( 256 -232 -64 ) ( 384 -216 -64 ) ( 256 -216 -64 ) special/skip [ -1 0 0 0 ] [ 0 -1 0 0 ] 0 0.5 0.5
 ( 24 192 0 ) ( 24 193 0 ) ( 25 192 0 ) GreenHill/sh_grass [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 0.5 0.5
-( 24 2576 0 ) ( 25 2576 0 ) ( 24 2576 1 ) GreenHill/sh_grass_side [ -1 0 0 0 ] [ 0 0 -1 0 ] 0 0.5 0.5
+( 24 2576 0 ) ( 25 2576 0 ) ( 24 2576 1 ) GreenHill/sh_rock [ -1 0 0 0 ] [ 0 0 -1 0 ] 0 0.5 0.5
 ( 320 192 0 ) ( 320 192 1 ) ( 320 193 0 ) GreenHill/sh_grass_side [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 0.5 0.5
 }
 // brush 7
@@ -86,15 +86,6 @@
 ( 24 192 0 ) ( 24 193 0 ) ( 25 192 0 ) GreenHill/sh_grass [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 0.5 0.5
 ( -320 448 -32 ) ( -192 448 -16 ) ( -320 448 -16 ) GreenHill/sh_rock [ -1 0 0 0 ] [ 0 0 -1 0 ] 0 0.5 0.5
 ( 320 192 0 ) ( 320 192 1 ) ( 320 193 0 ) GreenHill/sh_grass_side [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 0.5 0.5
-}
-// brush 9
-{
-( 144 1280 0 ) ( 144 1281 0 ) ( 144 1280 1 ) GreenHill/sh_rock [ 0 -1 0 96 ] [ 0 0 -1 0 ] 0 0.5 0.5
-( 144 1296 0 ) ( 144 1296 1 ) ( 145 1296 0 ) GreenHill/sh_rock [ 1 0 0 -32 ] [ 0 0 -1 0 ] 0 0.5 0.5
-( 144 1280 0 ) ( 145 1280 0 ) ( 144 1281 0 ) GreenHill/sh_rock [ -1 0 0 32 ] [ 0 -1 0 96 ] 0 0.5 0.5
-( 272 1392 320 ) ( 272 1393 320 ) ( 273 1392 320 ) GreenHill/sh_rock [ 1 0 0 -32 ] [ 0 -1 0 96 ] 0 0.5 0.5
-( 272 1392 16 ) ( 273 1392 16 ) ( 272 1392 17 ) GreenHill/sh_rock [ -1 0 0 32 ] [ 0 0 -1 0 ] 0 0.5 0.5
-( 240 1392 16 ) ( 240 1392 17 ) ( 240 1393 16 ) GreenHill/sh_rock [ 0 1 0 -96 ] [ 0 0 -1 0 ] 0 0.5 0.5
 }
 }
 // entity 1
@@ -148,97 +139,4 @@
 ( -208 2416 0 ) ( -208 2416 -1 ) ( -207 2416 0 ) GreenHill/sh_rock [ -6.123233995736766e-17 0 1 0 ] [ -1 0 -6.123233995736766e-17 64 ] 270 0.5 0.5
 ( -32 2416 0 ) ( -32 2417 0 ) ( -32 2416 -1 ) GreenHill/sh_grass_side [ 0 1 0 0 ] [ 0 0 -1 64 ] 0 0.5 0.5
 }
-}
-// entity 2
-{
-"classname" "gizmo_ringTrail"
-"origin" "0 56 8"
-"isfirst" "1"
-"rings" "5"
-"skipfirst" ""
-"target" "rt_01"
-"targetname" "rt_00"
-}
-// entity 3
-{
-"classname" "gizmo_ringTrail"
-"origin" "0 272 8"
-"target" "rt_00"
-"targetname" "rt_01"
-"isfirst" "0"
-}
-// entity 4
-{
-"classname" "gizmo_ringTrail"
-"origin" "-176 528 88"
-"isfirst" "1"
-"target" "rt_10"
-"targetname" "rt_11"
-"rings" "5"
-}
-// entity 5
-{
-"classname" "gizmo_ringTrail"
-"origin" "176 528 88"
-"isfirst" "1"
-"target" "rt_11"
-"targetname" "rt_10"
-}
-// entity 6
-{
-"classname" "gizmo_ringTrail"
-"origin" "-176 696 88"
-"isfirst" "1"
-"target" "rt_20"
-"targetname" "rt_21"
-"rings" "5"
-}
-// entity 7
-{
-"classname" "gizmo_ringTrail"
-"origin" "176 696 88"
-"isfirst" "1"
-"target" "rt_21"
-"targetname" "rt_20"
-}
-// entity 8
-{
-"classname" "gizmo_ringTrail"
-"origin" "168 1320 328"
-"target" "rt_31"
-"targetname" "rt_30"
-"isfirst" "1"
-"rings" "20"
-"skipfirst" "1"
-}
-// entity 9
-{
-"classname" "gizmo_ringTrail"
-"origin" "216 1320 328"
-"rings" "3"
-"skipfirst" ""
-"target" "rt_32"
-"targetname" "rt_31"
-}
-// entity 10
-{
-"classname" "gizmo_ringTrail"
-"origin" "216 1368 328"
-"targetname" "rt_32"
-"skipfirst" ""
-"target" "rt_33"
-}
-// entity 11
-{
-"classname" "gizmo_ringTrail"
-"origin" "168 1368 328"
-"targetname" "rt_33"
-"target" "rt_34"
-}
-// entity 12
-{
-"classname" "gizmo_ringTrail"
-"origin" "168 1320 328"
-"target" "rt_30"
-"targetname" "rt_34"
 }

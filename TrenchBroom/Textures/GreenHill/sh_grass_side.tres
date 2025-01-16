@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://doq4x4re2iuss"]
+
+[ext_resource type="Texture2D" uid="uid://dagp7b7iab8fe" path="res://TrenchBroom/Textures/GreenHill/sh_grass_side.png" id="1_36jxx"]
+
+[resource]
+transparency = 3
+alpha_hash_scale = 1.0
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("1_36jxx")
+metallic_specular = 0.0
+texture_filter = 2

@@ -31,15 +31,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.161624, -0.247377)
 cameraPath = NodePath("../CameraFollower/SpringArm3D/Camera3D")
 
 [node name="Skeleton3D" parent="Sonic/Rotator/mdl_metalSonic/Armature" index="0"]
-bones/5/position = Vector3(1.3838, 0.626381, 1.23112)
-bones/9/position = Vector3(-1.18212, 0.585172, 0.391096)
-bones/11/rotation = Quaternion(-0.698871, -7.38214e-07, -7.21268e-07, 0.715248)
-bones/12/rotation = Quaternion(-0.101919, 1.67001e-13, -9.74717e-14, 0.994793)
-bones/13/rotation = Quaternion(0.680111, 0.118555, -0.703927, 0.166975)
-bones/14/rotation = Quaternion(0.235891, 0.102616, -0.00589124, 0.966328)
-bones/16/rotation = Quaternion(0.590781, -0.324195, 0.609018, 0.418298)
-bones/17/rotation = Quaternion(0.758302, -0.0688067, 0.0189394, 0.647986)
-bones/21/rotation = Quaternion(-0.67853, -0.518307, 0.187087, 0.485751)
+bones/5/position = Vector3(1.38364, 0.625969, 1.22272)
+bones/9/position = Vector3(-1.18239, 0.585997, 0.407906)
+bones/11/rotation = Quaternion(-0.696798, -7.41234e-07, -7.20035e-07, 0.717267)
+bones/12/rotation = Quaternion(-0.0938358, 1.66259e-13, -9.81665e-14, 0.995588)
+bones/13/rotation = Quaternion(0.677782, 0.122447, -0.703866, 0.173756)
+bones/14/rotation = Quaternion(0.249012, 0.10227, -0.00621893, 0.963066)
+bones/16/rotation = Quaternion(0.591758, -0.321037, 0.612142, 0.414777)
+bones/17/rotation = Quaternion(0.753035, -0.069449, 0.0188078, 0.654035)
 
 [editable path="Sonic"]
 [editable path="Sonic/Rotator/mdl_metalSonic"]

@@ -6,7 +6,7 @@ public partial class RingTrail : Node3D
 
 	string ringPath = "res://Scenes/Gizmos/giz_ring.tscn";
 
-	[Export] public Godot.Collections.Dictionary func_godot_properties;
+	[Export] public Godot.Collections.Dictionary func_godot_properties = new();
 	GameManager gameManager;
 
 	// Called when the node enters the scene tree for the first time.

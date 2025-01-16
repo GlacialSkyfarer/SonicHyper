@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://i854w35gsorh"
-path="res://.godot/imported/mdl_spring_r.blend-7c1d8cdc4e660faa156547d75ba0a505.scn"
+valid=false
 
 [deps]
 
 source_file="res://Assets/Visual/Models/Gizmos/mdl_spring_r.blend"
-dest_files=["res://.godot/imported/mdl_spring_r.blend-7c1d8cdc4e660faa156547d75ba0a505.scn"]
 
 [params]
 
